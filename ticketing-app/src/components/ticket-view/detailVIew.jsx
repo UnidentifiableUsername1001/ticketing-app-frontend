@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router';
 import { config } from '../../../config';
 import Select from 'react-select';
 import useAssignableUsers from '../../hooks/useAssignableUsers';
+import { jwtDecode } from 'jwt-decode';
 
 function DetailView() {
     const [ticketTitle, setTicketTitle] = useState('');
@@ -20,7 +21,7 @@ function DetailView() {
     useEffect (() => {
         const fetchSelectedTicket = async () => {
             try {
-                const response = await fetch(`${url}/api/ticket/:ticketId`, {
+                const response = await fetch(`${url}/api/ticket/${params.ticketId}`, {
                     method: 'GET',
                     headers: {
                         Accept: 'application/JSON',
@@ -48,18 +49,31 @@ function DetailView() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch(`${url}/api/ticket/:ticketId`, {
+            const decodedToken = jwtDecode(jwtInStore);
+            const currentUserId = decodedToken.user.id;
+
+            const assigneeId = typeof assignedUser === 'object' ? assignedUser.value : assignedUser;
+
+            const payload = {
+                status: ticketStatus,
+                assignedUser: assigneeId,
+            };
+
+            if (newComment.trim() !== '') {
+                payload.newComment = {
+                    text: newComment,
+                    postedBy: currentUserId
+                };
+            }
+
+            const response = await fetch(`${url}/api/ticket/${params.ticketId}`, { 
                 method: 'PUT',
                 headers: {
                     Accept: 'application/JSON',
-                    'Content-Type':'application/JSON',
+                    'Content-Type': 'application/JSON',
                     Authorization: `Bearer ${jwtInStore}`,
                 },
-                body: JSON.stringify({
-                    status: ticketStatus,
-                    assignedUser: assignedUser.value,
-                    comments: newComment
-                })
+                body: JSON.stringify(payload) 
             });
 
             const setStates = () => {
@@ -67,18 +81,19 @@ function DetailView() {
                 setTicketStatus('');
                 setNewComment('');
             }
-            if(!response.ok) {
+
+            if (!response.ok) {
                 const data = await response.json();
                 throw new Error(`HTTP error, status ${response.status}, ${data.error}`);
             }
+            
             setStates();
             navigate('/dashboard');
         } catch (e) {
             console.error(e);
-            setError(e.message);
         }
     };
-
+    console.log("React sees these comments:", existingComments);
     return (
         <div className='container'>
             <div className='title-description-container'>
@@ -87,18 +102,20 @@ function DetailView() {
             </div>
             <div className='prev-comments'>
                 <h3>Comments</h3>
-                {existingComments.map((comment) => (
-                    <div key={comment._id} className='comment-div'>
-                        <h3 className='commentor-and-time'>{comment.postedBy + " " + comment.createdAt}</h3>
-                        <p className='comment-text'>{comment.text}</p>
+                {existingComments.map((comment, index) => (
+                    <div key={index} className='comment-div'>
+                        {comment ? (<>
+                            <h3 className='commentor-and-time'>{comment.postedBy?.firstName + " " + comment.postedBy?.lastName + " " + new Date(comment.createdAt).toLocaleString()}</h3>
+                            <p className='comment-text'>{comment.text}</p>                           
+                        </>) : (<></>)}
                     </div>
                 ))}
             </div>
             <div className='status-and-assignee-aside'>
-                <h3>Status <br></br></h3>
+                <h3>Status</h3>
                 <p>{ticketStatus}</p>
-                <h3>Assignee</h3><br></br>
-                <p>{assignedUser}</p>    
+                <h3>Assignee</h3>
+                <p>{typeof assignedUser === 'object' ? assignedUser.label : assignedUser}</p>  
             </div>
             <form onSubmit={handleSubmit}>
                 <input 

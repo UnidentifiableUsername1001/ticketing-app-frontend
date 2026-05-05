@@ -42,6 +42,10 @@ function RegisterPage() {
         }
     }
 
+    const changeToLogin = () => {
+        navigate('/login');
+    }
+
     return (
         <div className="register-login-components">
             <div className="absolute inset-0 bg-linear-to-b from-bgMain/50 to-bgMain"></div>
@@ -93,7 +97,7 @@ function RegisterPage() {
                                 />
                         </div>
                         <div className="flex flex-row gap-6">
-                            <button type="submit" className="bg-wiseSkin p-2 rounded-full hover:cursor-pointer hover:w-20 hover:h-11 hover:shadow-xl/60 hover:text-wiseOffWhite hover:bg-wiseDarkPink">
+                            <button type="submit" onClick={changeToLogin} className="bg-wiseSkin p-2 rounded-full hover:cursor-pointer hover:w-20 hover:h-11 hover:shadow-xl/60 hover:text-wiseOffWhite hover:bg-wiseDarkPink">
                                 Register
                             </button>                         
                         </div>

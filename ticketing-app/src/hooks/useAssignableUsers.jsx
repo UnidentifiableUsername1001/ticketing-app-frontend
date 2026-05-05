@@ -4,6 +4,7 @@ import { config } from "../../config";
 function useAssignableUsers() {
     const [assignableUsers, setAssignableUsers] = useState([]);
     const urlUsers = `${config.backendUrl}/api/users/`;
+    const jwtInStore = sessionStorage.getItem('auth-token');
     useEffect (() => {
         const fetchAssignableUsers = async () => {
         try {            

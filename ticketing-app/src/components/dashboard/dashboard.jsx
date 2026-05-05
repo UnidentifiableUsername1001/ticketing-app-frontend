@@ -35,23 +35,45 @@ function Dashboard() {
     }, []);
 
     const goToTicket = (ticketId) => {
-        navigate(`/app/ticket/${ticketId}`);
+        navigate(`/ticket/${ticketId}`);
     };
 
+    const colorRender = (status) => {
+        if (status === 'Open') return (<span className="bg-red-500 rounded-md p-1 text-wiseOffWhite">{status}</span>);
+        if (status === 'In progress') return (<span className="bg-yellow-500 rounded-md p-1 text-bgMain">{status}</span>);
+        if (status === 'Closed') return (<span className="bg-gray-500 rounded-md p-1 text-wiseOffWhite">{status}</span>);
+    }
+
     return (
-        <div className='container'>
-            <div className='row'>
-                {tickets.map((ticket) => (
-                    <div key={ticket._id} className='ticket-div'>
-                        <div className='title'><a onClick={() => {goToTicket(ticket._id)}}>{ticket.title}</a></div>
-                        {ticket.assignedTo ? (
-                            <div className='assignee'>{ticket.assignedTo.firstName}</div> 
-                        ) : (
-                            <div className='no-assignee'>Unassigned</div>    
-                        )}
-                        <div className='status'>{ticket.status}</div>
-                    </div>
-                ))}
+        <div className='bg-wisePaleGrey min-h-screen'>
+            <div className='max-w-6xl mx-auto'>
+                <table className='w-full text-left border-collapse'> 
+                    <thead className=''>
+                        <tr className='text-bgMain font-bold font-lato text-xl border-b border-bgMain'>
+                            <th className='py-3 px-4'>Status</th>
+                            <th className='py-3 px-4'>Title</th>
+                            <th className='py-3 px-4'>Assignee</th>
+                        </tr>
+                    </thead>
+                    <tbody className='font-lato font-light'>
+                        {tickets.map((ticket) => (
+                            <tr key={ticket._id} onClick={() => {goToTicket(ticket._id)}} className='border-b border-bgMain hover:bg-wiseSkin cursor-pointer transition-colors duration-200'>
+                                <td className='py-3 px-4'>{colorRender(ticket.status)}</td>
+                                <td className='py-3 px-4'>
+                                    {ticket.title}
+                                </td>
+                                {ticket.assignedTo ? (
+                                    <td className='py-3 px-4'>
+                                        {ticket.assignedTo.firstName + " " + ticket.assignedTo.lastName}
+                                    </td> 
+                                ) : (
+                                    <td className='py-3 px-4'>Unassigned</td>    
+                                )}
+                                
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
             </div>
         </div>
     );
