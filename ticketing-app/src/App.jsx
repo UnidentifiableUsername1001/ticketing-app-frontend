@@ -8,6 +8,7 @@ import Dashboard from './components/dashboard/dashboard';
 import CreateTicket from './components/create-ticket/createTicket';
 import DetailView from './components/ticket-view/detailVIew';
 import Navbar from './components/navbar/navbar';
+import Homepage from './components/homepage/homepage';
 
 
 function App() {
@@ -20,6 +21,11 @@ function App() {
           <Route path='/' element={<LoginPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
+          <Route path="/homepage" element={
+            <ProtectedRoute>
+              <Homepage />
+            </ProtectedRoute>
+          } />
           <Route path="/dashboard" element={
             <ProtectedRoute>
               <Dashboard />
