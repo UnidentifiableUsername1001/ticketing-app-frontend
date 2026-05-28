@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import { config } from "../../../config";
 import { Link, useNavigate } from "react-router";
 import { useAppContext } from "../../context/authContext";
+import { jwtDecode } from "jwt-decode";
 
 
 function LoginPage() {
@@ -27,12 +28,20 @@ function LoginPage() {
 
         const data = await response.json();
         if (!response.ok) return setShowError(data.message)
+
+            const decoded = jwtDecode(data.authToken);
+
+            if (decoded.user.scope == 'password_reset_only') {
+                navigate('/password-reset-page');
+            };
+
             sessionStorage.setItem('auth-token', data.authToken);
-            sessionStorage.setItem('name', data.firstName);
+            sessionStorage.setItem('name', data.firstName + " " + data.lastName);
             sessionStorage.setItem('email', data.email);
+
             setIsLoggedIn(true);
-            navigate('/dashboard');
-            console.log(data.authToken);
+
+            navigate('/homepage');
 
         } catch (e) {
             console.log('Error fetching details: ' + e);
