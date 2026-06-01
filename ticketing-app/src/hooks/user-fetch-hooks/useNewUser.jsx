@@ -34,6 +34,11 @@ export default function useNewUser(formData, setFormData) {
             if (finalPayload.departmentId) {
                 const destructDeptId = typeof finalPayload.departmentId === 'object' ? finalPayload.departmentId.value : finalPayload.departmentId;
                 finalPayload.departmentId = destructDeptId;
+            };
+
+            if (finalPayload.role) {
+                const destructDeptId = typeof finalPayload.role === 'object' ? finalPayload.role.value : finalPayload.role;
+                finalPayload.role = destructDeptId;
             }
 
             const response = await fetch(postUrl, {

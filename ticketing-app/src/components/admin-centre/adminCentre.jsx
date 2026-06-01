@@ -3,22 +3,22 @@ import { useAppContext } from "../../context/authContext";
 import { useNavigate } from "react-router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleUser } from "@fortawesome/free-regular-svg-icons";
-import { UserAmmend } from './sub-components/UserAmmend';
+import UserAmmend  from './sub-components/UserAmmend';
 import { faCubesStacked, faGlobe } from "@fortawesome/free-solid-svg-icons";
 
-function AdminCentre() {
+export default function AdminCentre() {
     const navigate = useNavigate();
-    const [activeTab, setActiveTab] = useState('users');
+    const [activeTab, setActiveTab] = useState('user');
     const renderActiveTab = () => {
         switch (activeTab){
             case 'user':
-                <UserAmmend/>
+                return <UserAmmend/>
                 break;
             case 'department':
-                <DepartmentAmend/>
+                return <DepartmentAmend/>
                 break;
             case 'global':
-                <GlobalSettings/>
+                return <GlobalSettings/>
                 break;
         };
     };
@@ -27,23 +27,24 @@ function AdminCentre() {
         <div className="top-div">
             <div className="admin-nav-div">
                 <ul>
-                    <li onClick={() => setActiveTab('user')} className="">
+                    <li onClick={() => setActiveTab('user')} className="cursor-pointer">
                         <FontAwesomeIcon icon={faCircleUser}/>
                         <span className="hidden-text">Users</span>
                     </li>
-                    <li onClick={() => setActiveTab('department')}>
+                    <li onClick={() => setActiveTab('department')} className="cursor-pointer">
                         <FontAwesomeIcon icon={faCubesStacked}/>
                         <span className="hidden-text">Department</span>
                     </li>
-                    <li onClick={() => setActiveTab('global')}>
+                    <li onClick={() => setActiveTab('global')} className="cursor-pointer">
                         <FontAwesomeIcon icon={faGlobe}/>
                         <span className="hidden-text">Global Configuration</span>
                     </li>
                 </ul>
             </div>
             <div className="sub-component">
-                {renderActiveTab}
+                {renderActiveTab()}
             </div>
         </div>
     )
 };
+

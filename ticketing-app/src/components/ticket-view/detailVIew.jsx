@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { config } from '../../../config';
 import Select from 'react-select';
-import useAssignableUsers from '../../hooks/useAssignableUsers';
+import useAssignableUsers from '../../hooks/user-fetch-hooks/useGetAllUsers';
 import { jwtDecode } from 'jwt-decode';
 import { useAppContext } from '../../context/authContext';
 import statusMapping from '../../hooks/ticketConstants';

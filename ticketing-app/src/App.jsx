@@ -12,6 +12,7 @@ import CreateTicket from './components/create-ticket/createTicket';
 import DetailView from './components/ticket-view/detailVIew';
 import Navbar from './components/navbar/navbar';
 import Homepage from './components/homepage/homepage';
+import AdminCentre from './components/admin-centre/adminCentre';
 
 // Icons
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -49,6 +50,11 @@ function App() {
           <Route path='/ticket/:ticketId' element={
             <ProtectedRoute>
               <DetailView/>
+            </ProtectedRoute>
+          } />
+          <Route path='/admin-centre' element={
+            <ProtectedRoute>
+              <AdminCentre/>
             </ProtectedRoute>
           } />
         </Routes>
