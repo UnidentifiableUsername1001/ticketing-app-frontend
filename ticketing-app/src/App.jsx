@@ -1,6 +1,9 @@
+// Default
 import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
+
+// Components
 import RegisterPage from './components/user-auth/registerPage';
 import LoginPage from './components/user-auth/loginPage';
 import ProtectedRoute from './components/user-auth/ProtectedRoute';
@@ -10,6 +13,13 @@ import DetailView from './components/ticket-view/detailVIew';
 import Navbar from './components/navbar/navbar';
 import Homepage from './components/homepage/homepage';
 
+// Icons
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faComments, faCircleUser, faBell, faHouse, faPenToSquare, faSquarePlus, faTrashCan, faUser, faIdBadge} from '@fortawesome/free-regular-svg-icons';
+import { faGear, faCubesStacked, faGlobe, faShield, faBuilding } from '@fortawesome/free-solid-svg-icons';
+
+library.add(faComments, faCircleUser, faGlobe, faCubesStacked, faBell, faHouse, faPenToSquare, faSquarePlus, faTrashCan, faUser, faIdBadge, faGear, faShield, faBuilding);
 
 function App() {
 
