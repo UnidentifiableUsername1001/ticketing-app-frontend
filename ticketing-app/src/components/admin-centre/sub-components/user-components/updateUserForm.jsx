@@ -3,7 +3,7 @@ import useGetDepartments from '../../../../hooks/department-fetch/useGetDepartme
 import useAssignableUsers from '../../../../hooks/user-fetch-hooks/useGetAllUsers';
 import useUpdateUser from '../../../../hooks/user-fetch-hooks/useUpdateUser';
 import Select from 'react-select';
-import { useGetOneUser } from '../../../../hooks/user-fetch-hooks/useGetOneUser';
+import { useGetOneUser } from '../../../../hooks/user-fetch-hooks/useGetOneUser'
 
 export function UpdateUserForm(){
 
@@ -22,7 +22,8 @@ export function UpdateUserForm(){
 
     const allUsers = useAssignableUsers();
     const [targetUserId, setTargetUserId] = useState({});
-    const selectedUser = useGetOneUser(targetUserId);
+    const { user } = useGetOneUser(targetUserId);
+
     const updateUserHandler = useUpdateUser(updateFormData, setUpdateFormData, targetUserId);
 
     const roleOptions = [
@@ -50,10 +51,6 @@ export function UpdateUserForm(){
 
     return (
         <div className='top-div'>
-            <div className='new-user bg-red-300'>
-                
-            </div>
-
             <div className='update-user bg-blue-300'>
                 <form onSubmit={updateUserHandler}>
                     <h1>Edit existing user</h1>
@@ -65,27 +62,25 @@ export function UpdateUserForm(){
                             onChange={(selectedOption) => setTargetUserId(selectedOption)} />
                     </div>
                     <div>
-                        <label htmlFor='firstName'>First Name: {}</label>
+                        <label htmlFor='firstName'>First Name - <span>Current: {user ? user.firstName : ""}</span></label>
                         <input
                             type='text'
                             name='firstName'
                             value={updateFormData.firstName}
                             onChange={updateEventHandler}
-                            placeholder='John'
                         />
                     </div>
                     <div>
-                        <label htmlFor='lastName'>Last Name:</label>
+                        <label htmlFor='lastName'>Last Name - <span>Current: {user ? user.lastName : ""}</span></label>
                         <input
                             type='text'
                             name='lastName'
                             value={updateFormData.lastName}
                             onChange={updateEventHandler}
-                            placeholder='Smith'
                         />
                     </div>
                     <div>
-                        <label htmlFor='jobTitle'>Job title:</label>
+                        <label htmlFor='jobTitle'>Job title - <span>Current: {user ? user.jobTitle : ""}</span></label>
                         <input
                             type='text'
                             name='jobTitle'
@@ -94,23 +89,21 @@ export function UpdateUserForm(){
                         />
                     </div>
                     <div>
-                        <label htmlFor='email'>Email:</label>
+                        <label htmlFor='email'>Email - <span>Current: {user ? user.email : ""}</span></label>
                         <input
                             type='text'
                             name='email'
                             value={updateFormData.email}
                             onChange={updateEventHandler}
-                            placeholder='firstName.lastName@businessdomain.com'
                         />
                     </div>
                     <div>
-                        <label htmlFor='password'>Password:</label>
+                        <label htmlFor='password'>Password Reset Required?</label>
                         <input
-                            type='text'
+                            type='checkbox'
                             name='password'
-                            value={updateFormData.password}
+                            value={updateFormData.passwordResetRequired}
                             onChange={updateEventHandler}
-                            placeholder="Set a default password (immediate reset at next log in)"
                         />
                     </div>
                      <div>
@@ -121,7 +114,7 @@ export function UpdateUserForm(){
                             onChange={(selectedOption) => handleExplicitChange('departmentId', selectedOption)} />
                     </div>
                     <div>
-                        <label htmlFor='role'>Permission Level:</label>
+                        <label htmlFor='role'>Permission Level - <span>Current: {user ? user.role : ""}</span></label>
                         <div>
                             <Select
                                 value={updateFormData.role}

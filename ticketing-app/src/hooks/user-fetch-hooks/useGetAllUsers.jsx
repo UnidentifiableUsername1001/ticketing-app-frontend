@@ -32,7 +32,6 @@ function useAssignableUsers() {
     };
         fetchAssignableUsers();
     }, []);
-
     return assignableUsers;
 }
 
