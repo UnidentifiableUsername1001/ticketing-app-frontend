@@ -34,6 +34,11 @@ export default function useUpdateUser(formData, setFormData, userId) {
                 finalPayload.departmentId = destructDeptId;
             }
 
+            if (finalPayload.role) {
+                const destructRole = typeof finalPayload.role === 'object' ? finalPayload.role.value : finalPayload.role;
+                finalPayload.role = destructRole;
+            }
+
             const destructUserId = typeof userId === 'object' ? userId.value : userId;
             const putUrl = `${config.backendUrl}/api/users/update-user/${destructUserId}`; 
 

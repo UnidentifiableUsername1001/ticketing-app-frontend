@@ -3,7 +3,7 @@ import { useAppContext } from "../../context/authContext";
 import { useNavigate } from "react-router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleUser } from "@fortawesome/free-regular-svg-icons";
-import UserAmmend  from './sub-components/UserAmmend';
+import UserAmmend  from './sub-components/user-components/UserAmmend';
 import { faCubesStacked, faGlobe } from "@fortawesome/free-solid-svg-icons";
 
 export default function AdminCentre() {

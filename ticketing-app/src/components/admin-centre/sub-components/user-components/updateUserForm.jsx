@@ -1,33 +1,29 @@
-import React, { useState } from 'react';
-import { useAppContext } from "../../../context/authContext";
-import { useNavigate } from "react-router";
-import useGetDepartments from '../../../hooks/useGetDepartments';
-import  useAssignableUsers from '../../../hooks/user-fetch-hooks/useGetAllUsers';
-import { config } from '../../../../config';
-import useNewUser from '../../../hooks/user-fetch-hooks/useNewUser';
-import useUpdateUser from '../../../hooks/user-fetch-hooks/useUpdateUser';
+import React, { useState, useEffect } from 'react';
+import useGetDepartments from '../../../../hooks/department-fetch/useGetDepartments';
+import useAssignableUsers from '../../../../hooks/user-fetch-hooks/useGetAllUsers';
+import useUpdateUser from '../../../../hooks/user-fetch-hooks/useUpdateUser';
 import Select from 'react-select';
+import { useGetOneUser } from '../../../../hooks/user-fetch-hooks/useGetOneUser';
 
-export default function UserAmmend() {
-    
-    const [formData, setFormData] = useState({
+export function UpdateUserForm(){
+
+    const [updateFormData, setUpdateFormData] = useState({
         jobTitle: "",
         firstName: "",
         lastName: "",
         email: "",
         password: "",
         passwordResetRequired: null,
-        departmentId: "",
-        role: ""
+        departmentId: {},
+        role: {}
     });
 
-    const [targetUserId, setTargetUserId] = useState({});
-    const [userRole, setUserRole] = useState({});
-    const [targetDepartment, setTargetDept] = useState({});
     const departments = useGetDepartments();
-    const users = useAssignableUsers();
-    const newUserHandler = useNewUser(formData, setFormData);
-    const updateUserHandler = useUpdateUser(formData, setFormData, targetUserId);
+
+    const allUsers = useAssignableUsers();
+    const [targetUserId, setTargetUserId] = useState({});
+    const selectedUser = useGetOneUser(targetUserId);
+    const updateUserHandler = useUpdateUser(updateFormData, setUpdateFormData, targetUserId);
 
     const roleOptions = [
         {value: 'Admin', label: 'Admin'},
@@ -35,27 +31,45 @@ export default function UserAmmend() {
         {value: 'User', label: 'Standard user'}
     ];
     
-    const updateEventHandler = (event) => {
+    const updateEventHandler = (event, setFormData) => {
         let targetName = event.target.name;
         let targetValue = event.target.value;
 
-        setFormData({
-            ...formData,
+        setUpdateFormData({
+            ...updateFormData,
             [targetName]: targetValue
         });
+    };
+
+    const handleExplicitChange = (name, value) => {
+        setUpdateFormData({
+            ...updateFormData,
+            [name]: value
+        })
     };
 
     return (
         <div className='top-div'>
             <div className='new-user bg-red-300'>
-                <form>
-                    <h1 className='title'>Add New User</h1>
+                
+            </div>
+
+            <div className='update-user bg-blue-300'>
+                <form onSubmit={updateUserHandler}>
+                    <h1>Edit existing user</h1>
                     <div>
-                        <label htmlFor='firstName'>First Name:</label>
+                        <label htmlFor='selectUser'>Select a user:</label>
+                        <Select
+                            value={targetUserId}
+                            options={allUsers}
+                            onChange={(selectedOption) => setTargetUserId(selectedOption)} />
+                    </div>
+                    <div>
+                        <label htmlFor='firstName'>First Name: {}</label>
                         <input
                             type='text'
                             name='firstName'
-                            value={formData.firstName}
+                            value={updateFormData.firstName}
                             onChange={updateEventHandler}
                             placeholder='John'
                         />
@@ -65,7 +79,7 @@ export default function UserAmmend() {
                         <input
                             type='text'
                             name='lastName'
-                            value={formData.lastName}
+                            value={updateFormData.lastName}
                             onChange={updateEventHandler}
                             placeholder='Smith'
                         />
@@ -75,7 +89,7 @@ export default function UserAmmend() {
                         <input
                             type='text'
                             name='jobTitle'
-                            value={formData.jobTitle}
+                            value={updateFormData.jobTitle}
                             onChange={updateEventHandler}
                         />
                     </div>
@@ -84,7 +98,7 @@ export default function UserAmmend() {
                         <input
                             type='text'
                             name='email'
-                            value={formData.email}
+                            value={updateFormData.email}
                             onChange={updateEventHandler}
                             placeholder='firstName.lastName@businessdomain.com'
                         />
@@ -94,36 +108,30 @@ export default function UserAmmend() {
                         <input
                             type='text'
                             name='password'
-                            value={formData.password}
+                            value={updateFormData.password}
                             onChange={updateEventHandler}
                             placeholder="Set a default password (immediate reset at next log in)"
                         />
                     </div>
-                    <div>
+                     <div>
                         <label htmlFor='department'>Department:</label>
                         <Select
-                            value={targetDepartment}
+                            value={updateFormData.departmentId}
                             options={departments}
-                            onChange={(selectedOption) => setUserRole(selectedOption)} />
+                            onChange={(selectedOption) => handleExplicitChange('departmentId', selectedOption)} />
                     </div>
                     <div>
                         <label htmlFor='role'>Permission Level:</label>
                         <div>
                             <Select
-                                value={userRole}
+                                value={updateFormData.role}
                                 options={roleOptions}
-                                onChange={(selectedOption) => setUserRole(selectedOption)} />
+                                onChange={(selectedOption) => handleExplicitChange('role', selectedOption)} />
                         </div>
                     </div>
-                    <button type='submit' className='cursor-pointer'>Add User</button>
-                </form>
-            </div>
-            <div className='update-user bg-blue-300'>
-                <form>
-                    
+                    <button type='submit' className='cursor-pointer'>Update Details</button>
                 </form>
             </div>
         </div>
     )
-};
-
+}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { config } from '../../config';
+import { config } from '../../../config';
 
 export default function useGetDepartments() {
     const [allDepartments, setAllDepartments] = useState([]);
