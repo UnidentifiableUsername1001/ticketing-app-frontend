@@ -4,6 +4,8 @@ import useAssignableUsers from '../../../../hooks/user-fetch-hooks/useGetAllUser
 import useUpdateUser from '../../../../hooks/user-fetch-hooks/useUpdateUser';
 import Select from 'react-select';
 import { useGetOneUser } from '../../../../hooks/user-fetch-hooks/useGetOneUser'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faAngleUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 
 export function UpdateUserForm(){
 
@@ -52,18 +54,28 @@ export function UpdateUserForm(){
     const [showForm, setShowForm] = useState(false);
 
     return (
-        <div className='top-div'>
-            <button type='button' className='cursor-pointer' onClick={() => setShowForm(!showForm)}>Add New User</button>
-            <div className={`transition-all ${showForm ? 'block opacity-100' : 'hidden opacity-0'}`}>
-                <form onSubmit={updateUserHandler}>
-                    <div>
+        <div className='top-div grid grid-cols-1 gap-10 font-lato'>
+            <button type='button' 
+                    className='cursor-pointer gap-2 w-1/2 grid grid-cols-2 p-2 text-bgMain font-bold text-xl
+                    border-b border-wisePaleGrey transition delay-75 duration-300 ease-in-out hover:border-bgMain hover:scale-105' 
+                    onClick={() => setShowForm(!showForm)}>
+                    <span className='text-left'>Add new user</span>
+                    <span className='text-right'>{showForm === false ? <><FontAwesomeIcon icon={faChevronDown}/></> : <><FontAwesomeIcon icon={faAngleUp}/></>}</span>
+            </button>
+            <div className={` 
+                    ${showForm ? 'block opacity-100' : 'hidden opacity-0'}
+                    transition-all bg-wiseNavy shadow-wiseSkin shadow-sm p-7 rounded-md outline-1 outline-wiseSkin
+                `}>
+                <form onSubmit={updateUserHandler} className='grid grid-cols-1 gap-10 text-wiseOffWhite'>
+                    <div className='grid grid-cols-1 gap-2'>
                         <label htmlFor='selectUser'>Select a user:</label>
                         <Select
+                            className='text-wiseNavy'
                             value={targetUserId}
                             options={allUsers}
                             onChange={(selectedOption) => setTargetUserId(selectedOption)} />
                     </div>
-                    <div>
+                    <div className='grid grid-cols-1 gap-2'>
                         <label htmlFor='firstName'>First Name - <span>Current: {user ? user.firstName : ""}</span></label>
                         <input
                             type='text'
@@ -72,7 +84,7 @@ export function UpdateUserForm(){
                             onChange={updateEventHandler}
                         />
                     </div>
-                    <div>
+                    <div className='grid grid-cols-1 gap-2'>
                         <label htmlFor='lastName'>Last Name - <span>Current: {user ? user.lastName : ""}</span></label>
                         <input
                             type='text'
@@ -81,7 +93,7 @@ export function UpdateUserForm(){
                             onChange={updateEventHandler}
                         />
                     </div>
-                    <div>
+                    <div className='grid grid-cols-1 gap-2'>
                         <label htmlFor='jobTitle'>Job title - <span>Current: {user ? user.jobTitle : ""}</span></label>
                         <input
                             type='text'
@@ -90,7 +102,7 @@ export function UpdateUserForm(){
                             onChange={updateEventHandler}
                         />
                     </div>
-                    <div>
+                    <div className='grid grid-cols-1 gap-2'>
                         <label htmlFor='email'>Email - <span>Current: {user ? user.email : ""}</span></label>
                         <input
                             type='text'
@@ -99,7 +111,7 @@ export function UpdateUserForm(){
                             onChange={updateEventHandler}
                         />
                     </div>
-                    <div>
+                    <div className='grid grid-cols-1 gap-2'>
                         <label htmlFor='password'>Password Reset Required?</label>
                         <input
                             type='checkbox'
@@ -108,17 +120,19 @@ export function UpdateUserForm(){
                             onChange={updateEventHandler}
                         />
                     </div>
-                     <div>
+                     <div className='grid grid-cols-1 gap-2'>
                         <label htmlFor='department'>Department:</label>
                         <Select
+                            className='text-wiseNavy'
                             value={updateFormData.departmentId}
                             options={departments}
                             onChange={(selectedOption) => handleExplicitChange('departmentId', selectedOption)} />
                     </div>
-                    <div>
+                    <div className='grid grid-cols-1 gap-2'>
                         <label htmlFor='role'>Permission Level - <span>Current: {user ? user.role : ""}</span></label>
                         <div>
                             <Select
+                                className='text-wiseNavy'
                                 value={updateFormData.role}
                                 options={roleOptions}
                                 onChange={(selectedOption) => handleExplicitChange('role', selectedOption)} />

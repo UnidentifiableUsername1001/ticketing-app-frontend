@@ -25,26 +25,44 @@ export default function AdminCentre() {
 
     return (
         <div className="bg-wisePaleGrey min-h-screen flex flex-col">
-            <div className="flex flex-row flex-1">
-                <div className="relative left-15 min-h-full pt-30">
-                    <ul className="p-2 sticky grid gap-5 rounded-2xl">
+            <div className="flex flex-row flex-1 justify-center relative">
+                <div className="fixed left-0 min-h-full pt-15">
+                    <ul className="p-2 sticky grid gap-10 rounded-2xl">
                         <li onClick={() => setActiveTab('user')} className="group flex items-center justify-center relative cursor-pointer">
-                            <FontAwesomeIcon icon={faCircleUser} className="text-xl text-wiseNavy"/>
-                            <span className="absolute left-full ml-3 hidden group-hover:block whitespace-nowrap bg-wiseNavy text-wiseOffWhite rounded-l-xl rounded-r-sm text-sm shadow-lg p-1 z-50">
-                                User Config
+                            <FontAwesomeIcon icon={faCircleUser} 
+                                className="text-3xl text-wiseNavy transition delay-150
+                                duration-150 hover:scale-110"
+                            />
+                            <span 
+                                className="absolute left-full ml-3 whitespace-nowrap bg-wisePaleGrey 
+                                text-wisePaleGrey group-hover:rounded-l-xl group-hover:rounded-r-sm text-sm group-hover:shadow-lg group-hover:p-1 group-hover:z-50
+                                transition-all delay-150 duration-150 group-hover:bg-wiseNavy group-hover:text-wiseOffWhite">
+                                User Configuration
                             </span>
                         </li>
                         <li onClick={() => setActiveTab('department')} className="group flex items-center justify-center relative cursor-pointer">
-                            <FontAwesomeIcon icon={faCubesStacked} className="text-wiseNavy"/>
-                            <span className="absolute left-full ml-3 hidden group-hover:block whitespace-nowrap bg-wiseNavy text-wiseOffWhite rounded-xl text-sm shadow-lg p-1 z-50">Department Config</span>
+                            <FontAwesomeIcon icon={faCubesStacked} className="text-3xl text-wiseNavy transition delay-150
+                                duration-150 hover:scale-110"/>
+                            <span 
+                                className="absolute left-full ml-3 whitespace-nowrap bg-wisePaleGrey 
+                                text-wisePaleGrey group-hover:rounded-l-xl group-hover:rounded-r-sm text-sm group-hover:shadow-lg group-hover:p-1 group-hover:z-50
+                                transition-all delay-150 duration-150 group-hover:bg-wiseNavy group-hover:text-wiseOffWhite">
+                                Department Configuration
+                            </span>
                         </li>
                         <li onClick={() => setActiveTab('global')} className="group flex items-center justify-center relative cursor-pointer">
-                            <FontAwesomeIcon icon={faGlobe} className="text-wiseNavy"/>
-                            <span className="absolute left-full ml-3 hidden group-hover:block whitespace-nowrap bg-wiseNavy text-wiseOffWhite rounded-xl text-sm shadow-lg p-1 z-50">Global Configuration</span>
+                            <FontAwesomeIcon icon={faGlobe} className="text-3xl text-wiseNavy transition delay-150
+                                duration-150 hover:scale-110"/>
+                            <span 
+                                className="absolute left-full ml-3 whitespace-nowrap bg-wisePaleGrey 
+                                text-wisePaleGrey group-hover:rounded-l-xl group-hover:rounded-r-sm text-sm group-hover:shadow-lg group-hover:p-1 group-hover:z-50
+                                transition-all delay-150 duration-150 group-hover:bg-wiseNavy group-hover:text-wiseOffWhite">
+                                Global Configuration
+                            </span>
                         </li>
                     </ul>
                 </div>
-                <div className="w-2/3 relative top-30 left-1/6 ">
+                <div className="w-4/9 p-15">
                     {renderActiveTab()}
                 </div>
             </div>

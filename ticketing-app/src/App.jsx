@@ -18,9 +18,9 @@ import AdminCentre from './components/admin-centre/adminCentre';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faComments, faCircleUser, faBell, faHouse, faPenToSquare, faSquarePlus, faTrashCan, faUser, faIdBadge} from '@fortawesome/free-regular-svg-icons';
-import { faGear, faCubesStacked, faGlobe, faShield, faBuilding } from '@fortawesome/free-solid-svg-icons';
+import { faGear, faCubesStacked, faGlobe, faShield, faBuilding, faChevronDown, faCheck, faAngleUp } from '@fortawesome/free-solid-svg-icons';
 
-library.add(faComments, faCircleUser, faGlobe, faCubesStacked, faBell, faHouse, faPenToSquare, faSquarePlus, faTrashCan, faUser, faIdBadge, faGear, faShield, faBuilding);
+library.add(faComments, faCircleUser, faGlobe, faCubesStacked, faBell, faHouse, faChevronDown, faAngleUp, faPenToSquare, faSquarePlus, faTrashCan, faUser, faIdBadge, faGear, faShield, faBuilding);
 
 function App() {
 

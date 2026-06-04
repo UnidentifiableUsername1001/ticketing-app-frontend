@@ -9,11 +9,11 @@ import { UpdateUserForm } from './updateUserForm';
 export default function UserAmmend() {
 
     return (
-        <div className=' grid gap-10'>
-            <div className='new-user bg-red-300'>
+        <div className='grid gap-10'>
+            <div className='new-user'>
                 <NewUserForm />
             </div>
-            <div className='update-user bg-blue-300'>
+            <div className='update-user'>
                 <UpdateUserForm/>
             </div>
         </div>
