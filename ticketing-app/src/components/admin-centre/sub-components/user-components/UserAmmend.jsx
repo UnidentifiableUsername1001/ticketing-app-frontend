@@ -9,7 +9,7 @@ import { UpdateUserForm } from './updateUserForm';
 export default function UserAmmend() {
 
     return (
-        <div className='top-div'>
+        <div className=' grid gap-10'>
             <div className='new-user bg-red-300'>
                 <NewUserForm />
             </div>

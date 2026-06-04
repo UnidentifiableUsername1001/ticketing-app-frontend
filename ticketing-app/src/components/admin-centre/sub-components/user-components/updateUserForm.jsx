@@ -49,11 +49,13 @@ export function UpdateUserForm(){
         })
     };
 
+    const [showForm, setShowForm] = useState(false);
+
     return (
         <div className='top-div'>
-            <div className='update-user bg-blue-300'>
+            <button type='button' className='cursor-pointer' onClick={() => setShowForm(!showForm)}>Add New User</button>
+            <div className={`transition-all ${showForm ? 'block opacity-100' : 'hidden opacity-0'}`}>
                 <form onSubmit={updateUserHandler}>
-                    <h1>Edit existing user</h1>
                     <div>
                         <label htmlFor='selectUser'>Select a user:</label>
                         <Select
