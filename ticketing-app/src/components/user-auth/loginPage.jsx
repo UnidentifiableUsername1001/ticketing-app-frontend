@@ -77,14 +77,13 @@ function LoginPage() {
                         />
                     </div>
                     <div className="flex flex-row gap-6">    
-                        <button type="submit" className="bg-wiseSkin p-2 rounded-full hover:cursor-pointer hover:w-16 hover:h-11 hover:shadow-xl/60 hover:text-wiseOffWhite hover:bg-wiseDarkPink">
+                        <button type="submit" 
+                            className="text-wiseOffWhite text-xl rounded-md p-2 transition delay-75 duration-200 hover:cursor-pointer 
+                            hover:scale-105 hover:bg-wiseNavy/75 hover:shadow-sm hover:shadow-wiseSkin hover:text-wiseOffWhite">
                             Login
                         </button>
                     </div>    
                 </form>
-                <p className="text-wiseOffWhite text-center">
-                    New here? <Link to="/register" className="text-wiseSkin hover:text-wiseDarkPink hover:underline">Register</Link>
-                </p>
                 <div className="subtext-section">
                     {showError ? (
                         <>

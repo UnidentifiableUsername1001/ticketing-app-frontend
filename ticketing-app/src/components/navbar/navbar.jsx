@@ -1,6 +1,9 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router';
 import { useAppContext } from '../../context/authContext';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowRightFromBracket, faChalkboardUser } from '@fortawesome/free-solid-svg-icons';
+import { faHouse, faPenToSquare } from '@fortawesome/free-regular-svg-icons';
 
 function Navbar() {
     const navigate = useNavigate();
@@ -19,13 +22,16 @@ function Navbar() {
             <div className='flex w-full justify-center gap-12'>
                 {isAuthenticated ? (
                     <>
-                            <NavLink to='/dashboard' className="nav-item">
-                                Dashboard
-                            </NavLink>
-                            <NavLink to="/create-ticket" className='nav-item'>
-                                Create Ticket
-                            </NavLink>
-                            <button onClick={handleLogout} className='nav-item'>Logout</button>
+                        <NavLink to='/homepage' className="nav-item" title='Home Page'>
+                            <FontAwesomeIcon icon={faHouse}/>
+                        </NavLink>
+                        <NavLink to='/dashboard' className="nav-item" title='Dashboard'>
+                            <FontAwesomeIcon icon={faChalkboardUser}/>
+                        </NavLink>
+                        <NavLink to="/create-ticket" className='nav-item' title='Create Issue'>
+                            <FontAwesomeIcon icon={faPenToSquare}/>
+                        </NavLink>
+                        <button onClick={handleLogout} className='nav-item' title='Logout'><FontAwesomeIcon icon={faArrowRightFromBracket}/></button>
                     </>
                 ) : (
                     <>

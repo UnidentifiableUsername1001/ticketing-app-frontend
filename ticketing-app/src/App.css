@@ -39,6 +39,42 @@
       relative
   }
 
+  .form-dropDown-button {
+    @apply
+      cursor-pointer 
+
+      relative
+      w-full
+      p-2 
+
+      text-bgMain 
+      font-bold 
+      text-xl
+
+      border-b 
+      border-wisePaleGrey
+
+      before:transition-all
+      before:delay-75
+      before:duration-300
+      before:ease-in-out
+      before:absolute
+      before:inset-0
+      before:bg-linear-to-t
+      before:from-wiseSkin/30
+      before:from-10%
+      before:to-wiseOffWhite
+      before:opacity-0
+
+      transition 
+      delay-75 
+      duration-300
+      ease-in-out 
+      hover:border-bgMain 
+      hover:before:opacity-100
+      hover:scale-105
+  }
+
   .nav-item {
     @apply 
       text-wiseOffWhite
@@ -46,15 +82,48 @@
         font-bold
         relative
         text-2xl 
-        after:bg-wiseDarkPink 
-        after:absolute 
-        after:h-1 
-        after:w-0 
-        after:bottom-0 
-        after:left-0 
-        hover:after:w-full 
-        after:transition-all 
-        after:duration-300 cursor-pointer
+        cursor-pointer
+        transition
+        delay-75
+        duration-200
+        hover:scale-115
+        hover:text-wiseSkin
+  }
+
+  .homepage-link-container {
+    @apply
+      font-lato 
+      min-h-1/2 
+      grid 
+      grid-cols-1 
+      md:grid-cols-2 
+      lg:grid-cols-4 
+      gap-16 
+      mx-32 
+      content-center 
+      p-12
+  }
+
+  .homepage-link-item {
+    @apply
+      bg-wiseNavy 
+      p-6 
+      flex 
+      flex-col 
+      gap-4 
+      shadow-sm 
+      rounded-tl-2xl 
+      rounded-sm 
+      transition
+      ease-in-out
+      delay-75
+      duration-300
+      hover:shadow-2xl 
+      hover:bg-linear-to-br
+      hover:scale-105 
+      hover:from-wiseNavy 
+      hover:to-russianBlue/50 
+      cursor-pointer
   }
 
    /* THIS IS FOR THE DASHBOARD PAGES*/
@@ -77,7 +146,7 @@
   --color-wiseSkin: #E59998;
   --color-ultMutePink: #F4C1C1;
   --color-wisePaleGrey: #E7E8EC;
-  --color-wiseOffWhite: #F2F2F2;
+  --color-wiseOffWhite: #fffdf9;
 
   /* WISE FONTS */
   --font-roboto: "Roboto", sans-serif;

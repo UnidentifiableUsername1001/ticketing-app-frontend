@@ -49,13 +49,16 @@ export function NewUserForm() {
     
     return (
         <div className='top-div grid grid-cols-1 gap-10 font-lato'>
-            <button type='button' 
-                    className='cursor-pointer gap-2 w-1/2 grid grid-cols-2 p-2 text-bgMain font-bold text-xl
-                    border-b border-wisePaleGrey transition delay-75 duration-300 ease-in-out hover:border-bgMain 
-                    hover:scale-105' 
-                    onClick={() => setShowForm(!showForm)}>
-                    <span className='text-left'>Add new user</span>
-                    <span className='text-right'>{showForm === false ? <><FontAwesomeIcon icon={faChevronDown}/></> : <><FontAwesomeIcon icon={faAngleUp}/></>}</span>
+            <button type='button' className='form-dropDown-button' onClick={() => setShowForm(!showForm)}>
+                <div className='width-full flex flex-row justify-between relative z-10'>
+                    <span className=''>Add new user</span>
+                    <span className=''>
+                        {showForm === false ? 
+                            <><FontAwesomeIcon icon={faChevronDown}/></> 
+                            : 
+                            <><FontAwesomeIcon icon={faAngleUp}/></>}
+                    </span>
+                </div>
             </button>
             <div className={` 
                     ${showForm ? 'block opacity-100' : 'hidden opacity-0'}
