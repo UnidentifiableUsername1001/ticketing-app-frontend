@@ -112,7 +112,7 @@ function DetailView() {
 
     console.log(existingComments);
     return (
-        <div className='min-h-screen bg-wisePaleGrey pt-32'>
+        <div className='min-h-screen bg-wiseOffWhite pt-32'>
             <div className='grid grid-cols-20'>
                 <div className='bg-wiseOffWhite col-span-8 col-start-4 col-end-12 p-8 rounded-md shadow-md'>
                     <div className='flex flex-col gap-8'>

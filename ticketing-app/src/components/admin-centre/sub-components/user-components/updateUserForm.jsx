@@ -15,7 +15,7 @@ export function UpdateUserForm(){
         lastName: "",
         email: "",
         password: "",
-        passwordResetRequired: null,
+        passwordResetRequired: undefined,
         departmentId: {},
         role: {}
     });
@@ -70,70 +70,75 @@ export function UpdateUserForm(){
                     ${showForm ? 'block opacity-100' : 'hidden opacity-0'}
                     transition-all bg-wiseNavy shadow-wiseSkin shadow-sm p-7 rounded-md outline-1 outline-wiseSkin
                 `}>
-                <form onSubmit={updateUserHandler} className='grid grid-cols-1 gap-10 text-wiseOffWhite'>
-                    <div className='grid grid-cols-1 gap-2'>
-                        <label htmlFor='selectUser'>Select a user:</label>
+                <form onSubmit={updateUserHandler} className='grid grid-cols-7 gap-10 text-wiseOffWhite'>
+                    <div className='grid grid-cols-1 col-start-2 col-span-5 gap-2'>
+                        <label className='admin-form-label' htmlFor='selectUser'>Select a user:</label>
                         <Select
                             className='text-wiseNavy'
                             value={targetUserId}
                             options={allUsers}
                             onChange={(selectedOption) => setTargetUserId(selectedOption)} />
                     </div>
-                    <div className='grid grid-cols-1 gap-2'>
-                        <label htmlFor='firstName'>First Name - <span>Current: {user ? user.firstName : ""}</span></label>
+                    <div className='grid grid-cols-1 col-start-2 col-span-5 gap-2'>
+                        <label className='admin-form-label' htmlFor='firstName'>First Name - <span className='text-wiseDarkPink'>Current: {user ? user.firstName : ""}</span></label>
                         <input
+                            className='admin-form-control'
                             type='text'
                             name='firstName'
                             value={updateFormData.firstName}
                             onChange={updateEventHandler}
                         />
                     </div>
-                    <div className='grid grid-cols-1 gap-2'>
-                        <label htmlFor='lastName'>Last Name - <span>Current: {user ? user.lastName : ""}</span></label>
+                    <div className='grid grid-cols-1 col-start-2 col-span-5 gap-2'>
+                        <label className='admin-form-label' htmlFor='lastName'>Last Name - <span className='text-wiseDarkPink'>Current: {user ? user.lastName : ""}</span></label>
                         <input
+                            className='admin-form-control'
                             type='text'
                             name='lastName'
                             value={updateFormData.lastName}
                             onChange={updateEventHandler}
                         />
                     </div>
-                    <div className='grid grid-cols-1 gap-2'>
-                        <label htmlFor='jobTitle'>Job title - <span>Current: {user ? user.jobTitle : ""}</span></label>
+                    <div className='grid grid-cols-1 col-start-2 col-span-5 gap-2'>
+                        <label className='admin-form-label' htmlFor='jobTitle'>Job title - <span className='text-wiseDarkPink'>Current: {user ? user.jobTitle : ""}</span></label>
                         <input
+                            className='admin-form-control'
                             type='text'
                             name='jobTitle'
                             value={updateFormData.jobTitle}
                             onChange={updateEventHandler}
                         />
                     </div>
-                    <div className='grid grid-cols-1 gap-2'>
-                        <label htmlFor='email'>Email - <span>Current: {user ? user.email : ""}</span></label>
+                    <div className='grid grid-cols-1 col-start-2 col-span-5 gap-2'>
+                        <label className='admin-form-label' htmlFor='email'>Email - <span className='text-wiseDarkPink'>Current: {user ? user.email : ""}</span></label>
                         <input
+                            className='admin-form-control'
                             type='text'
                             name='email'
                             value={updateFormData.email}
                             onChange={updateEventHandler}
                         />
                     </div>
-                    <div className='grid grid-cols-1 gap-2'>
-                        <label htmlFor='password'>Password Reset Required?</label>
+                    <div className='grid grid-cols-1 col-start-2 col-span-5 gap-2'>
+                        <label className='admin-form-label' htmlFor='password'>Password Reset Required?</label>
                         <input
+                            className='admin-form-control'
                             type='checkbox'
                             name='password'
                             value={updateFormData.passwordResetRequired}
                             onChange={updateEventHandler}
                         />
                     </div>
-                     <div className='grid grid-cols-1 gap-2'>
-                        <label htmlFor='department'>Department:</label>
+                     <div className='grid grid-cols-1 col-start-2 col-span-5 gap-2'>
+                        <label className='admin-form-label' htmlFor='department'>Department:</label>
                         <Select
                             className='text-wiseNavy'
                             value={updateFormData.departmentId}
                             options={departments}
                             onChange={(selectedOption) => handleExplicitChange('departmentId', selectedOption)} />
                     </div>
-                    <div className='grid grid-cols-1 gap-2'>
-                        <label htmlFor='role'>Permission Level - <span>Current: {user ? user.role : ""}</span></label>
+                    <div className='grid grid-cols-1 col-start-2 col-span-5 gap-2'>
+                        <label className='admin-form-label' htmlFor='role'>Permission Level - <span className='text-wiseDarkPink'>Current: {user ? user.role : ""}</span></label>
                         <div>
                             <Select
                                 className='text-wiseNavy'
@@ -142,7 +147,8 @@ export function UpdateUserForm(){
                                 onChange={(selectedOption) => handleExplicitChange('role', selectedOption)} />
                         </div>
                     </div>
-                    <button type='submit' className='cursor-pointer'>Update Details</button>
+ 
+                 <button type='submit' className='cursor-pointer col-start-3 col-span-3 text-center'>Update Details</button>
                 </form>
             </div>
         </div>

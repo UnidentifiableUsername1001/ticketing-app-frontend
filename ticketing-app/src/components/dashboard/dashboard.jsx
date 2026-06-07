@@ -46,7 +46,7 @@ function Dashboard() {
     }
 
     return (
-        <div className='bg-wisePaleGrey min-h-screen'>
+        <div className='bg-wiseOffWhite min-h-screen'>
             <div className='max-w-6xl mx-auto'>
                 <table className='w-full text-left border-collapse'> 
                     <thead className=''>

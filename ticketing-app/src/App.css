@@ -126,6 +126,30 @@
       cursor-pointer
   }
 
+    /* Styling for admin config forms */
+
+  .admin-form-label {
+    @apply
+    font-semibold
+  }
+
+  .admin-form-control {
+    @apply
+      border-b
+      border-wiseSkin
+      outline-none
+      p-1
+      rounded-t-sm
+      transition
+      duration-150
+      ease-in-out
+      hover:scale-105
+      hover:bg-wiseSkin/20
+      focus:scale-105
+      focus:bg-wiseOffWhite
+      focus:text-bgMain
+  }
+
    /* THIS IS FOR THE DASHBOARD PAGES*/
 
   @font-face {

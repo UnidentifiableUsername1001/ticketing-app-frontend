@@ -88,7 +88,7 @@ function Homepage() {
     }
 
     return (
-        <div className='min-h-screen bg-wisePaleGrey'>
+        <div className='min-h-screen bg-wiseOffWhite'>
             <div className='content-center pt-32'>
                 {tilesToRender()}
             </div>

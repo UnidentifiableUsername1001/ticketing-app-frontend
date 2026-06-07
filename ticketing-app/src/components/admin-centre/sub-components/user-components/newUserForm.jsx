@@ -33,7 +33,7 @@ export function NewUserForm() {
         let targetValue = event.target.value;
 
         setNewFormData({
-            ...formData,
+            ...newFormData,
             [targetName]: targetValue
         });
     };
@@ -51,7 +51,7 @@ export function NewUserForm() {
         <div className='top-div grid grid-cols-1 gap-10 font-lato'>
             <button type='button' className='form-dropDown-button' onClick={() => setShowForm(!showForm)}>
                 <div className='width-full flex flex-row justify-between relative z-10'>
-                    <span className=''>Add new user</span>
+                    <span className=''>Add New User</span>
                     <span className=''>
                         {showForm === false ? 
                             <><FontAwesomeIcon icon={faChevronDown}/></> 
@@ -64,10 +64,11 @@ export function NewUserForm() {
                     ${showForm ? 'block opacity-100' : 'hidden opacity-0'}
                     transition-all bg-wiseNavy shadow-wiseSkin shadow-sm p-7 rounded-md outline-1 outline-wiseSkin
                 `}>
-                <form onSubmit={newUserHandler} className='grid grid-cols-1 gap-10 text-wiseOffWhite'>
-                    <div className='grid grid-cols-1 gap-2'>
-                        <label htmlFor='firstName'>First Name:</label>
+                <form onSubmit={newUserHandler} className='grid grid-cols-7 gap-10 text-wiseOffWhite'>
+                    <div className='grid grid-cols-1 col-start-2 col-span-5 gap-2'>
+                        <label htmlFor='firstName' className='admin-form-label'>First Name:</label>
                         <input
+                            className='admin-form-control'
                             type='text'
                             name='firstName'
                             value={newFormData.firstName}
@@ -75,9 +76,10 @@ export function NewUserForm() {
                             placeholder='John'
                         />
                     </div>
-                    <div className='grid grid-cols-1 gap-2'>
-                        <label htmlFor='lastName'>Last Name:</label>
+                    <div className='grid grid-cols-1 col-start-2 col-span-5 gap-2'>
+                        <label htmlFor='lastName' className='admin-form-label'>Last Name:</label>
                         <input
+                            className='admin-form-control'
                             type='text'
                             name='lastName'
                             value={newFormData.lastName}
@@ -85,44 +87,48 @@ export function NewUserForm() {
                             placeholder='Smith'
                         />
                     </div>
-                    <div className='grid grid-cols-1 gap-2'>
-                        <label htmlFor='jobTitle'>Job title:</label>
+                    <div className='grid grid-cols-1 col-start-2 col-span-5 gap-2'>
+                        <label htmlFor='jobTitle' className='admin-form-label'> Job title:</label>
                         <input
+                            className='admin-form-control'
                             type='text'
                             name='jobTitle'
                             value={newFormData.jobTitle}
                             onChange={updateEventHandler}
+                            placeholder='Technical Production Manager'
                         />
                     </div>
-                    <div className='grid grid-cols-1 gap-2'>
-                        <label htmlFor='email'>Email:</label>
+                    <div className='grid grid-cols-1 col-start-2 col-span-5 gap-2'>
+                        <label htmlFor='email' className='admin-form-label'>Email:</label>
                         <input
+                            className='admin-form-control'
                             type='text'
                             name='email'
                             value={newFormData.email}
                             onChange={updateEventHandler}
-                            placeholder='firstName.lastName@businessdomain.com'
+                            placeholder='name@businessdomain.com'
                         />
                     </div>
-                    <div className='grid grid-cols-1 gap-2'>
-                        <label htmlFor='password'>Password:</label>
+                    <div className='grid grid-cols-1 col-start-2 col-span-5 gap-2'>
+                        <label htmlFor='password' className='admin-form-label'> Password:</label>
                         <input
+                            className='admin-form-control'
                             type='text'
                             name='password'
                             value={newFormData.password}
                             onChange={updateEventHandler}
-                            placeholder="Set a default password (immediate reset at next log in)"
+                            placeholder="Set a default password"
                         />
                     </div>
-                    <div className='grid grid-cols-1 gap-2'>
-                        <label htmlFor='department'>Department:</label>
+                    <div className='grid grid-cols-1 col-start-2 col-span-5 gap-2'>
+                        <label htmlFor='department' className='admin-form-label'>Department:</label>
                         <Select
                             value={newFormData.departmentId}
                             options={departments}
                             onChange={(selectedOption) => handleExplicitChange('departmentId', selectedOption)} />
                     </div>
-                    <div className='grid grid-cols-1 gap-2'>
-                        <label htmlFor='role'>Permission Level:</label>
+                    <div className='grid grid-cols-1 col-start-2 col-span-5 gap-2'>
+                        <label htmlFor='role' className='admin-form-label'>Permission Level:</label>
                         <div className='text-wiseNavy'>
                             <Select
                                 value={newFormData.role}
@@ -130,7 +136,7 @@ export function NewUserForm() {
                                 onChange={(selectedOption) => handleExplicitChange('role', selectedOption)} />
                         </div>
                     </div>
-                    <button type='submit' className='cursor-pointer'>Add User</button>
+                    <button type='submit' className='cursor-pointer col-start-3 col-span-3 text-center'>Add User</button>
                 </form>
             </div>
         </div>

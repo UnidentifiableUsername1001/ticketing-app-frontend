@@ -56,23 +56,23 @@ function CreateTicket() {
     };
 
     return (
-        <div className="min-h-screen bg-wisePaleGrey pt-32">   
+        <div className="min-h-screen bg-wiseOffWhite pt-32">   
             <div className="grid grid-cols-5">
                 <div className="col-span-3 col-start-2 w-4/6 mx-auto">
-                    <form onSubmit={handleSubmit} className="flex flex-col gap-8 bg-wiseOffWhite shadow-md rounded-md p-8">
+                    <form onSubmit={handleSubmit} className="flex flex-col gap-8 bg-wiseNavy shadow-wiseSkin shadow-sm p-7 rounded-md outline-1 outline-wiseSkin">
                         <div className="flex flex-col gap-2">
-                            <label htmlFor="title" className="font-lato font-semibold text-1xl">Title<span className="text-wiseDarkPink">*</span></label>
+                            <label htmlFor="title" className="font-lato text-wiseOffWhite font-semibold text-1xl">Title<span className="text-wiseDarkPink">*</span></label>
                             <input 
                                 type="text"
                                 id="title"
-                                className="p-2 bg-white font-lato shadow-sm rounded-sm hover:shadow-lg hover:bg-wiseDarkPink/10"
+                                className="p-2 bg-white font-lato shadow-sm rounded-sm hover:shadow-lg outline-none"
                                 placeholder="Write a brief title"
                                 value={title}
                                 onChange={(e) => setTitle(e.target.value)}
                                 />
                         </div>
                         <div className="flex flex-col gap-2">
-                            <label htmlFor="description" className="font-lato font-semibold text-1xl">Description<span className="text-wiseDarkPink">*</span></label>
+                            <label htmlFor="description" className="font-lato text-wiseOffWhite font-semibold text-1xl">Description<span className="text-wiseDarkPink">*</span></label>
                             <input 
                                 type="text"
                                 id="description"
@@ -83,7 +83,7 @@ function CreateTicket() {
                             />
                         </div>
                         <div className="flex flex-col gap-2">
-                            <label htmlFor="status" className="font-lato font-semibold text-1xl">Status<span className="text-wiseDarkPink">*</span></label>
+                            <label htmlFor="status" className="font-lato font-semibold text-1xl text-wiseOffWhite">Status<span className="text-wiseDarkPink">*</span></label>
                             <div className="w-1/3">
                                 <Select 
                                     value={status}
@@ -93,7 +93,7 @@ function CreateTicket() {
                             </div>
                         </div>
                         <div className="flex flex-col gap-2">
-                            <label htmlFor="assignedUser" className="font-lato font-semibold text-1xl">Assigned To?</label>
+                            <label htmlFor="assignedUser" className="font-lato font-semibold text-1xl text-wiseOffWhite">Assigned To?</label>
                             <div className="w-1/3">
                                 <Select
                                     value={assignedTo}
