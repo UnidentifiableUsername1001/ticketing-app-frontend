@@ -150,6 +150,23 @@
       focus:text-bgMain
   }
 
+  .admin-form-button {
+    @apply
+    cursor-pointer
+    w-19/40
+    p-1
+    bg-wiseSkin
+    text-lg
+    font-normal
+    transition
+    duration-200
+    hover:bg-bgMain
+    hover:text-wiseDarkPink
+    hover:outline
+    hover:outline-offset-2
+    hover:outline-wiseSkin
+  }
+
    /* THIS IS FOR THE DASHBOARD PAGES*/
 
   @font-face {

@@ -4,6 +4,7 @@ import { useNavigate } from "react-router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleUser } from "@fortawesome/free-regular-svg-icons";
 import UserAmmend  from './sub-components/user-components/UserAmmend';
+import { DepartmentAmend } from "./sub-components/department-components/DepartmentAmend";
 import { faCubesStacked, faGlobe } from "@fortawesome/free-solid-svg-icons";
 
 export default function AdminCentre() {
