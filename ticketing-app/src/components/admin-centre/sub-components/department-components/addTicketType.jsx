@@ -80,7 +80,13 @@ export function AddTicketType ({appendTypeFunc, showTicketTypeForm}) {
                 />
             </div>
             {newTicketType.fields.map((field, index) => (
-                <div key={index} className='grid grid-cols-1 gap-10'>
+                <div key={index} className='grid grid-cols-1 gap-12'>
+                    <h1 
+                        className='font-bold text-xl text-wiseOffWhite text-center
+                        justify-self-center w-1/2 mt-5 bg-linear-to-b from-wiseNavy to-bgMain/50
+                        border-b border-wiseOffWhite'>
+                        Field {index + 1}
+                    </h1>
                     <div className='grid grid-cols-1 gap-2'>
                         <label className='admin-form-label' htmlFor={field.name}>Field Title:</label>
                         <input
@@ -146,6 +152,7 @@ export function AddTicketType ({appendTypeFunc, showTicketTypeForm}) {
                         ) : (
                             <></>
                         )}
+                        { newTicketType.fields.length !== 1 ? (
                         <button 
                             type='button' 
                             onClick={() => removeField(index)}
@@ -153,6 +160,9 @@ export function AddTicketType ({appendTypeFunc, showTicketTypeForm}) {
                             title='Delete Field'>
                                 <FontAwesomeIcon icon={faTrash}/>
                         </button>
+                        ) : (
+                            <></>
+                        )}
                     </div>
                 </div>
             ))}

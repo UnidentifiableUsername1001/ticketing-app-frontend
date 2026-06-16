@@ -3,7 +3,7 @@ import Select from 'react-select';
 import { useCreateDepartment } from '../../../../hooks/department-fetch/useCreateDepartment';
 import { AddTicketType } from './addTicketType';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { faAngleUp, faChevronDown, faDeleteLeft, faXmark } from '@fortawesome/free-solid-svg-icons';
 
 export function CreateDepartment() {
     
@@ -28,6 +28,15 @@ export function CreateDepartment() {
                 ...formData.ticketTypes,
                 newTypeData
             ]
+        });
+    };
+
+    const deleteTicketType = (typeIndex) => {
+        const ticketTypeCopy = formData.ticketTypes;
+        const filteredTypes = ticketTypeCopy.filter((type) => ticketTypeCopy.indexOf(type) !== typeIndex);
+        setFormData({
+            ...formData,
+            ticketTypes: filteredTypes
         });
     };
 
@@ -84,13 +93,26 @@ export function CreateDepartment() {
                                 <option value={formData.config.assignmentStrategy}>Manual</option>
                             </select>
                         </div>
-                        <div className=''>
-                            <h2>Custom Tickets:</h2>
+                        <div 
+                            className={`${formData.ticketTypes.length !== 0 ? 
+                                'block opacity-100' : 
+                                'hidden opacity-0'}
+                                grid grid-cols-1 gap-2 p-4 mt-2`}>
+                            <h2 className='admin-form-lable text-lg'>Custom Tickets:</h2>
                             {formData.ticketTypes.length !== 0 ? (
                                 formData.ticketTypes.map((ticket, index) => (
                                     <>
-                                        <div key={index}>
-                                            <p>#{index} {ticket.typeName}</p>
+                                        <div key={index} className='grid grid-cols-1 gap-2'>
+                                            <p 
+                                            className='bg-wiseOffWhite/10 p-1 rounded-sm w-2/4 flex flex-row'>
+                                                <span className='text-wiseDarkPink'>#{index + 1}</span> - {ticket.typeName}
+                                                <span className='ml-auto'>
+                                                    <button type='button' onClick={() => deleteTicketType(index)}
+                                                        className=' text-wiseOffWhite font-lato font-bold cursor-pointer transition delay-75 duration-200 hover:scale-105 hover:text-wiseSkin'>
+                                                        <FontAwesomeIcon icon={faXmark}/>
+                                                    </button>
+                                                </span>
+                                            </p>
                                         </div>
                                     </>
                                 ))
