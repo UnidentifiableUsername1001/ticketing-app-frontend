@@ -34,7 +34,7 @@ export function UpdateUserForm(){
         {value: 'User', label: 'Standard user'}
     ];
     
-    const updateEventHandler = (event, setFormData) => {
+    const updateEventHandler = (event) => {
         let targetName = event.target.name;
         let targetValue = event.target.value;
 
