@@ -9,6 +9,7 @@ export function useEditDepartment (formData, stateFunction, deptId) {
         
         try {
             const destructDeptId = typeof deptId === 'object' ? deptId.value : deptId;
+            console.log(destructDeptId);
             const url = `${config.backendUrl}/api/department/edit-department/${destructDeptId}`
 
             const response = await fetch(url, {
@@ -27,7 +28,7 @@ export function useEditDepartment (formData, stateFunction, deptId) {
 
             stateFunction({
                 name: '',
-                ticketTypes: {},
+                ticketTypes: [],
                 config: {
                     assignmentStrategy: ''
                 }

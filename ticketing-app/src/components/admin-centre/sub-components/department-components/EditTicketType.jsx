@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSquareCheck, faSquarePlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 
-export function EditTicketType ({appendTypeFunc, showTicketState, currentTicket}) {
+export function EditTicketType ({appendTypeFunc, showTicketState, currentTicket, index}) {
 
     const [editTicketType, setEditTicketType] = useState(currentTicket);
 
@@ -32,7 +32,7 @@ export function EditTicketType ({appendTypeFunc, showTicketState, currentTicket}
     const handleFieldChange = (targetIndex, inputName, inputValue) => {
         const currentFieldsArray = editTicketType.fields.map((field, index)  => {
             if (index === targetIndex) {
-                const newFieldObj = {...field, [inputName]: inputValue};
+                const newFieldObj = { ...field, [inputName]: inputValue};
                 return newFieldObj;
             };
             return field;
@@ -45,7 +45,7 @@ export function EditTicketType ({appendTypeFunc, showTicketState, currentTicket}
     };
 
     const handleSubmit = () => {
-        appendTypeFunc(editTicketType);
+        appendTypeFunc(editTicketType, index);
         showTicketState(null);
     }
 
@@ -62,7 +62,7 @@ export function EditTicketType ({appendTypeFunc, showTicketState, currentTicket}
                     placeholder='E.g. Kit-list ammendments'
                 />
             </div>
-            {currentTicket.fields.map((field, index) => (
+            {editTicketType.fields.map((field, index) => (
                 <div key={index} className='grid grid-cols-1 gap-12'>
                     <h1 
                         className='font-bold text-xl text-wiseOffWhite text-center

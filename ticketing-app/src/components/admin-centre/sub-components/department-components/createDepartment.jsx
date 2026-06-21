@@ -58,7 +58,7 @@ export function CreateDepartment() {
         <div className='top-div grid grid-cols-1 gap-10 font-lato'>
             <button type='button' className='form-dropDown-button' onClick={() => setShowForm(!showForm)}>
                 <div className='width-full flex flex-row justify-between relative z-10'>
-                    <span className=''>Add New Department</span>
+                    <span className=''>New Department</span>
                     <span className=''>
                         {showForm === false ? 
                             <><FontAwesomeIcon icon={faChevronDown}/></> 

@@ -14,7 +14,7 @@ export function EditDepartment() {
     
     const departments = useGetDepartments();
     const [targetDeptId, setTargetDeptId] = useState(null);
-    const [targetTypeIndex, setTargetTypeIndex] = useState(null);
+    
     const [showForm, setShowForm] = useState(false);
     const targetDepartment = useGetOneDepartment(targetDeptId);
 
@@ -66,18 +66,27 @@ export function EditDepartment() {
 
     // For editing ticket types
 
-    const handleEditTicketType = (newTypeData) => {
+    const [showEditTicket, setShowEditTicket] = useState(null);
+    const [ticketToEdit, setTicketToEdit] = useState({});
+
+    const handleEditTicketType = (newTypeData, index) => {
+
+        const ticketTypes = formData.ticketTypes;
+        const splicedTypes = ticketTypes.toSpliced(index, 1, newTypeData);
+        // const removeOriginalEntry = ticketTypes.filter((type) => ticketTypes.indexOf(type) !== index);
+        // const withUpdatedEntry = removeOriginalEntry.push(newTypeData);
+
         setFormData({
             ...formData,
-            ticketTypes: [
-                ...formData.ticketTypes,
-                newTypeData
-            ]
+            ticketTypes: splicedTypes
         });
+
+        setShowEditTicket(null);
+        setTicketToEdit({});
     };
 
     const handleShowEditFormChild = (value) => {
-        setTargetTypeIndex(value);
+        setShowEditTicket(value);
     }
 
     return (
@@ -143,7 +152,10 @@ export function EditDepartment() {
                                                     className='bg-wiseOffWhite/10 p-1 rounded-sm w-2/4 flex flex-row'>
                                                         <span className='text-wiseDarkPink'>#{index + 1}</span> - {ticket.typeName}
                                                         <span className='ml-auto'>
-                                                            <button type='button' onClick={() => setTargetTypeIndex(index)}
+                                                            <button type='button' onClick={() => {
+                                                                setShowEditTicket(showEditTicket === index ? null : index)
+                                                                setTicketToEdit(ticket);
+                                                            }}
                                                                 className=' text-wiseOffWhite font-lato font-bold cursor-pointer transition delay-75 duration-200 hover:scale-105 hover:text-wiseSkin'>
                                                                 <FontAwesomeIcon icon={faPenToSquare}/>
                                                             </button>
@@ -153,16 +165,28 @@ export function EditDepartment() {
                                                             </button>
                                                         </span>
                                                     </p>
-                                                    <div 
-                                                        className={`${targetTypeIndex === index ? 
-                                                        'block opacity-100' : 
-                                                        'hidden opacity-0'}
-                                                    `}>
-                                                        <EditTicketType
-                                                            appendTypeFunc={handleEditTicketType}
-                                                            showTicketState={handleShowEditFormChild}
-                                                            currentTicket={ticket} />
-                                                    </div>
+                                                    {showEditTicket === index ? (
+                                                        <div 
+                                                            className=''>
+                                                            <EditTicketType
+                                                                appendTypeFunc={handleEditTicketType}
+                                                                showTicketState={handleShowEditFormChild}
+                                                                currentTicket={ticketToEdit}
+                                                                index={index} />
+                                                        </div>        
+                                                    ) : (
+                                                        <></>
+                                                    )}
+                                                        {/* <div 
+                                                            className={`${targetTypeIndex === index ? 
+                                                            'block opacity-100' : 
+                                                            'hidden opacity-0'}
+                                                        `}>
+                                                            <EditTicketType
+                                                                appendTypeFunc={() => handleEditTicketType(index)}
+                                                                showTicketState={handleShowEditFormChild}
+                                                                currentTicket={ticket} />
+                                                        </div> */}
                                                 </div>
                                             </>
                                         ))
