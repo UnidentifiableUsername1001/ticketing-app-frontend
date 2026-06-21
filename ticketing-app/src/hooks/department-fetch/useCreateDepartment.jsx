@@ -3,10 +3,15 @@ import { config } from '../../../config';
 
 export function useCreateDepartment(formData, setFormData) {
     const jwtInStore = sessionStorage.getItem('auth-token');
-    const url = `${config.backendUrl}/api/new-department`;
+    const url = `${config.backendUrl}/api/department/new-department`;
 
     const createDepartment = async (e) => {
-        e.preventDefault();
+        if (e && typeof e.preventDefault === 'function') {
+            e.preventDefault();
+        }
+
+        console.log(formData);
+
         try {
             const response = await fetch(url, {
                 method: 'POST',
@@ -24,15 +29,14 @@ export function useCreateDepartment(formData, setFormData) {
 
             setFormData({
                 name: '',
-                ticketTypes: {},
+                ticketTypes: [],
                 config: {
                     assignmentStrategy: ''
                 }
             });
-        } catch (e) {
-            console.log(e);
-        }
-
-        return createDepartment;
+        } catch (error) {
+            console.log(error);
+        }   
     }
+    return createDepartment;
 };

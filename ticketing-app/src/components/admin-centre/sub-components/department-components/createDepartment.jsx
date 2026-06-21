@@ -40,7 +40,7 @@ export function CreateDepartment() {
         });
     };
 
-    const updateEventHandler = (event, setFormData) => {
+    const updateEventHandler = (event) => {
         let targetName = event.target.name;
         let targetValue = event.target.value;
 
@@ -85,12 +85,19 @@ export function CreateDepartment() {
                     </div>
                     <div className='grid grid-cols-1 col-start-2 col-span-5 gap-10'>
                         <div className='grid grid-cols-1 gap-2'>
-                            <label htmlFor='config' className='admin-form-label'>Assignment Strategy</label>
+                            <label htmlFor='config' className='admin-form-label'>Assignment Strategy: </label>
                             <select 
-                                name='config'
-                                className='appearance-none admin-form-control'>
-                                <option value={formData.config.assignmentStrategy}>Load Balance</option>
-                                <option value={formData.config.assignmentStrategy}>Manual</option>
+                                name='assignmentStrategy'
+                                className='appearance-none admin-form-control'
+                                onChange={(e) => setFormData({
+                                    ...formData,
+                                    config: {
+                                        ...formData.config,
+                                        assignmentStrategy: e.target.value
+                                    }
+                                })}>
+                                <option value={'Load Balance'}>Load Balance</option>
+                                <option value={'Manual'}>Manual</option>
                             </select>
                         </div>
                         <div 

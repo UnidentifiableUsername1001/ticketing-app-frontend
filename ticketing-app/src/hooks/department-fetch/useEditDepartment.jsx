@@ -9,7 +9,7 @@ export function useEditDepartment (formData, stateFunction, deptId) {
         
         try {
             const destructDeptId = typeof deptId === 'object' ? deptId.value : deptId;
-            const url = `${config.backendUrl}/api/edit-department/${destructDeptId}`
+            const url = `${config.backendUrl}/api/department/edit-department/${destructDeptId}`
 
             const response = await fetch(url, {
                 method: 'PUT',
