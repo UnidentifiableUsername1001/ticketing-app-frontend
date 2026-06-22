@@ -136,7 +136,13 @@ export function NewUserForm() {
                                 onChange={(selectedOption) => handleExplicitChange('role', selectedOption)} />
                         </div>
                     </div>
-                    <button type='submit' className='cursor-pointer col-start-3 col-span-3 text-center'>Add User</button>
+                    <button 
+                        type='submit' 
+                        className='cursor-pointer p-1 bg-wiseSkin text-lg font-normal transition duration-200
+                            hover:bg-bgMain hover:text-wiseDarkPink hover:outline hover:outline-offset-2 hover:outline-wiseSkin 
+                            col-start-3 col-span-3 text-center'>
+                            Add User
+                    </button>
                 </form>
             </div>
         </div>

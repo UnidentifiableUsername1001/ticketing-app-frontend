@@ -148,7 +148,13 @@ export function UpdateUserForm(){
                         </div>
                     </div>
  
-                 <button type='submit' className='cursor-pointer col-start-3 col-span-3 text-center'>Update Details</button>
+                 <button 
+                    type='submit' 
+                    className='cursor-pointer p-1 bg-wiseSkin text-lg font-normal transition duration-200
+                            hover:bg-bgMain hover:text-wiseDarkPink hover:outline hover:outline-offset-2 hover:outline-wiseSkin 
+                            col-start-3 col-span-3 text-center'>
+                        Update Details
+                </button>
                 </form>
             </div>
         </div>

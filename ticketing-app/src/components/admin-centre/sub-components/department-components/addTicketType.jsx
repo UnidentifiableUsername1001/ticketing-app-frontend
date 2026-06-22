@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
+import Select from 'react-select';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSquareCheck, faSquarePlus, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { expectedTypeMapping, dataSources } from '../../../../hooks/ticketConstants';
 
 export function AddTicketType ({appendTypeFunc, showTicketTypeForm}) {
 
@@ -38,6 +40,7 @@ export function AddTicketType ({appendTypeFunc, showTicketTypeForm}) {
     };
 
     const handleFieldChange = (targetIndex, inputName, inputValue) => {
+
         const currentFieldsArray = newTicketType.fields.map((field, index)  => {
             if (index === targetIndex) {
                 const newFieldObj = {...field, [inputName]: inputValue};
@@ -80,6 +83,7 @@ export function AddTicketType ({appendTypeFunc, showTicketTypeForm}) {
                 />
             </div>
             {newTicketType.fields.map((field, index) => (
+                <>
                 <div key={index} className='grid grid-cols-1 gap-12'>
                     <h1 
                         className='font-bold text-xl text-wiseOffWhite text-center
@@ -98,24 +102,20 @@ export function AddTicketType ({appendTypeFunc, showTicketTypeForm}) {
                             onChange={(e) => handleFieldChange(index, e.target.name, e.target.value)}/>
                     </div>
                     <div className='grid grid-cols-1 gap-2'>
-                        <label className='admin-form-label' htmlFor={field.expectedType}>Expected Type:</label>
-                        <input
-                            className='admin-form-control'
-                            type='text'
-                            name='expectedType'
-                            placeholder='E.g. String, Array, Number, Boolean'
-                            value={field.expectedType}
-                            onChange={(e) => handleFieldChange(index, e.target.name, e.target.value)}/>
+                        <label className='admin-form-label' htmlFor={field.expectedType}>Expected Data Type:</label>
+                        <Select
+                            className='text-wiseNavy'
+                            value={expectedTypeMapping.find(option => option.value === field.expectedType) || null}
+                            options={expectedTypeMapping}
+                            onChange={(selectedOption) => handleFieldChange(index, 'expectedType', selectedOption ? selectedOption.value : '')} />
                     </div>
                     <div className='grid grid-cols-1 gap-2'>
                         <label className='admin-form-label' htmlFor={field.dataSource}>Data Source:</label>
-                        <input
-                            className='admin-form-control'
-                            type='text'
-                            name='dataSource'
-                            placeholder="E.g. 'ALL_KIT' or 'KIT_BY_ID'"
-                            value={field.dataSource}
-                            onChange={(e) => handleFieldChange(index, e.target.name, e.target.value)}/>
+                        <Select
+                            className='text-wiseNavy'
+                            value={dataSources.find(option => option.value === field.dataSource) || null}
+                            options={dataSources}
+                            onChange={(selectedOption) => handleFieldChange(index, 'dataSource', selectedOption ? selectedOption.value : '')} />
                     </div>
                     <div className='grid grid-cols-1 gap-2 border-b border-wiseSkin'>
                         <label className='admin-form-label' htmlFor={field.required}>Required:</label>
@@ -165,6 +165,7 @@ export function AddTicketType ({appendTypeFunc, showTicketTypeForm}) {
                         )}
                     </div>
                 </div>
+            </>
             ))}
             <div className='grid justify-items-stretch'>
                 <button 

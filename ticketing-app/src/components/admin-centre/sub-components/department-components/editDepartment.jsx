@@ -177,16 +177,6 @@ export function EditDepartment() {
                                                     ) : (
                                                         <></>
                                                     )}
-                                                        {/* <div 
-                                                            className={`${targetTypeIndex === index ? 
-                                                            'block opacity-100' : 
-                                                            'hidden opacity-0'}
-                                                        `}>
-                                                            <EditTicketType
-                                                                appendTypeFunc={() => handleEditTicketType(index)}
-                                                                showTicketState={handleShowEditFormChild}
-                                                                currentTicket={ticket} />
-                                                        </div> */}
                                                 </div>
                                             </>
                                         ))

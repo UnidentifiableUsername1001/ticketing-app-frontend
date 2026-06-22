@@ -9,16 +9,16 @@ import { faCubesStacked, faGlobe } from "@fortawesome/free-solid-svg-icons";
 
 export default function AdminCentre() {
     const navigate = useNavigate();
-    const [activeTab, setActiveTab] = useState('user');
+    const [activeTab, setActiveTab] = useState('User');
     const renderActiveTab = () => {
         switch (activeTab){
-            case 'user':
+            case 'User':
                 return <UserAmmend/>
                 break;
-            case 'department':
+            case 'Department':
                 return <DepartmentAmend/>
                 break;
-            case 'global':
+            case 'Global':
                 return <GlobalSettings/>
                 break;
         };
@@ -29,7 +29,7 @@ export default function AdminCentre() {
             <div className="flex flex-row flex-1 justify-center relative">
                 <div className="fixed left-0 min-h-full pt-15">
                     <ul className="p-2 sticky grid gap-10 rounded-2xl">
-                        <li onClick={() => setActiveTab('user')} className="group flex items-center justify-center relative cursor-pointer">
+                        <li onClick={() => setActiveTab('User')} className="group flex items-center justify-center relative cursor-pointer">
                             <FontAwesomeIcon icon={faCircleUser} 
                                 className="text-3xl text-wiseNavy transition delay-150
                                 duration-150 hover:scale-110"
@@ -41,7 +41,7 @@ export default function AdminCentre() {
                                 User Configuration
                             </span>
                         </li>
-                        <li onClick={() => setActiveTab('department')} className="group flex items-center justify-center relative cursor-pointer">
+                        <li onClick={() => setActiveTab('Department')} className="group flex items-center justify-center relative cursor-pointer">
                             <FontAwesomeIcon icon={faCubesStacked} className="text-3xl text-wiseNavy transition delay-150
                                 duration-150 hover:scale-110"/>
                             <span 
@@ -51,7 +51,7 @@ export default function AdminCentre() {
                                 Department Configuration
                             </span>
                         </li>
-                        <li onClick={() => setActiveTab('global')} className="group flex items-center justify-center relative cursor-pointer">
+                        <li onClick={() => setActiveTab('Global')} className="group flex items-center justify-center relative cursor-pointer">
                             <FontAwesomeIcon icon={faGlobe} className="text-3xl text-wiseNavy transition delay-150
                                 duration-150 hover:scale-110"/>
                             <span 
@@ -63,7 +63,10 @@ export default function AdminCentre() {
                         </li>
                     </ul>
                 </div>
-                <div className="w-4/9 p-15">
+                <div className="w-4/9 p-15 shadow-2xl mt-10">
+                    <div className="mb-10 p-3 text-center font-lato text-wiseOffWhite text-2xl font-semibold bg-wiseSkin">
+                        <h1>{activeTab + ' ' + 'Configuration'}</h1>
+                    </div>
                     {renderActiveTab()}
                 </div>
             </div>

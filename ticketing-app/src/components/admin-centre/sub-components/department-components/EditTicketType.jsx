@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSquareCheck, faSquarePlus, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { expectedTypeMapping, dataSources } from '../../../../hooks/ticketConstants';
+import Select from 'react-select';
 
 export function EditTicketType ({appendTypeFunc, showTicketState, currentTicket, index}) {
 
@@ -81,24 +83,20 @@ export function EditTicketType ({appendTypeFunc, showTicketState, currentTicket,
                             onChange={(e) => handleFieldChange(index, e.target.name, e.target.value)}/>
                     </div>
                     <div className='grid grid-cols-1 gap-2'>
-                        <label className='admin-form-label' htmlFor={field.expectedType}>Expected Type - <span className='text-wiseDarkPink'>Current: {field.expectedType}</span></label>
-                        <input
-                            className='admin-form-control'
-                            type='text'
-                            name='expectedType'
-                            placeholder='E.g. String, Array, Number, Boolean'
-                            value={field.expectedType}
-                            onChange={(e) => handleFieldChange(index, e.target.name, e.target.value)}/>
+                        <label className='admin-form-label' htmlFor={field.expectedType}>Expected Data Type:</label>
+                        <Select
+                            className='text-wiseNavy'
+                            value={expectedTypeMapping.find(option => option.value === field.expectedType) || null}
+                            options={expectedTypeMapping}
+                            onChange={(selectedOption) => handleFieldChange(index, 'expectedType', selectedOption ? selectedOption.value : '')} />
                     </div>
                     <div className='grid grid-cols-1 gap-2'>
-                        <label className='admin-form-label' htmlFor={field.dataSource}>Data Source - <span className='text-wiseDarkPink'>Current: {field.dataSource}</span></label>
-                        <input
-                            className='admin-form-control'
-                            type='text'
-                            name='dataSource'
-                            placeholder="E.g. 'ALL_KIT' or 'KIT_BY_ID'"
-                            value={field.dataSource}
-                            onChange={(e) => handleFieldChange(index, e.target.name, e.target.value)}/>
+                        <label className='admin-form-label' htmlFor={field.dataSource}>Data Source:</label>
+                        <Select
+                            className='text-wiseNavy'
+                            value={dataSources.find(option => option.value === field.dataSource) || null}
+                            options={dataSources}
+                            onChange={(selectedOption) => handleFieldChange(index, 'dataSource', selectedOption ? selectedOption.value : '')} />
                     </div>
                     <div className='grid grid-cols-1 gap-2 border-b border-wiseSkin'>
                         <label className='admin-form-label' htmlFor={field.required}>Required - <span className='text-wiseDarkPink'>Current: {field.required}</span></label>
