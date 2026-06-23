@@ -78,8 +78,19 @@ function LoginPage() {
                     </div>
                     <div className="flex flex-row gap-6">    
                         <button type="submit" 
-                            className="text-wiseOffWhite text-xl rounded-md p-2 transition delay-75 duration-200 hover:cursor-pointer 
-                            hover:scale-105 hover:bg-wiseNavy/75 hover:shadow-sm hover:shadow-wiseSkin hover:text-wiseOffWhite">
+                            className="cursor-pointer
+                                        p-2
+                                        bg-wiseSkin
+                                        text-wiseOffWhite
+                                        text-lg
+                                        font-normal
+                                        transition
+                                        duration-200
+                                        hover:bg-bgMain
+                                        hover:text-wiseDarkPink
+                                        hover:outline
+                                        hover:outline-offset-2
+                                        hover:outline-wiseSkin">
                             Login
                         </button>
                     </div>    

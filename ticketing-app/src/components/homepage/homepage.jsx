@@ -43,7 +43,7 @@ function Homepage() {
                 <>
                     <div className='homepage-link-container'>
                         <div className='homepage-link-item' onClick={() => navigate('/dashboard')}>
-                            <h2 className='border-b-wiseSkin border-b-2 font-bold text-white text-lg p-0.5'><span><FontAwesomeIcon icon={faBuilding}/></span> Organisation Overview</h2>
+                            <h2 className='border-b-wiseSkin border-b-2 font-bold text-white text-lg p-0.5'><span><FontAwesomeIcon icon={faBuilding}/></span> Dashboard</h2>
                             <p className='text-white'>View all tickets accross the Organisation</p>
                         </div>
                         <div className='homepage-link-item' onClick={() => navigate('/create-ticket')}>
