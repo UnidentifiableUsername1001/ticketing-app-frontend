@@ -5,7 +5,7 @@ import Select from 'react-select';
 import useAssignableUsers from '../../hooks/user-fetch-hooks/useGetAllUsers';
 import { jwtDecode } from 'jwt-decode';
 import { useAppContext } from '../../context/authContext';
-import {statusMapping} from '../../hooks/ticketConstants';
+import {statusMapping} from '../../hooks/assorted/ticketConstants';
 
 function DetailView() {
     const [ticketTitle, setTicketTitle] = useState('');

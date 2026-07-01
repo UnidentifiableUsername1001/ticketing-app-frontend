@@ -1,111 +1,178 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { config } from "../../../config";
 import { useAppContext } from "../../context/authContext";
 import Select  from 'react-select';
-import useAssignableUsers from '../../hooks/user-fetch-hooks/useGetAllUsers';
-import {statusMapping} from "../../hooks/ticketConstants";
+import { useCreateTicket } from "../../hooks/ticket-fetch/useCreateTicket";
+import useGetDepartments from '../../hooks/department-fetch/useGetDepartments';
+import { useGetOneDepartment } from '../../hooks/department-fetch/useGetOneDepartment';
+import useAssignableUsers from "../../hooks/user-fetch-hooks/useGetAllUsers";
+import { fieldTypeToRender } from "../../hooks/assorted/createTicket";
 
 function CreateTicket() {
-    const [title, setTitle] = useState('');
-    const [description, setDescription] = useState('');
-    const [status, setStatus] = useState('');
-    const [assignedTo, setAssignedTo] = useState('')
-    const [error, setError] = useState('');
-    const navigate = useNavigate();
-    const urlTickets = `${config.backendUrl}/api/ticket/create`;
-    const jwtInStore = sessionStorage.getItem('auth-token');
+
+    const [formData, setFormData] = useState({
+        title: '',
+        description: '',
+    });
+
+    // Evaluates to Object.value of react-select object post-call of prepRenderFormState 
+    const [tickTypeToRender, setTickTypeToRender] = useState({})
+
+    // remember to set-up a conditional check of this variable when coding return as React will crash on-load as is
+    const [selectedDept, setSelectedDept] = useState(null)
+    const [selectedDeptTickets, setSelectedDeptTickets] = useState(null)
+
+    const allDepartments = useGetDepartments();
+    const selectedDepartment = useGetOneDepartment(selectedDept);
     const assignableUsers = useAssignableUsers();
-    const statusOptions = statusMapping();
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            const response = await fetch(urlTickets, {
-                method: 'POST',
-                headers: {
-                    Accept: 'application/JSON',
-                    'Content-Type':'application/JSON',
-                    Authorization: `Bearer ${jwtInStore}`,
+    // To make ticketTypes parsable by react-select
+    const mappedTypesArray = () => {
 
-                },
-                body: JSON.stringify({
-                    title: title,
-                    description: description,
-                    status: status,
-                    assignedUser: assignedTo.value
-                })
+        const ticketTypes = selectedDepartment.ticketTypes;
+
+        if(ticketTypes && ticketTypes.length !== 0) {
+            const mappedArray = ticketTypes.map((type) => ({
+                label: type.typeName,
+                value: type
+            }));
+
+            mappedArray.unshift({
+                label: 'General Enquiry',
+                value: {
+                    typeName: 'General Enquiry',
+                    fields: [
+                        // will need to convert names to lowercase either at endpoint or during fetch hook
+                        {name: 'Title', expectedType: 'String', required: true},
+                        {name: 'Description', expectedType: 'Textarea', required: true},
+                    ]
+                }
             });
 
-            const setStates = () => {
-                setTitle('');
-                setDescription('');
-                setAssignedTo('');
-                setStatus('');
-            }
-            if(!response.ok) {
-                const data = await response.json();
-                throw new Error(`HTTP error, status ${response.status}, ${data.error}`);
-            }
-            setStates();
-            navigate('/dashboard');
-        } catch (e) {
-            console.error(e);
-            setError(e.message);
-        }
+            return setSelectedDeptTickets(mappedArray);
+        };
     };
 
+    useEffect(() =>{
+        mappedTypesArray();
+    }, [selectedDepartment])
+
+    const prepRenderFormState = (ticketTypeObj) => {
+
+        const ticketType = ticketTypeObj.value;
+
+        if (ticketType.typeName === 'General Enquiry') {
+
+            setTickTypeToRender({...ticketType});
+
+            setFormData({
+                ...formData,
+                departmentId: selectedDepartment._id,
+                ticketType: ticketType.typeName
+            })
+
+            return;
+        }
+
+        ticketType.fields.unshift(
+            {name: 'Title', expectedType: 'String', required: true},
+            {name: 'Description', expectedType: 'Textarea', required: true},
+        );
+
+        setTickTypeToRender({...ticketType});
+
+        ticketType.fields.forEach((field) => {
+            setFormData({
+                ...formData,
+                [field.name]: null
+            });
+        });
+
+        setFormData({
+            ...formData,
+            departmentId: selectedDepartment._id,
+            ticketType: ticketType.typeName
+        })
+    }
+
+
+    const updateEventHandler = (event) => {
+        let targetName = event.target.name;
+        let targetValue = event.target.value;
+
+        setUpdateFormData({
+            ...updateFormData,
+            [targetName]: targetValue
+        });
+    };
+
+    const handleExplicitChange = (name, value) => {
+        setUpdateFormData({
+            ...updateFormData,
+            [name]: value
+        })
+    };
+
+    const handleSubmit = useCreateTicket(formData);    
+
+
     return (
-        <div className="min-h-screen bg-wiseOffWhite pt-32">   
-            <div className="grid grid-cols-5">
-                <div className="col-span-3 col-start-2 w-4/6 mx-auto">
-                    <form onSubmit={handleSubmit} className="flex flex-col gap-8 bg-wiseNavy shadow-wiseSkin shadow-sm p-7 rounded-md outline-1 outline-wiseSkin">
-                        <div className="flex flex-col gap-2">
-                            <label htmlFor="title" className="font-lato text-wiseOffWhite font-semibold text-1xl">Title<span className="text-wiseDarkPink">*</span></label>
-                            <input 
-                                type="text"
-                                id="title"
-                                className="p-2 bg-white font-lato shadow-sm rounded-sm hover:shadow-lg outline-none"
-                                placeholder="Write a brief title"
-                                value={title}
-                                onChange={(e) => setTitle(e.target.value)}
-                                />
-                        </div>
-                        <div className="flex flex-col gap-2">
-                            <label htmlFor="description" className="font-lato text-wiseOffWhite font-semibold text-1xl">Description<span className="text-wiseDarkPink">*</span></label>
-                            <input 
-                                type="text"
-                                id="description"
-                                className="p-8 bg-white shadow-sm rounded-sm hover:shadow-lg font-lato hover:bg-wiseDarkPink/10"
-                                placeholder="Write a detailed description..."
-                                value={description}
-                                onChange={(e) => setDescription(e.target.value)}
-                            />
-                        </div>
-                        <div className="flex flex-col gap-2">
-                            <label htmlFor="status" className="font-lato font-semibold text-1xl text-wiseOffWhite">Status<span className="text-wiseDarkPink">*</span></label>
-                            <div className="w-1/3">
+        <div className='top-div grid grid-col-1'>
+            <div className={`transition-all w-5/9 bg-wiseNavy shadow-wiseSkin shadow-sm p-7 rounded-md outline-1 outline-wiseSkin place-self-center mt-20`}>
+                <form onSubmit={handleSubmit} className='grid grid-cols-7 gap-10 text-wiseOffWhite'>
+                    <div className='grid grid-cols-1 col-start-2 col-span-5 gap-2'>
+                        <label className='admin-form-label' htmlFor='selectDepartment'>Select a department:</label>
+                        <Select
+                            className='text-wiseNavy'
+                            value={selectedDept}
+                            options={allDepartments}
+                            onChange={(selectedOption) => {
+                                setSelectedDept(selectedOption)
+                                console.log()
+                                }} />
+                    </div>
+                    {selectedDepartment && Object.keys(selectedDepartment).length !== 0 ? (
+                        <>
+                            <div className='grid grid-cols-1 col-start-2 col-span-5 gap-2'>
+                                <label className='admin-form-label' htmlFor='ticketType'>What type of ticket are you raising?</label>
                                 <Select 
-                                    value={status}
-                                    options={statusOptions} 
-                                    onChange={(selectedOption) => setStatus(selectedOption)}
-                                />
+                                    className="text-wiseNavy"
+                                    value={tickTypeToRender}
+                                    options={selectedDeptTickets}
+                                    onChange={(selectedOption) => prepRenderFormState(selectedOption)} />
                             </div>
-                        </div>
-                        <div className="flex flex-col gap-2">
-                            <label htmlFor="assignedUser" className="font-lato font-semibold text-1xl text-wiseOffWhite">Assigned To?</label>
-                            <div className="w-1/3">
-                                <Select
-                                    value={assignedTo}
-                                    options={assignableUsers} 
-                                    onChange={(selectedOption) => setAssignedTo(selectedOption)}/>
+                            {tickTypeToRender && Object.keys(tickTypeToRender).length !== 0 ? (
+                                <div className='grid grid-cols-1 col-start-2 col-span-5 gap-2'>
+                                    {tickTypeToRender.fields.map((field, index) => (
+                                        <>
+                                            <div key={index} className="grid grid-cols-1">
+                                                <label htmlFor={field.name} className="admin-form-label">{field.name}</label>
+                                                <>{fieldTypeToRender(field, updateEventHandler, formData)}</>
+                                                
+                                            </div>
+                                        </>
+                                    ))}
+                                </div>
+                                
+                            ) : (
+                                <div className='col-start-2 col-span-5 text-center text-wiseSkin/60 py-10 font-bold'>
+                                    Please select a ticket type.
+                                </div>
+                            )}
+                            <div className='grid grid-cols-1 col-start-5 col-end-9 justify-items-stretch'>
+                                <button 
+                                    type='submit' 
+                                    className='admin-form-button justify-self-end'>
+                                        Finish
+                                </button>
                             </div>
+                        </>
+                    ) : (
+                        <div className='col-start-2 col-span-5 text-center text-wiseSkin/60 py-10 font-bold'>
+                            Please start by selecting a department.
                         </div>
-                        <button type="submit" className="cursor-pointer bg-wiseSkin hover:bg-wiseDarkPink rounded-full w-1/7 mx-auto p-4 font-lato font-medium shadow-sm hover:shadow-lg">
-                            Create
-                        </button>
-                    </form>
-                </div>
+                    )}
+                </form>
             </div>
         </div>
     )

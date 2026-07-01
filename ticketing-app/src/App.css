@@ -143,9 +143,9 @@
       transition
       duration-150
       ease-in-out
-      hover:scale-105
+      hover:scale-102
       hover:bg-wiseSkin/20
-      focus:scale-105
+      focus:scale-102
       focus:bg-wiseOffWhite
       focus:text-bgMain
   }

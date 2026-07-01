@@ -11,7 +11,7 @@ export function useGetOneDepartment(deptId) {
 
     useEffect(() => {
 
-        if (!destructDeptId) return;
+        if (destructDeptId === null || Object.keys(destructDeptId).length === 0 || destructDeptId === undefined) return;
 
         const getOneDept = async () => {
             try {

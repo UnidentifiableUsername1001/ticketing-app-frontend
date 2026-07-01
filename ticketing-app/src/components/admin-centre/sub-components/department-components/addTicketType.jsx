@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import Select from 'react-select';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSquareCheck, faSquarePlus, faTrash } from '@fortawesome/free-solid-svg-icons';
-import { expectedTypeMapping, dataSources } from '../../../../hooks/ticketConstants';
+import { expectedTypeMapping, dataSources } from '../../../../hooks/assorted/ticketConstants';
 
 export function AddTicketType ({appendTypeFunc, showTicketTypeForm}) {
 
