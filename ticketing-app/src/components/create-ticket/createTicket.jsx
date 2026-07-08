@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { config } from "../../../config";
 import { useAppContext } from "../../context/authContext";
 import Select  from 'react-select';
@@ -6,13 +6,19 @@ import { useCreateTicket } from "../../hooks/ticket-fetch/useCreateTicket";
 import useGetDepartments from '../../hooks/department-fetch/useGetDepartments';
 import { useGetOneDepartment } from '../../hooks/department-fetch/useGetOneDepartment';
 import useAssignableUsers from "../../hooks/user-fetch-hooks/useGetAllUsers";
-import { fieldTypeToRender } from "../../hooks/assorted/createTicket";
+import { RenderFields } from "./sub-components/RenderFields";
 
 function CreateTicket() {
 
     const [formData, setFormData] = useState({
         title: '',
-        description: '',
+        description: {
+            postedBy: '',
+            bodyText: '',
+            mentions: [],
+            attachments: [],
+        },
+        customAttributes: []
     });
 
     // Evaluates to Object.value of react-select object post-call of prepRenderFormState 
@@ -45,6 +51,7 @@ function CreateTicket() {
                         // will need to convert names to lowercase either at endpoint or during fetch hook
                         {name: 'Title', expectedType: 'String', required: true},
                         {name: 'Description', expectedType: 'Textarea', required: true},
+                        {name: 'File Upload', expectedType: 'fileUpload', required: true}
                     ]
                 }
             });
@@ -59,67 +66,82 @@ function CreateTicket() {
 
     const prepRenderFormState = (ticketTypeObj) => {
 
-        const ticketType = ticketTypeObj.value;
+        if (ticketTypeObj.value.typeName === 'General Enquiry') {
 
-        if (ticketType.typeName === 'General Enquiry') {
-
-            setTickTypeToRender({...ticketType});
+            setTickTypeToRender({...ticketTypeObj});
 
             setFormData({
                 ...formData,
                 departmentId: selectedDepartment._id,
-                ticketType: ticketType.typeName
+                ticketType: ticketTypeObj.value.typeName
             })
 
             return;
         }
 
-        ticketType.fields.unshift(
+        ticketTypeObj.value.fields.unshift(
             {name: 'Title', expectedType: 'String', required: true},
             {name: 'Description', expectedType: 'Textarea', required: true},
         );
+        
+        ticketTypeObj.value.fields.push(
+            {name: 'File Upload', expectedType: 'fileUpload', required: true}
+        )
 
-        setTickTypeToRender({...ticketType});
-
-        ticketType.fields.forEach((field) => {
-            setFormData({
-                ...formData,
-                [field.name]: null
-            });
-        });
+        setTickTypeToRender({...ticketTypeObj});
 
         setFormData({
             ...formData,
             departmentId: selectedDepartment._id,
-            ticketType: ticketType.typeName
+            ticketType: ticketTypeObj.value.typeName
         })
     }
 
 
-    const updateEventHandler = (event) => {
+    const handleNormalChange = (event) => {
         let targetName = event.target.name;
         let targetValue = event.target.value;
 
-        setUpdateFormData({
-            ...updateFormData,
+        setFormData({
+            ...formData,
             [targetName]: targetValue
         });
     };
 
     const handleExplicitChange = (name, value) => {
-        setUpdateFormData({
-            ...updateFormData,
+        setFormData({
+            ...formData,
             [name]: value
         })
     };
 
-    const handleSubmit = useCreateTicket(formData);    
+    const handleCustAttrChange = (name, value) => {
+        setFormData({
+            ...formData,
+            customAttributes: [
+                ...formData.customAttributes,
+                {
+                    key: name,
+                    value: value
+                }
+            ]
+        });
+    };
+
+    const handleSubmit = () => {
+        const parser = new DOMParser();
+        const body = formData.description.bodyText;
+        const parsedBody = parser.parseFromString(body, 'text/html');
+        const mentions = parsedBody.querySelectorAll('[data-id]');
+
+        
+    };    
 
 
     return (
-        <div className='top-div grid grid-col-1'>
-            <div className={`transition-all w-5/9 bg-wiseNavy shadow-wiseSkin shadow-sm p-7 rounded-md outline-1 outline-wiseSkin place-self-center mt-20`}>
-                <form onSubmit={handleSubmit} className='grid grid-cols-7 gap-10 text-wiseOffWhite'>
+        <div className='min-h-screen bg-wisePaleGrey'>
+            <div className={`transition-all w-5/9 bg-wiseOffWhite shadow-wiseSkin shadow-sm p-7 outline-1 outline-bgMain/20 place-self-center`}>
+                <form onSubmit={handleSubmit} className='grid grid-cols-7 gap-15 text-bgMain'>
                     <div className='grid grid-cols-1 col-start-2 col-span-5 gap-2'>
                         <label className='admin-form-label' htmlFor='selectDepartment'>Select a department:</label>
                         <Select
@@ -128,7 +150,6 @@ function CreateTicket() {
                             options={allDepartments}
                             onChange={(selectedOption) => {
                                 setSelectedDept(selectedOption)
-                                console.log()
                                 }} />
                     </div>
                     {selectedDepartment && Object.keys(selectedDepartment).length !== 0 ? (
@@ -139,16 +160,21 @@ function CreateTicket() {
                                     className="text-wiseNavy"
                                     value={tickTypeToRender}
                                     options={selectedDeptTickets}
-                                    onChange={(selectedOption) => prepRenderFormState(selectedOption)} />
+                                    onChange={(selectedOption) => {prepRenderFormState(selectedOption);}} />
                             </div>
                             {tickTypeToRender && Object.keys(tickTypeToRender).length !== 0 ? (
-                                <div className='grid grid-cols-1 col-start-2 col-span-5 gap-2'>
-                                    {tickTypeToRender.fields.map((field, index) => (
+                                <div className='grid grid-cols-1 col-start-2 col-span-5 gap-15'>
+                                    {tickTypeToRender.value.fields.map((field, index) => (
                                         <>
-                                            <div key={index} className="grid grid-cols-1">
+                                            <div key={index} className="grid grid-cols-1 gap-3">
                                                 <label htmlFor={field.name} className="admin-form-label">{field.name}</label>
-                                                <>{fieldTypeToRender(field, updateEventHandler, formData)}</>
-                                                
+                                                <RenderFields
+                                                    formData={formData}
+                                                    formStateFunc={setFormData}
+                                                    field={field}
+                                                    updateHandlerNormal={handleNormalChange}
+                                                    updateHandlerCustom={handleCustAttrChange}
+                                                />
                                             </div>
                                         </>
                                     ))}
