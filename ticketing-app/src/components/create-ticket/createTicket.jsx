@@ -21,6 +21,8 @@ function CreateTicket() {
         customAttributes: []
     });
 
+    const { createTicket, isCreating, creationError } = useCreateTicket();
+
     // Evaluates to Object.value of react-select object post-call of prepRenderFormState 
     const [tickTypeToRender, setTickTypeToRender] = useState({})
 
@@ -49,9 +51,9 @@ function CreateTicket() {
                     typeName: 'General Enquiry',
                     fields: [
                         // will need to convert names to lowercase either at endpoint or during fetch hook
-                        {name: 'Title', expectedType: 'String', required: true},
-                        {name: 'Description', expectedType: 'Textarea', required: true},
-                        {name: 'File Upload', expectedType: 'fileUpload', required: true}
+                        {name: 'title', expectedType: 'String', required: true},
+                        {name: 'description', expectedType: 'Textarea', required: true},
+                        {name: 'file_upload', expectedType: 'fileUpload', required: true}
                     ]
                 }
             });
@@ -80,8 +82,8 @@ function CreateTicket() {
         }
 
         ticketTypeObj.value.fields.unshift(
-            {name: 'Title', expectedType: 'String', required: true},
-            {name: 'Description', expectedType: 'Textarea', required: true},
+            {name: 'title', expectedType: 'String', required: true},
+            {name: 'description', expectedType: 'Textarea', required: true},
         );
         
         ticketTypeObj.value.fields.push(
@@ -128,12 +130,25 @@ function CreateTicket() {
         });
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
         const parser = new DOMParser();
         const body = formData.description.bodyText;
-        const parsedBody = parser.parseFromString(body, 'text/html');
-        const mentions = parsedBody.querySelectorAll('[data-id]');
+        const parsedBody = parser.parseFromString(body, 'text/html'); 
 
+        const idArr = parsedBody.querySelectorAll('[data-id]');
+        const mentionIds = Array.from(idArr).map(node => node.getAttribute('data-id'));
+
+        const finalPayload = {
+            ...formData,
+            description: {
+                ...formData.description,
+                mentions: mentionIds
+            }
+        };
+
+        createTicket(finalPayload);
         
     };    
 
@@ -187,9 +202,10 @@ function CreateTicket() {
                             )}
                             <div className='grid grid-cols-1 col-start-5 col-end-9 justify-items-stretch'>
                                 <button 
-                                    type='submit' 
+                                    type='submit'
+                                    disabled={isCreating} 
                                     className='admin-form-button justify-self-end'>
-                                        Finish
+                                        {isCreating ? 'Saving...' : 'Finish'}
                                 </button>
                             </div>
                         </>

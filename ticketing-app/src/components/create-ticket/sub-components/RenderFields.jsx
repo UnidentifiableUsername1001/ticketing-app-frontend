@@ -31,7 +31,7 @@ function RenderFields ({field, updateHandlerNormal, formData, updateHandlerCusto
                     type="text"
                     name={fieldName}
                     value={formData.fieldName}
-                    onChange={(e) => field.title.toLowerCase() === 'title' ? updateHandlerNormal(e) : updateHandlerCustom(e.target.name, e.target.value)}
+                    onChange={(e) => fieldName.toLowerCase() === 'title' ? updateHandlerNormal(e) : updateHandlerCustom(e.target.name, e.target.value)}
                     placeholder="Type something..."
                 />
             </>

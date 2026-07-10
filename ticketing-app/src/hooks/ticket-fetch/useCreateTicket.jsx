@@ -1,16 +1,20 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { config } from '../../../config';
 import { useNavigate } from "react-router-dom";
+import { useMutation } from '@tanstack/react-query';
+import { ToastContext } from '../../context/toast-notification/ToastContext';
 
-export function useCreateTicket(formData) {
+export function useCreateTicket() {
 
     const navigate = useNavigate();
     const urlTickets = `${config.backendUrl}/api/ticket/create`;
     const jwtInStore = sessionStorage.getItem('auth-token');
 
-    const response = async (e) => {
-        e.preventDefault();
-        try {
+    const { addToast } = useContext(ToastContext);
+
+    const mutationResult = useMutation({
+        mutationFn: async (payload) => {
+
             const response = await fetch(urlTickets, {
                 method: 'POST',
                 headers: {
@@ -19,20 +23,32 @@ export function useCreateTicket(formData) {
                     Authorization: `Bearer ${jwtInStore}`,
 
                 },
-                body: JSON.stringify(formData)
+                body: JSON.stringify(payload)
             });
 
-
-            if(!response.ok) {
-                
-                throw new Error(`HTTP error, status ${response.status}, ${data.error}`);
-            }
             const data = await response.json();
 
-            navigate(`/ticket/${data.id}`);
-        } catch (e) {
-            console.error(e);
-        }
-    };
+            return data;
 
+        },
+
+        onSuccess: (result) => {
+
+            addToast({msg: `${mutationResult.message}`, type: 'success'});
+
+            // navigate(`/ticket/${mutationResult.id}`);
+        },
+
+        onError: (error) => {
+            addToast({msg: `${error.message}`, type: 'error'});
+
+            console.log(error);
+        }
+    });
+    
+    return {
+        createTicket: mutationResult.mutate,       
+        isCreating: mutationResult.isPending,      
+        creationError: mutationResult.error,       
+  };
 };
