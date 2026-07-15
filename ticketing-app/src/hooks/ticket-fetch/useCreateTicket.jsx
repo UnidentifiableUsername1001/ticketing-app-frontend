@@ -1,12 +1,13 @@
 import React, { useContext } from 'react';
 import { config } from '../../../config';
-import { useNavigate } from "react-router-dom";
 import { useMutation } from '@tanstack/react-query';
 import { ToastContext } from '../../context/toast-notification/ToastContext';
+import { useNavigate } from 'react-router';
 
 export function useCreateTicket() {
 
     const navigate = useNavigate();
+
     const urlTickets = `${config.backendUrl}/api/ticket/create`;
     const jwtInStore = sessionStorage.getItem('auth-token');
 
@@ -34,9 +35,7 @@ export function useCreateTicket() {
 
         onSuccess: (result) => {
 
-            addToast({msg: `${mutationResult.message}`, type: 'success'});
-
-            // navigate(`/ticket/${mutationResult.id}`);
+            addToast({msg: `${result.message}`, type: 'success'});
         },
 
         onError: (error) => {

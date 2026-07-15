@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { config } from "../../../config";
 import { useAppContext } from "../../context/authContext";
 import Select  from 'react-select';
@@ -7,6 +7,9 @@ import useGetDepartments from '../../hooks/department-fetch/useGetDepartments';
 import { useGetOneDepartment } from '../../hooks/department-fetch/useGetOneDepartment';
 import useAssignableUsers from "../../hooks/user-fetch-hooks/useGetAllUsers";
 import { RenderFields } from "./sub-components/RenderFields";
+import { useSearchParams } from "react-router";
+import { useUploadAttachment } from "../../hooks/ticket-fetch/useUploadAttachment";
+import { ToastContext } from "../../context/toast-notification/ToastContext";
 
 function CreateTicket() {
 
@@ -21,12 +24,18 @@ function CreateTicket() {
         customAttributes: []
     });
 
+    const { addToast } = useContext(ToastContext);
+
+    const [searchParams, setSearchParams] = useSearchParams();
+
     const { createTicket, isCreating, creationError } = useCreateTicket();
 
-    // Evaluates to Object.value of react-select object post-call of prepRenderFormState 
+    const { uploadFile, isUploading, uploadError } = useUploadAttachment();
+
+    // Evaluates to react-select object post-call of prepRenderFormState e.g. {label: <void>, value: {<ticketTypeObject>}}
     const [tickTypeToRender, setTickTypeToRender] = useState({})
 
-    // remember to set-up a conditional check of this variable when coding return as React will crash on-load as is
+    // I need to remember to set-up a conditional check of this variable when coding return as React will crash on-load as is
     const [selectedDept, setSelectedDept] = useState(null)
     const [selectedDeptTickets, setSelectedDeptTickets] = useState(null)
 
@@ -50,7 +59,6 @@ function CreateTicket() {
                 value: {
                     typeName: 'General Enquiry',
                     fields: [
-                        // will need to convert names to lowercase either at endpoint or during fetch hook
                         {name: 'title', expectedType: 'String', required: true},
                         {name: 'description', expectedType: 'Textarea', required: true},
                         {name: 'file_upload', expectedType: 'fileUpload', required: true}
@@ -130,26 +138,40 @@ function CreateTicket() {
         });
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    const handleSubmit = async (e) => {
 
-        const parser = new DOMParser();
-        const body = formData.description.bodyText;
-        const parsedBody = parser.parseFromString(body, 'text/html'); 
+        try {
+            e.preventDefault();
 
-        const idArr = parsedBody.querySelectorAll('[data-id]');
-        const mentionIds = Array.from(idArr).map(node => node.getAttribute('data-id'));
+            let finalPayload;
 
-        const finalPayload = {
-            ...formData,
-            description: {
-                ...formData.description,
-                mentions: mentionIds
-            }
-        };
+            const parser = new DOMParser();
+            const body = formData.description.bodyText;
+            const parsedBody = parser.parseFromString(body, 'text/html'); 
 
-        createTicket(finalPayload);
-        
+            const idArr = parsedBody.querySelectorAll('[data-id]');
+            const mentionIds = Array.from(idArr).map(node => node.getAttribute('data-id'));
+            
+            const filePromises = formData.description.attachments.map((file) => uploadFile(file));
+
+
+            const completedFileArray = await Promise.all(filePromises);
+
+            finalPayload = {
+                ...formData,
+                description: {
+                    ...formData.description,
+                    mentions: mentionIds,
+                    attachments: completedFileArray
+                }
+            };
+
+            createTicket(finalPayload);
+
+        } catch (e) {
+            console.log(e);
+            addToast({msg: `Error uploading: ${e}`, type: 'error'});
+        }
     };    
 
 
@@ -203,9 +225,9 @@ function CreateTicket() {
                             <div className='grid grid-cols-1 col-start-5 col-end-9 justify-items-stretch'>
                                 <button 
                                     type='submit'
-                                    disabled={isCreating} 
+                                    disabled={isUploading || isCreating} 
                                     className='admin-form-button justify-self-end'>
-                                        {isCreating ? 'Saving...' : 'Finish'}
+                                        {isUploading || isCreating ? 'Saving...' : 'Finish'}
                                 </button>
                             </div>
                         </>
