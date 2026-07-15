@@ -176,8 +176,8 @@ function CreateTicket() {
 
 
     return (
-        <div className='min-h-screen bg-wisePaleGrey'>
-            <div className={`transition-all w-5/9 bg-wiseOffWhite shadow-wiseSkin shadow-sm p-7 outline-1 outline-bgMain/20 place-self-center`}>
+        <div className='min-h-screen bg-wisePaleGrey pt-30'>
+            <div className={`transition-all w-5/9 bg-wiseOffWhite shadow-wiseSkin shadow-sm p-7 outline-1 outline-bgMain/20 mx-auto`}>
                 <form onSubmit={handleSubmit} className='grid grid-cols-7 gap-15 text-bgMain'>
                     <div className='grid grid-cols-1 col-start-2 col-span-5 gap-2'>
                         <label className='admin-form-label' htmlFor='selectDepartment'>Select a department:</label>
