@@ -40,6 +40,7 @@ export function useCreateTicket() {
 
         onError: (error) => {
             addToast({msg: `${error.message}`, type: 'error'});
+            navigate('/dashboard');
 
             console.log(error);
         }

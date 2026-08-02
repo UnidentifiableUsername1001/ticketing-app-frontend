@@ -16,7 +16,6 @@ function CreateTicket() {
     const [formData, setFormData] = useState({
         title: '',
         description: {
-            postedBy: '',
             bodyText: '',
             mentions: [],
             attachments: [],
