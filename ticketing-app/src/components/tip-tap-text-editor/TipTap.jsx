@@ -11,18 +11,12 @@ import { MenuBar } from './Menu-Bar/MenuBar';
 
 
 
-function RichTextEditor ({formStateFunc, form}) {
+function RichTextEditor ({stateFunc}) {
 
     const editor = useEditor({
         onUpdate({editor}) {
             const body = editor.getHTML();
-            formStateFunc({
-                ...form,
-                description: {
-                    ...form.description,
-                    bodyText: body
-                }
-            })
+            stateFunc(body);
         },
         extensions: [
             StarterKit,
@@ -40,7 +34,7 @@ function RichTextEditor ({formStateFunc, form}) {
     })
 
     return (
-        <div className='tiptap-container'>
+        <div className='tiptap-container border border-wiseGrey4'>
             <MenuBar editor={editor} />
             <EditorContent editor={editor} />
             <FloatingMenu editor={editor}/>

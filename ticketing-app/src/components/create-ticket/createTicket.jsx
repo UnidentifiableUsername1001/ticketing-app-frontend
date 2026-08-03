@@ -23,6 +23,8 @@ function CreateTicket() {
         customAttributes: []
     });
 
+    const [bodyText, setBodyText] = useState(null);
+
     const { addToast } = useContext(ToastContext);
 
     const [searchParams, setSearchParams] = useSearchParams();
@@ -159,7 +161,7 @@ function CreateTicket() {
             finalPayload = {
                 ...formData,
                 description: {
-                    ...formData.description,
+                    bodyText: bodyText,
                     mentions: mentionIds,
                     attachments: completedFileArray
                 }
@@ -206,7 +208,7 @@ function CreateTicket() {
                                                 <label htmlFor={field.name} className="admin-form-label">{field.name}</label>
                                                 <RenderFields
                                                     formData={formData}
-                                                    formStateFunc={setFormData}
+                                                    formStateFunc={setBodyText}
                                                     field={field}
                                                     updateHandlerNormal={handleNormalChange}
                                                     updateHandlerCustom={handleCustAttrChange}

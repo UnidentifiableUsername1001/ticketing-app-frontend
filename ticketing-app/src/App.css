@@ -156,7 +156,23 @@
     cursor-pointer
     w-19/40
     p-1
-    bg-wiseSkin
+    bg-wiseRose3
+    text-lg
+    font-normal
+    transition
+    duration-200
+    hover:bg-bgMain
+    hover:text-wiseDarkPink
+    hover:outline
+    hover:outline-offset-2
+    hover:outline-wiseSkin
+  }
+
+  .button1-no-width {
+    @apply
+    cursor-pointer
+    p-1
+    bg-wiseRose3
     text-lg
     font-normal
     transition
@@ -197,15 +213,49 @@
 @theme {
 
   /* WISE COLORS */
-  --color-nearBlack: #040300;
-  --color-bgMain: #0F1225;
+
+  /* Supporting Greys */
+  --color-wiseGrey1: #040300;
+  --color-wiseGrey2: #363532;
+  --color-wiseGrey3: #686764;
+  --color-wiseGrey4: #CDCBC7;
+  --color-wiseGrey5: #fffdf9; 
+
+  /* Legacy variable  */
+  --color-wiseOffWhite: #fffdf9;  
+  --color-wisePaleGrey: #E7E8EC;
+
+  /* Heritage Rose Shades */
+  --color-wiseRose1: #A73F3F;
+  --color-wiseRose2: #C46565;
+  --color-wiseRose3: #EC9797;
+  --color-wiseRose4: #F4C1C1;
+  --color-wiseRose5: #F9E0E0; 
+
+  /* Legacy variable  */
+  --color-wiseDarkPink: #C46565;
+  --color-wiseSkin: #F4C1C1;
+  --color-ultMutePink: #F4C1C1;
+
+  /* Nightfall Navy Shades */
+  --color-wiseNavy1: #0D1226;
+  --color-wiseNavy2: #161E3F;
+  --color-wiseNavy3: #444B65;
+  --color-wiseNavy4: #A1A4B2;
+  --color-wiseNavy5: #E7E8EC;
+
+  /* Legacy variable  */
+  --color-bgMain: #0D1226;
   --color-wiseNavy: #161E3F;
   --color-russianBlue: #444B65;
-  --color-wiseDarkPink: #C46565;
-  --color-wiseSkin: #E59998;
-  --color-ultMutePink: #F4C1C1;
-  --color-wisePaleGrey: #E7E8EC;
-  --color-wiseOffWhite: #fffdf9;
+
+
+
+  
+  
+  
+
+  
 
   /* WISE FONTS */
   --font-roboto: "Roboto", sans-serif;
