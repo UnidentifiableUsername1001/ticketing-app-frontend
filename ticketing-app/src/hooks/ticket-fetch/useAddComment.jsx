@@ -3,12 +3,14 @@ import { config } from '../../../config';
 import { useMutation } from '@tanstack/react-query';
 import { ToastContext } from '../../context/toast-notification/ToastContext';
 import { useParams } from 'react-router';
+import { useQueryClient } from '@tanstack/react-query';
 
 export function useAddComment() {
 
     const jwt = sessionStorage.getItem('auth-token');
     const params = useParams();
     const url = `${config.backendUrl}/api/ticket/${params.ticketId}/add-comment`
+    const queryClient = useQueryClient();
 
     const {addToast} = useContext(ToastContext);
 
@@ -34,6 +36,7 @@ export function useAddComment() {
         },
 
         onSuccess: (result) => {
+            queryClient.invalidateQueries({queryKey: ['comments', params.ticketId]})
             addToast({msg: 'Comment added!', type: 'success'});
         },
 
@@ -46,6 +49,7 @@ export function useAddComment() {
     return {
         addComment: mutationResult.mutate,
         isAdding: mutationResult.isPending,
-        errorAdding: mutationResult.isError
+        errorAdding: mutationResult.isError,
+        commentAdded: mutationResult.isSuccess
     }
 };

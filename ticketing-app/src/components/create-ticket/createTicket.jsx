@@ -147,7 +147,7 @@ function CreateTicket() {
             let finalPayload;
 
             const parser = new DOMParser();
-            const body = formData.description.bodyText;
+            const body = bodyText
             const parsedBody = parser.parseFromString(body, 'text/html'); 
 
             const idArr = parsedBody.querySelectorAll('[data-id]');
