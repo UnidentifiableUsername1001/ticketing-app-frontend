@@ -13,6 +13,8 @@ import { ReadOnlyEditor } from './sub-components/ReadOnlyEditor';
 import { RichTextEditor } from '../tip-tap-text-editor/TipTap';
 import { style1 } from '../../hooks/assorted/react-select-styles';
 import { NewComment } from './sub-components/CommentTile';
+import { colorRender } from '../../hooks/assorted/ticketConstants';
+import { useUpdateTicketMeta } from '../../hooks/ticket-fetch/useUpdateTicketMeta';
 
 function DetailView() {
 
@@ -31,8 +33,21 @@ function DetailView() {
     const params = useParams();
 
     const { ticket, isGettingTicket, ticketFetchError } = useGetTicketById(params.ticketId);
+    const { updateTicket, ticketUpdating, ticketUpdated, errorUpdatingTicket } = useUpdateTicketMeta()
 
-    const handleMetaSubmit = () => {
+    const handleMetaSubmit = (e) => {
+
+        e.preventDefault();
+
+        let payload = {
+            assignedUser: draftAssignee?.value,
+            status: draftStatus?.value,
+            follower: newFollowers
+        };
+
+        updateTicket(payload, {
+             onSuccess: () => navigate('/dashboard')
+        });
 
     }
 
@@ -57,9 +72,9 @@ function DetailView() {
                 </div>
                 <div className='sidebar relative col-span-5 col-start-13 p-8 border-r border-t border-b bg-wiseGrey5 border-wiseGrey5 rounded-br-sm rounded-tr-sm'>
                     <div className='flex flex-col gap-8'>
-                        <div>
+                        <div className='grid gap-3'>
                             <h3 className='font-lato font-semibold text-1xl'>Status</h3>
-                            <p className='font-lato font-light text-lg'>{ticket?.status ? ticket.status : 'Failed to load'}</p>
+                            <p className='font-lato font-light text-lg'>{ticket?.status ? colorRender(ticket.status) : 'Failed to load'}</p>
                         </div>
                         <div>
                             <h3 className='font-lato font-semibold text-1xl'>Assignee</h3>
@@ -85,11 +100,20 @@ function DetailView() {
                                         classNames={style1} />
                             </div>
                             <div className='absolute bottom-8 right-8'>
-                                <button 
-                                    type='submit'
-                                    className='button1-no-width w-32'>
-                                        Submit
-                                </button>
+                                {ticketUpdating ? (
+                                    <button 
+                                        type='submit'
+                                        className='button1-loading w-32'>
+                                            Saving...
+                                    </button>
+                                ) : (
+                                    <button 
+                                        type='submit'
+                                        className='button1-no-width w-32'>
+                                            Submit
+                                    </button>
+                                ) }
+ 
                             </div>
                         </form>
                     </div>    

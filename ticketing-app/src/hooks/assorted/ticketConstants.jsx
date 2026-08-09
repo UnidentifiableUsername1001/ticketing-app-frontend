@@ -8,6 +8,12 @@ function statusMapping() {
     return mappedArray;
 };
 
+const colorRender = (status) => {
+    if (status === 'Open') return (<span className="bg-red-500 rounded-md p-2 text-wiseOffWhite">{status}</span>);
+    if (status === 'In progress') return (<span className="bg-yellow-500 rounded-md p-2 text-bgMain">{status}</span>);
+    if (status === 'Closed') return (<span className="bg-gray-500 rounded-md p-2 text-wiseOffWhite">{status}</span>);
+}
+
 const expectedTypeMapping = [
     {
         label: 'Plain text',
@@ -49,5 +55,6 @@ const dataSources = [
 export {
     statusMapping,
     expectedTypeMapping,
-    dataSources
+    dataSources,
+    colorRender
 };

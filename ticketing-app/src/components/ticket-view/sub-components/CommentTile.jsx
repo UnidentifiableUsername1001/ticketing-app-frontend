@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router';
+import { useNavigate, useParams, useSearchParams } from 'react-router';
 import { useAppContext } from '../../../context/authContext';
 import { useAddComment } from '../../../hooks/ticket-fetch/useAddComment';
 import { useGetComments } from '../../../hooks/ticket-fetch/useGetCommments';
@@ -9,16 +9,19 @@ import { useQueryClient } from '@tanstack/react-query';
 
 export function NewComment({mentionsStateFunc, urlParams}) {
 
+    const [searchParams, setSearchParams] = useSearchParams();
+    const params = useParams();
+
     const [showCommentInput, setShowCommentInput] = useState(false);
     const [newComment, setNewComment] = useState(null);
-
-    const { comments, isGettingComments, errorGettingComments } = useGetComments(urlParams);
+    
+    const { comments, isGettingComments, errorGettingComments } = useGetComments(urlParams, searchParams);
     const { addComment, isAdding, errorAdding, commentAdded } = useAddComment();
 
     const queryClient = useQueryClient();
 
     const pageSelect = (event) => {
-
+        setSearchParams({page: event.target.value});
     }
 
     let pageNumArr = [];
@@ -38,6 +41,8 @@ export function NewComment({mentionsStateFunc, urlParams}) {
             const idArr = parsedBody.querySelectorAll('[data-id]');
 
             const mentionIds = Array.from(idArr).map(node => node.getAttribute('data-id'));
+
+            mentionsStateFunc(mentionIds);
 
             let payload = {
                 bodyText: newComment,
@@ -86,9 +91,9 @@ export function NewComment({mentionsStateFunc, urlParams}) {
             </div>
             <div className='grid grid-cols-3 mt-10'>
                 <div className={`flex justify-center col-start-2`}>
-                    <div className=''>
+                    <div className='flex'>
                         <button 
-                            className='page-number-button'
+                            className='page-number-button2'
                             type='button' 
                             value={pageNumArr[0]} 
                             onClick={(e) => pageSelect(e)}>
@@ -110,11 +115,11 @@ export function NewComment({mentionsStateFunc, urlParams}) {
                     )) : (<>
                     
                     </>)}
-                    <div className=''>
+                    <div className='flex'>
                         <button 
-                            className='page-number-button'
+                            className='page-number-button2'
                             type='button' 
-                            value={pageNumArr[0]} 
+                            value={comments?.totalPages} 
                             onClick={(e) => pageSelect(e)}>
                                 {`Last >>`}
                         </button>

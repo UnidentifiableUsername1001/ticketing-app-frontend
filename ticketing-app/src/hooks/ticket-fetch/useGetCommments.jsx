@@ -3,17 +3,18 @@ import { config } from '../../../config';
 import { useQuery } from '@tanstack/react-query';
 import { ToastContext } from '../../context/toast-notification/ToastContext';
 
-export function useGetComments(ticketId) {
+export function useGetComments(ticketId, urlQuery) {
 
     const jwt = sessionStorage.getItem('auth-token');
     const {addToast} = useContext(ToastContext);
+    const pageParam = `page=${urlQuery.get('page')}` 
 
     const queryResult = useQuery({
-        queryKey: ['comments', ticketId],
+        queryKey: ['comments', ticketId, pageParam],
 
         queryFn: async (payload) => {
 
-            const url = `${config.backendUrl}/api/ticket/${ticketId}/get-comments`
+            const url = `${config.backendUrl}/api/ticket/${ticketId}/get-comments?${pageParam}`
 
             const response = await fetch(url, {
                 method: 'GET',

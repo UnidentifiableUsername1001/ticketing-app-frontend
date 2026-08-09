@@ -184,6 +184,17 @@
     hover:outline-wiseSkin
   }
 
+  .button1-loading {
+    @apply
+    cursor-not-allowed
+    p-0.5
+    bg-wiseGrey3
+    text-lg
+    font-normal
+    transition
+    duration-200
+  }
+
   .button2-no-width {
     @apply
     cursor-pointer
@@ -204,7 +215,23 @@
     @apply
     cursor-pointer
     p-1
+    mx-1
+    mb-1
     text-lg
+    text-wiseRose3
+    underline
+    font-normal
+    transition
+    duration-200
+    hover:text-wiseRose1
+  }
+
+  .page-number-button2 {
+    @apply
+    cursor-pointer
+    p-1
+    justify-end
+    text-sm
     text-wiseRose3
     underline
     font-normal
