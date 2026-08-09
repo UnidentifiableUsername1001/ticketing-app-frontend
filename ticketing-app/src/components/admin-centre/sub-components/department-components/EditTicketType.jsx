@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSquareCheck, faSquarePlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { expectedTypeMapping, dataSources } from '../../../../hooks/assorted/ticketConstants';
 import Select from 'react-select';
+import { style1 } from '../../../../hooks/assorted/react-select-styles';
 
 export function EditTicketType ({appendTypeFunc, showTicketState, currentTicket, index}) {
 
@@ -67,8 +68,8 @@ export function EditTicketType ({appendTypeFunc, showTicketState, currentTicket,
             {editTicketType.fields.map((field, index) => (
                 <div key={index} className='grid grid-cols-1 gap-12'>
                     <h1 
-                        className='font-bold text-xl text-wiseOffWhite text-center
-                        justify-self-center w-1/2 mt-5 bg-linear-to-b from-wiseNavy to-bgMain/50
+                        className='font-bold text-xl text-wiseGrey1 text-center
+                        justify-self-center w-1/2 mt-5
                         border-b border-wiseOffWhite'>
                         Field {index + 1}
                     </h1>
@@ -85,7 +86,8 @@ export function EditTicketType ({appendTypeFunc, showTicketState, currentTicket,
                     <div className='grid grid-cols-1 gap-2'>
                         <label className='admin-form-label' htmlFor={field.expectedType}>Expected Data Type:</label>
                         <Select
-                            className='text-wiseNavy'
+                            unstyled
+                            classNames={style1}
                             value={expectedTypeMapping.find(option => option.value === field.expectedType) || null}
                             options={expectedTypeMapping}
                             onChange={(selectedOption) => handleFieldChange(index, 'expectedType', selectedOption ? selectedOption.value : '')} />
@@ -93,7 +95,8 @@ export function EditTicketType ({appendTypeFunc, showTicketState, currentTicket,
                     <div className='grid grid-cols-1 gap-2'>
                         <label className='admin-form-label' htmlFor={field.dataSource}>Data Source:</label>
                         <Select
-                            className='text-wiseNavy'
+                            unstyled
+                            classNames={style1}
                             value={dataSources.find(option => option.value === field.dataSource) || null}
                             options={dataSources}
                             onChange={(selectedOption) => handleFieldChange(index, 'dataSource', selectedOption ? selectedOption.value : '')} />

@@ -5,6 +5,7 @@ import useNewUser from '../../../../hooks/user-fetch-hooks/useNewUser';
 import Select from 'react-select';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { style1 } from '../../../../hooks/assorted/react-select-styles';
 
 export function NewUserForm() {
         const [newFormData, setNewFormData] = useState({
@@ -48,7 +49,7 @@ export function NewUserForm() {
     const [showForm, setShowForm] = useState(false);
     
     return (
-        <div className='top-div grid grid-cols-1 gap-10 font-lato'>
+        <div className='top-div grid grid-cols-1 gap-5 font-lato'>
             <button type='button' className='form-dropDown-button' onClick={() => setShowForm(!showForm)}>
                 <div className='width-full flex flex-row justify-between relative z-10'>
                     <span className=''>Add New User</span>
@@ -62,9 +63,9 @@ export function NewUserForm() {
             </button>
             <div className={` 
                     ${showForm ? 'block opacity-100' : 'hidden opacity-0'}
-                    transition-all bg-wiseNavy shadow-wiseSkin shadow-sm p-7 rounded-md outline-1 outline-wiseSkin
+                    transition-all bg-wisOffWhite p-7 border border-wiseGrey4
                 `}>
-                <form onSubmit={newUserHandler} className='grid grid-cols-7 gap-10 text-wiseOffWhite'>
+                <form onSubmit={newUserHandler} className='grid grid-cols-7 gap-10 text-wiseGrey1'>
                     <div className='grid grid-cols-1 col-start-2 col-span-5 gap-2'>
                         <label htmlFor='firstName' className='admin-form-label'>First Name:</label>
                         <input
@@ -123,6 +124,8 @@ export function NewUserForm() {
                     <div className='grid grid-cols-1 col-start-2 col-span-5 gap-2'>
                         <label htmlFor='department' className='admin-form-label'>Department:</label>
                         <Select
+                            unstyled
+                            classNames={style1}
                             value={newFormData.departmentId}
                             options={departments}
                             onChange={(selectedOption) => handleExplicitChange('departmentId', selectedOption)} />
@@ -131,6 +134,8 @@ export function NewUserForm() {
                         <label htmlFor='role' className='admin-form-label'>Permission Level:</label>
                         <div className='text-wiseNavy'>
                             <Select
+                                unstyled
+                                classNames={style1}
                                 value={newFormData.role}
                                 options={roleOptions}
                                 onChange={(selectedOption) => handleExplicitChange('role', selectedOption)} />

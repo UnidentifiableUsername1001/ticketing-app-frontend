@@ -18,7 +18,7 @@ export function TicketTable({tickets}) {
     }
 
     return (
-        <div className='table p-3 border-l border-gray-400/25'>
+        <div className='table border-gray-400/25'>
             <table 
                 className='w-full text-left border-collapse'> 
                 <thead className=''>

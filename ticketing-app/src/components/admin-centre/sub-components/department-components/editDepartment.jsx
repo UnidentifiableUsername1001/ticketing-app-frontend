@@ -7,6 +7,7 @@ import { AddTicketType } from './addTicketType';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleUp, faChevronDown, faPenToSquare, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { EditTicketType } from './EditTicketType';
+import { style1 } from '../../../../hooks/assorted/react-select-styles';
 
 export function EditDepartment() {
 
@@ -104,13 +105,14 @@ export function EditDepartment() {
             </button>
             <div className={` 
                     ${showForm ? 'block opacity-100' : 'hidden opacity-0'}
-                    transition-all bg-wiseNavy shadow-wiseSkin shadow-sm p-7 rounded-md outline-1 outline-wiseSkin
+                    transition-all bg-wiseOffWhite p-7 border border-wiseGrey4
                 `}>
-                <form onSubmit={submitHandler} className='grid grid-cols-7 gap-10 text-wiseOffWhite'>
+                <form onSubmit={submitHandler} className='grid grid-cols-7 gap-10 text-wiseGrey1'>
                     <div className='grid grid-cols-1 col-start-2 col-span-5 gap-2'>
                         <label className='admin-form-label' htmlFor='selectUser'>Select a department:</label>
                         <Select
-                            className='text-wiseNavy'
+                            unstyled
+                            classNames={style1}
                             value={targetDeptId}
                             options={departments}
                             onChange={(selectedOption) => setTargetDeptId(selectedOption)} />
@@ -118,7 +120,7 @@ export function EditDepartment() {
                     {formData && Object.keys(formData).length !== 0 ? (
                         <>
                             <div className='grid grid-cols-1 col-start-2 col-span-5 gap-2'>
-                                <label htmlFor='name' className='admin-form-label'>Department Name - <span className='text-wiseDarkPink'>Current: {formData ? formData.name : ""}</span></label>
+                                <label htmlFor='name' className='admin-form-label'>Department Name - <span className='text-wiseRose3'>Current: <span className='text-wiseRose1'>{formData ? formData.name : ""}</span></span></label>
                                 <input
                                     className='admin-form-control'
                                     type='text'
@@ -149,14 +151,14 @@ export function EditDepartment() {
                                             <>
                                                 <div key={index} className='grid grid-cols-1 gap-2'>
                                                     <p 
-                                                    className='bg-wiseOffWhite/10 p-1 rounded-sm w-2/4 flex flex-row'>
-                                                        <span className='text-wiseDarkPink'>#{index + 1}</span> - {ticket.typeName}
+                                                    className='bg-wiseNavy2 p-1 rounded-sm w-2/4 flex flex-row'>
+                                                        <span className='text-wiseDarkPink'>#{index + 1}</span><span className='ml-3 text-wiseGrey5'> {ticket.typeName}</span>
                                                         <span className='ml-auto'>
                                                             <button type='button' onClick={() => {
                                                                 setShowEditTicket(showEditTicket === index ? null : index)
                                                                 setTicketToEdit(ticket);
                                                             }}
-                                                                className=' text-wiseOffWhite font-lato font-bold cursor-pointer transition delay-75 duration-200 hover:scale-105 hover:text-wiseSkin'>
+                                                                className=' text-wiseOffWhite mx-1 font-lato font-bold cursor-pointer transition delay-75 duration-200 hover:scale-105 hover:text-wiseSkin'>
                                                                 <FontAwesomeIcon icon={faPenToSquare}/>
                                                             </button>
                                                             <button type='button' onClick={() => deleteTicketType(index)}

@@ -6,6 +6,7 @@ import Select from 'react-select';
 import { useGetOneUser } from '../../../../hooks/user-fetch-hooks/useGetOneUser'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { style1 } from '../../../../hooks/assorted/react-select-styles';
 
 export function UpdateUserForm(){
 
@@ -54,7 +55,7 @@ export function UpdateUserForm(){
     const [showForm, setShowForm] = useState(false);
 
     return (
-        <div className='top-div grid grid-cols-1 gap-10 font-lato'>
+        <div className='top-div grid grid-cols-1 gap-5 font-lato'>
             <button type='button' className='form-dropDown-button' onClick={() => setShowForm(!showForm)}>
                 <div className='width-full flex flex-row justify-between relative z-10'>
                     <span className=''>Edit Existing User</span>
@@ -68,19 +69,20 @@ export function UpdateUserForm(){
             </button>
             <div className={` 
                     ${showForm ? 'block opacity-100' : 'hidden opacity-0'}
-                    transition-all bg-wiseNavy shadow-wiseSkin shadow-sm p-7 rounded-md outline-1 outline-wiseSkin
+                    transition-all bg-wiseOffWhite shadow-wiseSkin p-7 border border-wiseGrey4
                 `}>
-                <form onSubmit={updateUserHandler} className='grid grid-cols-7 gap-10 text-wiseOffWhite'>
+                <form onSubmit={updateUserHandler} className='grid grid-cols-7 gap-10 text-wiseGrey1'>
                     <div className='grid grid-cols-1 col-start-2 col-span-5 gap-2'>
                         <label className='admin-form-label' htmlFor='selectUser'>Select a user:</label>
                         <Select
-                            className='text-wiseNavy'
+                            unstyled
+                            classNames={style1}
                             value={targetUserId}
                             options={allUsers}
                             onChange={(selectedOption) => setTargetUserId(selectedOption)} />
                     </div>
                     <div className='grid grid-cols-1 col-start-2 col-span-5 gap-2'>
-                        <label className='admin-form-label' htmlFor='firstName'>First Name - <span className='text-wiseDarkPink'>Current: {user ? user.firstName : ""}</span></label>
+                        <label className='admin-form-label' htmlFor='firstName'>First Name - <span className='text-wiseRose3'>Current: <span className='text-wiseRose1'>{user ? user.firstName : ""}</span></span></label>
                         <input
                             className='admin-form-control'
                             type='text'
@@ -90,7 +92,7 @@ export function UpdateUserForm(){
                         />
                     </div>
                     <div className='grid grid-cols-1 col-start-2 col-span-5 gap-2'>
-                        <label className='admin-form-label' htmlFor='lastName'>Last Name - <span className='text-wiseDarkPink'>Current: {user ? user.lastName : ""}</span></label>
+                        <label className='admin-form-label' htmlFor='lastName'>Last Name - <span className='text-wiseRose3'>Current: <span className='text-wiseRose1'>{user ? user.lastName : ""}</span></span></label>
                         <input
                             className='admin-form-control'
                             type='text'
@@ -100,7 +102,7 @@ export function UpdateUserForm(){
                         />
                     </div>
                     <div className='grid grid-cols-1 col-start-2 col-span-5 gap-2'>
-                        <label className='admin-form-label' htmlFor='jobTitle'>Job title - <span className='text-wiseDarkPink'>Current: {user ? user.jobTitle : ""}</span></label>
+                        <label className='admin-form-label' htmlFor='jobTitle'>Job title - <span className='text-wiseRose3'>Current: <span className='text-wiseRose1'>{user ? user.jobTitle : ""}</span></span></label>
                         <input
                             className='admin-form-control'
                             type='text'
@@ -110,7 +112,7 @@ export function UpdateUserForm(){
                         />
                     </div>
                     <div className='grid grid-cols-1 col-start-2 col-span-5 gap-2'>
-                        <label className='admin-form-label' htmlFor='email'>Email - <span className='text-wiseDarkPink'>Current: {user ? user.email : ""}</span></label>
+                        <label className='admin-form-label' htmlFor='email'>Email - <span className='text-wiseRose3'>Current: <span className='text-wiseRose1'>{user ? user.email : ""}</span></span></label>
                         <input
                             className='admin-form-control'
                             type='text'
@@ -132,16 +134,18 @@ export function UpdateUserForm(){
                      <div className='grid grid-cols-1 col-start-2 col-span-5 gap-2'>
                         <label className='admin-form-label' htmlFor='department'>Department:</label>
                         <Select
-                            className='text-wiseNavy'
+                            unstyled
+                            classNames={style1}
                             value={updateFormData.departmentId}
                             options={departments}
                             onChange={(selectedOption) => handleExplicitChange('departmentId', selectedOption)} />
                     </div>
                     <div className='grid grid-cols-1 col-start-2 col-span-5 gap-2'>
-                        <label className='admin-form-label' htmlFor='role'>Permission Level - <span className='text-wiseDarkPink'>Current: {user ? user.role : ""}</span></label>
+                        <label className='admin-form-label' htmlFor='role'>Permission Level - <span className='text-wiseRose3'>Current: <span className='text-wiseRose1'>{user ? user.role : ""}</span></span></label>
                         <div>
                             <Select
-                                className='text-wiseNavy'
+                                unstyled
+                                classNames={style1}
                                 value={updateFormData.role}
                                 options={roleOptions}
                                 onChange={(selectedOption) => handleExplicitChange('role', selectedOption)} />

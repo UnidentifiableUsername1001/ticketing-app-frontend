@@ -79,7 +79,7 @@ function RenderFields ({field, updateHandlerNormal, formData, updateHandlerCusto
 
     const textarea = () => {
         return (
-            <div className=" text-bgMain border border-wiseSkin/40 bg-wiseOffWhite rounded-md p-4 focus-within:ring-2 focus-within:ring-wiseSkin">
+            <div className=" text-wiseGrey1 bg-wiseOffWhite rounded-md">
                 <RichTextEditor
                     formStateFunc={formStateFunc}
                     form={formData}

@@ -10,6 +10,7 @@ import { RenderFields } from "./sub-components/RenderFields";
 import { useSearchParams } from "react-router";
 import { useUploadAttachment } from "../../hooks/ticket-fetch/useUploadAttachment";
 import { ToastContext } from "../../context/toast-notification/ToastContext";
+import { style1 } from "../../hooks/assorted/react-select-styles";
 
 function CreateTicket() {
 
@@ -173,17 +174,22 @@ function CreateTicket() {
             console.log(e);
             addToast({msg: `Error uploading: ${e}`, type: 'error'});
         }
-    };    
+    };
+
+    const makeUpperCase = (string) => {
+        return string.replace(string[0], string[0].toUpperCase());   
+    }
 
 
     return (
-        <div className='min-h-screen bg-wisePaleGrey pt-30'>
-            <div className={`transition-all w-5/9 bg-wiseOffWhite shadow-wiseSkin shadow-sm p-7 outline-1 outline-bgMain/20 mx-auto`}>
+        <div className='min-h-screen bg-wisePaleGrey pt-15'>
+            <div className={`transition-all w-5/9 bg-wiseOffWhite p-7 border-2 border-wiseGrey4 mx-auto`}>
                 <form onSubmit={handleSubmit} className='grid grid-cols-7 gap-15 text-bgMain'>
                     <div className='grid grid-cols-1 col-start-2 col-span-5 gap-2'>
                         <label className='admin-form-label' htmlFor='selectDepartment'>Select a department:</label>
                         <Select
-                            className='text-wiseNavy'
+                            unstyled
+                            classNames={style1}
                             value={selectedDept}
                             options={allDepartments}
                             onChange={(selectedOption) => {
@@ -195,17 +201,25 @@ function CreateTicket() {
                             <div className='grid grid-cols-1 col-start-2 col-span-5 gap-2'>
                                 <label className='admin-form-label' htmlFor='ticketType'>What type of ticket are you raising?</label>
                                 <Select 
-                                    className="text-wiseNavy"
+                                    unstyled
                                     value={tickTypeToRender}
                                     options={selectedDeptTickets}
-                                    onChange={(selectedOption) => {prepRenderFormState(selectedOption);}} />
+                                    onChange={(selectedOption) => {prepRenderFormState(selectedOption);}}
+                                    classNames={style1} />
                             </div>
                             {tickTypeToRender && Object.keys(tickTypeToRender).length !== 0 ? (
                                 <div className='grid grid-cols-1 col-start-2 col-span-5 gap-15'>
                                     {tickTypeToRender.value.fields.map((field, index) => (
                                         <>
                                             <div key={index} className="grid grid-cols-1 gap-3">
-                                                <label htmlFor={field.name} className="admin-form-label">{field.name}</label>
+                                                <label 
+                                                    htmlFor={field.name} 
+                                                    className="admin-form-label">
+                                                        {field.name == 'file_upload' 
+                                                            ? 'File Upload' 
+                                                            : 
+                                                            makeUpperCase(field.name)}
+                                                </label>
                                                 <RenderFields
                                                     formData={formData}
                                                     formStateFunc={setBodyText}

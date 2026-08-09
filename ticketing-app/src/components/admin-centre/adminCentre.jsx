@@ -25,7 +25,7 @@ export default function AdminCentre() {
     };
 
     return (
-        <div className="bg-wiseOffWhite min-h-screen flex flex-col">
+        <div className="bg-wiseNavy5 min-h-screen flex flex-col">
             <div className="flex flex-row flex-1 justify-center relative">
                 <div className="fixed left-0 min-h-full pt-15">
                     <ul className="p-2 sticky grid gap-10 rounded-2xl">
@@ -35,8 +35,8 @@ export default function AdminCentre() {
                                 duration-150 hover:scale-110"
                             />
                             <span 
-                                className="absolute left-full ml-3 whitespace-nowrap bg-wiseOffWhite 
-                                text-wiseOffWhite group-hover:rounded-l-xl group-hover:rounded-r-sm text-sm group-hover:shadow-lg group-hover:p-1 group-hover:z-50
+                                className="absolute left-full ml-3 whitespace-nowrap bg-wiseNavy5 
+                                text-wiseNavy5 group-hover:rounded-l-xl group-hover:rounded-r-sm text-sm group-hover:shadow-lg group-hover:p-1 group-hover:z-50
                                 transition-all delay-150 duration-150 group-hover:bg-wiseNavy group-hover:text-wiseOffWhite">
                                 User Configuration
                             </span>
@@ -45,8 +45,8 @@ export default function AdminCentre() {
                             <FontAwesomeIcon icon={faCubesStacked} className="text-3xl text-wiseNavy transition delay-150
                                 duration-150 hover:scale-110"/>
                             <span 
-                                className="absolute left-full ml-3 whitespace-nowrap bg-wiseOffWhite 
-                                text-wiseOffWhite group-hover:rounded-l-xl group-hover:rounded-r-sm text-sm group-hover:shadow-lg group-hover:p-1 group-hover:z-50
+                                className="absolute left-full ml-3 whitespace-nowrap bg-wiseNavy5 
+                                text-wiseNavy5 group-hover:rounded-l-xl group-hover:rounded-r-sm text-sm group-hover:shadow-lg group-hover:p-1 group-hover:z-50
                                 transition-all delay-150 duration-150 group-hover:bg-wiseNavy group-hover:text-wiseOffWhite">
                                 Department Configuration
                             </span>
@@ -55,16 +55,16 @@ export default function AdminCentre() {
                             <FontAwesomeIcon icon={faGlobe} className="text-3xl text-wiseNavy transition delay-150
                                 duration-150 hover:scale-110"/>
                             <span 
-                                className="absolute left-full ml-3 whitespace-nowrap bg-wiseOffWhite 
-                                text-wiseOffWhite group-hover:rounded-l-xl group-hover:rounded-r-sm text-sm group-hover:shadow-lg group-hover:p-1 group-hover:z-50
+                                className="absolute left-full ml-3 whitespace-nowrap bg-wiseNavy5 
+                                text-wiseNavy5 group-hover:rounded-l-xl group-hover:rounded-r-sm text-sm group-hover:shadow-lg group-hover:p-1 group-hover:z-50
                                 transition-all delay-150 duration-150 group-hover:bg-wiseNavy group-hover:text-wiseOffWhite">
                                 Global Configuration
                             </span>
                         </li>
                     </ul>
                 </div>
-                <div className="w-4/9 p-15 shadow-2xl mt-10">
-                    <div className="mb-10 p-3 text-center font-lato text-wiseOffWhite text-2xl font-semibold bg-wiseSkin">
+                <div className="w-5/9 p-15 mt-10 bg-wiseOffWhite border border-wiseGrey4">
+                    <div className="mb-10 w-3/5 place-self-center p-3 text-center font-lato text-wiseGrey5 text-2xl font-medium bg-wiseNavy2">
                         <h1>{activeTab + ' ' + 'Configuration'}</h1>
                     </div>
                     {renderActiveTab()}

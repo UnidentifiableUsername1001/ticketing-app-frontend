@@ -24,12 +24,12 @@ function Dashboard() {
     const ticketsForTable = activeView === 'team' ? departmentTickets : ticketsFromQuery.results;
 
     return (
-        <div className='bg-wiseOffWhite min-h-screen'>
+        <div className='bg- min-h-screen'>
             <div className='grid grid-cols-14'>
-                <div className='grid col-start-1 col-span-3'>
+                <div className='grid border-r border-wiseGrey4 col-start-1 col-span-3'>
                     <div className='flex flex-col'>
                         <div className=''>
-                            <h1 className='font-lato font-extrabold border-b border-gray-400/25 text-center text-2xl py-3'>Views</h1>
+                            <h1 className='font-lato font-extrabold border-b border-wiseGrey4 text-center text-2xl py-3'>Views</h1>
                         </div>
                         <div className='mt-10 grid gap-6'>
                             <div className='flex flex-row'>
@@ -41,23 +41,46 @@ function Dashboard() {
                                     {ticketCounts?.team?.[0]?.ticketCount ?? 0}
                                 </p>
                             </div>
+
                             <div className='flex flex-row'>
-                                <h2 onClick={() =>  setSearchParams({ view: 'assigned', assignedTo: decodedJwt.user.id, status: ['Open', 'In progress'] })} className='dashboard-view-link'>My assigned tickets</h2>
-                                <p className='text-sm text-wiseOffWhite bg-wiseDarkPink px-2 py-0.5 rounded-full'>
-                                    {ticketCounts?.assigned?.[0]?.ticketCount ?? 0}
+                                <h2 
+                                    onClick={() => 
+                                        setSearchParams({ 
+                                                view: 'assigned', 
+                                                assignedTo: decodedJwt.user.id, 
+                                                status: ['Open', 'In progress'] 
+                                            })} 
+                                    className='dashboard-view-link'>
+                                        My assigned tickets
+                                </h2>
+                                <p 
+                                    className={`${ticketCounts?.assigned?.[0]?.ticketCount 
+                                            ? 'text-sm text-wiseOffWhite bg-wiseDarkPink px-2 py-0.5 rounded-full'
+                                            : ''}`
+                                        }>
+                                    {ticketCounts?.assigned?.[0]?.ticketCount ?? ''}
                                 </p>
                             </div>
+
                             <div className='flex flex-row'>
                                 <h2 onClick={() => setSearchParams({ view: 'raisedByUser', createdBy: decodedJwt.user.id, status: ['Open', 'In progress'] })
                                  } className='dashboard-view-link'>Tickets raised by me</h2>
-                                <p className='text-sm text-wiseOffWhite bg-wiseDarkPink px-2 py-0.5 rounded-full'>
+                                <p 
+                                    className={`${ticketCounts?.raisedByUser?.[0]?.ticketCount
+                                            ? 'text-sm text-wiseOffWhite bg-wiseDarkPink px-2 py-0.5 rounded-full'
+                                            : ''}`
+                                        }>
                                     {ticketCounts?.raisedByUser?.[0]?.ticketCount ?? 0}
                                 </p>
                             </div>
                             <div className='flex flex-row'>
                                 <h2 onClick={() =>  setSearchParams({ view: 'closed', status: 'Closed' })} className='dashboard-view-link'>Closed tickets</h2>
-                                <p className='text-sm text-wiseOffWhite bg-wiseDarkPink px-2 py-0.5 rounded-full'>
-                                    {ticketCounts?.closed?.[0]?.ticketCount ?? 0}
+                                <p 
+                                    className={`${ticketCounts?.closed?.[0]?.ticketCount
+                                            ? 'text-sm text-wiseOffWhite bg-wiseDarkPink px-2 py-0.5 rounded-full'
+                                            : ''}`
+                                        }>
+                                    {ticketCounts?.closed?.[0]?.ticketCount ?? ''}
                                 </p>
                             </div>
                         </div>
@@ -65,7 +88,7 @@ function Dashboard() {
                 </div>
                 <div className='grid col-start-4 col-span-10'>
                     <div className=''>
-                        <h1 className='font-lato font-extrabold border-b border-gray-400/25 text-center text-2xl py-3'>All Tickets</h1>
+                        <h1 className='font-lato font-extrabold border-b border-wiseGrey4 text-center text-2xl py-3'>All Tickets</h1>
                     </div>
                     <>
                         <TicketTable

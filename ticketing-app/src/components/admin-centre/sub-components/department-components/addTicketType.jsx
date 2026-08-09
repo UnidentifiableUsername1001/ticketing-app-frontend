@@ -3,6 +3,7 @@ import Select from 'react-select';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSquareCheck, faSquarePlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { expectedTypeMapping, dataSources } from '../../../../hooks/assorted/ticketConstants';
+import { style1 } from '../../../../hooks/assorted/react-select-styles';
 
 export function AddTicketType ({appendTypeFunc, showTicketTypeForm}) {
 
@@ -71,7 +72,7 @@ export function AddTicketType ({appendTypeFunc, showTicketTypeForm}) {
 
     return (
         <div>
-            <div className='grid grid-cols-1 gap-2 mb-10'>
+            <div className='grid grid-cols-1 gap-2 mb-15'>
                 <label htmlFor='typeName' className='admin-form-label'>Ticket Type Name:</label>
                 <input
                     className='admin-form-control'
@@ -86,9 +87,9 @@ export function AddTicketType ({appendTypeFunc, showTicketTypeForm}) {
                 <>
                 <div key={index} className='grid grid-cols-1 gap-12'>
                     <h1 
-                        className='font-bold text-xl text-wiseOffWhite text-center
-                        justify-self-center w-1/2 mt-5 bg-linear-to-b from-wiseNavy to-bgMain/50
-                        border-b border-wiseOffWhite'>
+                        className='font-bold text-2xl text-wiseGrey1 text-center
+                        justify-self-center w-1/4 -mb-10
+                        border-b border-wiseGrey1'>
                         Field {index + 1}
                     </h1>
                     <div className='grid grid-cols-1 gap-2'>
@@ -104,7 +105,8 @@ export function AddTicketType ({appendTypeFunc, showTicketTypeForm}) {
                     <div className='grid grid-cols-1 gap-2'>
                         <label className='admin-form-label' htmlFor={field.expectedType}>Expected Data Type:</label>
                         <Select
-                            className='text-wiseNavy'
+                            unstyled
+                            classNames={style1}
                             value={expectedTypeMapping.find(option => option.value === field.expectedType) || null}
                             options={expectedTypeMapping}
                             onChange={(selectedOption) => handleFieldChange(index, 'expectedType', selectedOption ? selectedOption.value : '')} />
@@ -112,12 +114,13 @@ export function AddTicketType ({appendTypeFunc, showTicketTypeForm}) {
                     <div className='grid grid-cols-1 gap-2'>
                         <label className='admin-form-label' htmlFor={field.dataSource}>Data Source:</label>
                         <Select
-                            className='text-wiseNavy'
+                            unstyled
+                            classNames={style1}
                             value={dataSources.find(option => option.value === field.dataSource) || null}
                             options={dataSources}
                             onChange={(selectedOption) => handleFieldChange(index, 'dataSource', selectedOption ? selectedOption.value : '')} />
                     </div>
-                    <div className='grid grid-cols-1 gap-2 border-b border-wiseSkin'>
+                    <div className='grid grid-cols-1 gap-2'>
                         <label className='admin-form-label' htmlFor={field.required}>Required:</label>
                         <div className='grid grid-cols-5 '>
                             <div className=''>

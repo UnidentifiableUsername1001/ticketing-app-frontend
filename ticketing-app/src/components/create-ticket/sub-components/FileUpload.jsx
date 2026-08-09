@@ -74,10 +74,15 @@ export function FileUpload ({fieldName, formData, formStateFunc}) {
     return (
         <>
             <label htmlFor='file-upload' 
-                className='cursor-pointer p-1 border border-dashed border-bgMain/20
-                text-center font-lato rounded-sm 
-                transition hover:border-bgMain
-                w-1/5'>
+                className='
+                    cursor-pointer p-1 
+                    h- border 
+                    bg-wiseGrey4/45 
+                    border-dashed border-bgMain/20
+                    text-center font-lato rounded-sm 
+                    transition hover:border-bgMain
+                    hover:bg-wiseGrey4 w-1/5'
+            >
                     Choose a File <span><FontAwesomeIcon icon={faArrowUpFromBracket}/></span>
             </label>
             <input

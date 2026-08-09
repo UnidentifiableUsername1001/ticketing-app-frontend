@@ -50,10 +50,7 @@
 
       text-bgMain 
       font-bold 
-      text-xl
-
-      border-b 
-      border-wisePaleGrey
+      text-lg
 
       before:transition-all
       before:delay-75
@@ -70,10 +67,10 @@
       transition 
       delay-75 
       duration-300
-      ease-in-out 
-      hover:border-bgMain 
+      ease-in-out
+      hover:border-b 
+      hover:border-wiseGrey4 
       hover:before:opacity-100
-      hover:scale-105
   }
 
   .nav-item {
@@ -136,19 +133,18 @@
 
   .admin-form-control {
     @apply
+      bg-wiseNavy4/15
       border-b
       border-wiseSkin
       outline-none
-      p-1
-      rounded-t-sm
+      p-1.5
       transition
       duration-150
       ease-in-out
-      hover:scale-102
-      hover:bg-wiseSkin/20
-      focus:scale-102
-      focus:bg-wiseOffWhite
-      focus:text-bgMain
+      hover:bg-wiseSkin/35
+      focus:scale-101
+      focus:bg-wiseSkin/50
+      focus:text-wiseGrey1
   }
 
   .admin-form-button {
