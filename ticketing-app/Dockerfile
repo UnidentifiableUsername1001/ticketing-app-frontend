@@ -1,6 +1,6 @@
 FROM node:24-slim AS build
 
-ARG VITE_BACKEND_URL="https://wisetickets.co.uk"
+ARG VITE_BACKEND_URL="https://api.wisetickets.co.uk"
 
 ENV VITE_BACKEND_URL=${VITE_BACKEND_URL}
 
