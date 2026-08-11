@@ -8,7 +8,7 @@ import RegisterPage from './components/user-auth/registerPage';
 import LoginPage from './components/user-auth/loginPage';
 import ProtectedRoute from './components/user-auth/ProtectedRoute';
 import Dashboard from './components/dashboard/dashboard';
-import CreateTicket from './components/create-ticket/CreateTicket';
+import CreateTicket from './components/create-ticket/createTicket';
 import DetailView from './components/ticket-view/detailVIew';
 import Navbar from './components/navbar/navbar';
 import Homepage from './components/homepage/homepage';
