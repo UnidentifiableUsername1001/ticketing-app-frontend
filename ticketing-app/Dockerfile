@@ -12,7 +12,7 @@ RUN npm ci
 
 COPY . .
 
-RUN npm run build
+RUN VITE_BACKEND_URL=${VITE_BACKEND_URL} npm run build
 
 FROM nginx:alpine AS production
 
