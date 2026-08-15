@@ -21,7 +21,6 @@ export function useGetAllTickets() {
                         
                     if (!response.ok) {
                         throw new Error(`HTTP error: Status ${response.status}, ${response.message}`);
-                        return;
                     };
                     const data = await response.json();
                     setTickets(data.ticketArray);

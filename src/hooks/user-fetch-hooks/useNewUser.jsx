@@ -17,13 +17,10 @@ export default function useNewUser(formData, setFormData) {
                 switch(sanitised) {
                     case "":
                         return false
-                        break;
                     case null:
                         return false
-                        break
                     case false:
                         return true
-                        break;
                     default:
                         return true
                 };

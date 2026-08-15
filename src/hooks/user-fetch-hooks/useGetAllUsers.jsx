@@ -19,7 +19,6 @@ function useAssignableUsers() {
 
             if (!response.ok) {
                 throw new Error(`HTTP error: Status ${response.status}, ${response.message}`);
-                return;
             };
             const data = await response.json();
             const mappedArray = data.userArray.map(({_id, firstName, lastName}) => ({

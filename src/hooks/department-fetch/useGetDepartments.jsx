@@ -20,7 +20,6 @@ export default function useGetDepartments() {
 
                 if(!response.ok) {
                     throw new Error(`HTTP error: ${response.status}, ${response.message}`);
-                    return;
                 }
 
                 const data = await response.json();

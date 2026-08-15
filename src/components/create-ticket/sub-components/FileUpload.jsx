@@ -67,8 +67,6 @@ export function FileUpload ({fieldName, formData, formStateFunc}) {
             default:
                 return src = '/images/Generic_File.jpg' 
         };
-
-        return src;
     }
 
     return (
