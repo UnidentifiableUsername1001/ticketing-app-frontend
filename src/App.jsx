@@ -1,5 +1,5 @@
 // Default
-import { useState } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 
@@ -19,7 +19,7 @@ import { ToastProvider } from './context/toast-notification/ToastContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faComments, faCircleUser, faBell, faHouse, faPenToSquare, faSquarePlus, faTrashCan, faUser, faIdBadge} from '@fortawesome/free-regular-svg-icons';
-import { faGear, faTrash, faCubesStacked, faArrowUpFromBracket, faGlobe, faShield, faBuilding, faChevronDown, faCheck, faAngleUp, faChalkboardUser, faArrowRightFromBracket, faSquareCheck, faDeleteLeft, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faGear, faTrash, faCubesStacked, faArrowUpFromBracket, faGlobe, faShield, faBuilding, faChevronDown, faAngleUp, faChalkboardUser, faArrowRightFromBracket, faSquareCheck, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { ToastContainer } from './context/toast-notification/ToastContainer';
 
 

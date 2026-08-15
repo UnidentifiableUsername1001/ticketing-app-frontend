@@ -1,6 +1,4 @@
 import React, {useState} from "react";
-import { useAppContext } from "../../context/authContext";
-import { useNavigate } from "react-router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleUser } from "@fortawesome/free-regular-svg-icons";
 import UserAmmend  from './sub-components/user-components/UserAmmend';
@@ -8,19 +6,15 @@ import { DepartmentAmend } from "./sub-components/department-components/Departme
 import { faCubesStacked, faGlobe } from "@fortawesome/free-solid-svg-icons";
 
 export default function AdminCentre() {
-    const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState('User');
     const renderActiveTab = () => {
         switch (activeTab){
             case 'User':
                 return <UserAmmend/>
-                break;
             case 'Department':
                 return <DepartmentAmend/>
-                break;
             case 'Global':
                 return <GlobalSettings/>
-                break;
         };
     };
 

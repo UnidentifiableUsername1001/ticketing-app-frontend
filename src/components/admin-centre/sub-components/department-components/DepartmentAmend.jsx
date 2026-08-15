@@ -1,5 +1,4 @@
 import React from 'react'
-import { useAppContext } from "../../../../context/authContext";
 import { CreateDepartment } from './createDepartment';
 import { EditDepartment } from './editDepartment';
 
