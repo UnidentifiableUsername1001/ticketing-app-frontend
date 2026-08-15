@@ -17,15 +17,18 @@ export function EditDepartment() {
     const [targetDeptId, setTargetDeptId] = useState(null);
     
     const [showForm, setShowForm] = useState(false);
-    const targetDepartment = useGetOneDepartment(targetDeptId);
+    const targetDepartment = useGetOneDepartment();
 
-    useEffect(() => {
-        if (targetDepartment && Object.keys(targetDepartment).length !== 0) {
-            setFormData({...targetDepartment});
+    const handleSetTargDept = async (option) => {
+
+        setTargetDeptId(option);
+
+        const deptData = await targetDepartment(option);
+
+        if (deptData && Object.keys(deptData).length !== 0) {
+            setFormData({...deptData});
         }
-
-    }, [targetDepartment])
-
+    }; 
     
     const submitHandler = useEditDepartment(formData, setFormData, targetDeptId);
 
@@ -115,7 +118,7 @@ export function EditDepartment() {
                             classNames={style1}
                             value={targetDeptId}
                             options={departments}
-                            onChange={(selectedOption) => setTargetDeptId(selectedOption)} />
+                            onChange={(selectedOption) => handleSetTargDept(selectedOption) } />
                     </div>
                     {formData && Object.keys(formData).length !== 0 ? (
                         <>

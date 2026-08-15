@@ -1,44 +1,41 @@
 import React, { useState, useEffect } from 'react';
 import { config } from '../../../config';
 
-export function useGetOneDepartment(deptId) {
+export function useGetOneDepartment() {
 
-    const destructDeptId = deptId && typeof deptId === 'object' ? deptId.value : deptId;
+    const getOneDept = async (deptId) => {
+        try {
+            const destructDeptId = deptId && typeof deptId === 'object' ? deptId.value : deptId;
+            
+            const url = `${config.backendUrl}/api/department/${destructDeptId}`;
+            const jwtInStore = sessionStorage.getItem('auth-token');
 
-    const [targetDept, setTargetDept] = useState({});
-    const url = `${config.backendUrl}/api/department/${destructDeptId}`;
-    const jwtInStore = sessionStorage.getItem('auth-token');
-
-    useEffect(() => {
-
-        if (destructDeptId === null || Object.keys(destructDeptId).length === 0 || destructDeptId === undefined) return;
-
-        const getOneDept = async () => {
-            try {
-                const response = await fetch(url, {
-                    method: 'GET',
-                    headers: {
-                        Accept: 'application/JSON',
-                        'Content-Type':'application/JSON',
-                        Authorization: `Bearer ${jwtInStore}`
-                    }
-                });
-
-                if(!response.ok){
-                    throw new Error(`HTTP error ${response.status} ${response.message}`);
+            if (destructDeptId === null || Object.keys(destructDeptId).length === 0 || destructDeptId === undefined) return;
+            
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    Accept: 'application/JSON',
+                    'Content-Type':'application/JSON',
+                    Authorization: `Bearer ${jwtInStore}`
                 }
-                
-                const data = await response.json();
-                const departmentData = data.department;
+            });
 
-                setTargetDept(departmentData);
-            } catch(e) {
-                console.log(e);
+            if(!response.ok){
+                throw new Error(`HTTP error ${response.status} ${response.message}`);
             }
+            
+            const data = await response.json();
+            const departmentData = data.department;
+
+            return departmentData;
+
+
+        } catch(e) {
+            console.log(e);
         }
+    }
 
-        getOneDept();
-    }, [destructDeptId, url, jwtInStore]);
+    return getOneDept;
 
-    return targetDept;
 }

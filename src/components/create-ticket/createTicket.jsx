@@ -38,17 +38,24 @@ function CreateTicket() {
     const [tickTypeToRender, setTickTypeToRender] = useState({})
 
     // I need to remember to set-up a conditional check of this variable when coding return as React will crash on-load as is
-    const [selectedDept, setSelectedDept] = useState(null)
+    const [selectedDept, setSelectedDept] = useState(null);
+    const [fetchedDept, setFetchedDept] = useState(null)
     const [selectedDeptTickets, setSelectedDeptTickets] = useState(null)
 
     const allDepartments = useGetDepartments();
-    const selectedDepartment = useGetOneDepartment(selectedDept);
+    const selectedDepartment = useGetOneDepartment();
     const assignableUsers = useAssignableUsers();
 
     // To make ticketTypes parsable by react-select
-    const mappedTypesArray = () => {
+    const mappedTypesArray = async (option) => {
 
-        const ticketTypes = selectedDepartment.ticketTypes;
+        setSelectedDept(option);
+
+        const deptData = await selectedDepartment(option);
+
+        setFetchedDept(deptData);
+
+        const ticketTypes = deptData.ticketTypes;
 
         if(ticketTypes && ticketTypes.length !== 0) {
             const mappedArray = ticketTypes.map((type) => ({
@@ -72,10 +79,6 @@ function CreateTicket() {
         };
     };
 
-    useEffect(() =>{
-        mappedTypesArray();
-    }, [selectedDepartment])
-
     const prepRenderFormState = (ticketTypeObj) => {
 
         if (ticketTypeObj.value.typeName === 'General Enquiry') {
@@ -84,7 +87,7 @@ function CreateTicket() {
 
             setFormData({
                 ...formData,
-                departmentId: selectedDepartment._id,
+                departmentId: fetchedDept._id,
                 ticketType: ticketTypeObj.value.typeName
             })
 
@@ -104,7 +107,7 @@ function CreateTicket() {
 
         setFormData({
             ...formData,
-            departmentId: selectedDepartment._id,
+            departmentId: fetchedDept._id,
             ticketType: ticketTypeObj.value.typeName
         })
     }
@@ -192,11 +195,9 @@ function CreateTicket() {
                             classNames={style1}
                             value={selectedDept}
                             options={allDepartments}
-                            onChange={(selectedOption) => {
-                                setSelectedDept(selectedOption)
-                                }} />
+                            onChange={(selectedOption) => mappedTypesArray(selectedOption)} />
                     </div>
-                    {selectedDepartment && Object.keys(selectedDepartment).length !== 0 ? (
+                    {fetchedDept && Object.keys(fetchedDept).length !== 0 ? (
                         <>
                             <div className='grid grid-cols-1 col-start-2 col-span-5 gap-2'>
                                 <label className='admin-form-label' htmlFor='ticketType'>What type of ticket are you raising?</label>

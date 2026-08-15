@@ -12,7 +12,7 @@ function Homepage() {
     const token = sessionStorage.getItem('auth-token');
 
     if (!token) {
-        window.location.href = '/login';
+        navigate('/login');
         return null;
     }
     const decoded = jwtDecode(token);
