@@ -31,11 +31,10 @@
 
   .register-login-components {
     @apply h-screen 
-      bg-bgMain 
+      bg-wiseNavy3 
       flex 
       justify-center 
       items-center 
-      bg-[url('/assets/wise_people_grid_3.webp')] 
       bg-contain
       relative
   }

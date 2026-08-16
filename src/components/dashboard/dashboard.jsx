@@ -86,7 +86,7 @@ function Dashboard() {
                         </div>
                     </div>
                 </div>
-                <div className='grid col-start-4 col-span-10'>
+                <div className='grid col-start-4 col-span-11'>
                     <div className=''>
                         <h1 className='font-lato font-extrabold border-b border-wiseGrey4 text-center text-2xl py-3'>All Tickets</h1>
                     </div>

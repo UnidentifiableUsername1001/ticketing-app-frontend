@@ -16,10 +16,7 @@ function Navbar() {
 
     return (
         <nav className='bg-bgMain flex flex-row items-center p-3 justify-between'>
-            <div className=''>
-                <img className='h-6' src='/assets/wise_logo_primary.svg'></img>
-            </div>
-            <div className='flex w-full justify-center gap-12'>
+            <div className='flex w-full justify-center gap-12 -mr-10'>
                 {isAuthenticated ? (
                     <>
                         <NavLink to='/homepage' className="nav-item" title='Home Page'>

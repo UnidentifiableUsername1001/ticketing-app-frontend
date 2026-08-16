@@ -87,7 +87,7 @@ function CreateTicket() {
 
             setFormData({
                 ...formData,
-                departmentId: fetchedDept._id,
+                departmentId: fetchedDept?._id,
                 ticketType: ticketTypeObj.value.typeName
             })
 
@@ -107,7 +107,7 @@ function CreateTicket() {
 
         setFormData({
             ...formData,
-            departmentId: fetchedDept._id,
+            departmentId: fetchedDept?._id,
             ticketType: ticketTypeObj.value.typeName
         })
     }
