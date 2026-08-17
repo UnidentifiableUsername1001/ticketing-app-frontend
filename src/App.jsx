@@ -13,6 +13,7 @@ import DetailView from './components/ticket-view/detailVIew';
 import Navbar from './components/navbar/navbar';
 import Homepage from './components/homepage/homepage';
 import AdminCentre from './components/admin-centre/adminCentre';
+import { PasswordReset } from './components/user-auth/PasswordReset';
 import { ToastProvider } from './context/toast-notification/ToastContext';
 
 // Icons
@@ -60,6 +61,7 @@ function App() {
           <Routes>
             <Route path='/' element={<LoginPage />} />
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/password-reset" element={<PasswordReset/>}/>
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/homepage" element={
               <ProtectedRoute>
