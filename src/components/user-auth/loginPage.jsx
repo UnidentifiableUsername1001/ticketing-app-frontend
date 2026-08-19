@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router";
 import { useAppContext } from "../../context/authContext";
 import { jwtDecode } from "jwt-decode";
 import { useLogin } from "../../hooks/auth/useLogin";
+import { openEye, closedEye } from "../../hooks/assorted/react-icons";
 
 
 function LoginPage() {
@@ -18,6 +19,19 @@ function LoginPage() {
 
     const [showError, setShowError] = useState('');
 
+    const [inputType, setInputType] = useState('password');
+    const [icon, setIcon] = useState(openEye);
+
+    const handlePassToggle = () => {
+        if (inputType === 'password') {
+            setIcon(closedEye);
+            setInputType('text');
+        } else {
+            setIcon(openEye);
+            setInputType('password');
+        };
+    };
+
     const handleLogin = async (e) => {
         e.preventDefault();
         loginFunc(loginData);
@@ -25,31 +39,34 @@ function LoginPage() {
 
     return (
         <div className="register-login-components">
-        <div className="absolute inset-0 bg-linear-to-b from-bgMain/50 to-bgMain"></div>
-            <div className="p-12 -mt-64 relative">
-                <h2 className="text-center -mt-6 mb-3 font-wise text-wiseOffWhite text-3xl font-semibold">Login</h2>
-                <form onSubmit={handleLogin} className="bg-wiseOffWhite/10 backdrop-blur-sm rounded-sm flex flex-col p-8 gap-6 items-center">
-                    <div className="flex flex-col gap-2">
-                        <label htmlFor="email" className="form-label">Email</label>
+        <div className="absolute inset-0 bg-"></div>
+            <div className="p-12 -mt-128 relative w-125">
+                <h2 className="text-center -mt-6 mb-3 font-wise text-wiseGrey1 text-3xl font-medium">Login</h2>
+                <form onSubmit={handleLogin} className="bg-wiseOffWhite border border-wiseGrey4 flex flex-col p-8 py-15 gap-12 items-center">
+                    <div className="flex flex-col gap-2 w-8/10">
                         <input
                             id="email"
                             type="email"
-                            className="form-control"
+                            className="admin-form-control"
                             placeholder="Enter your email"
                             value={loginData.email}
                             onChange={(e) => setLoginData({...loginData, email: e.target.value})}
                         />
                     </div>
-                    <div className="flex flex-col gap-2">
-                        <label htmlFor="password" className="form-label">Password</label>
+                    <div className="flex gap-2 w-8/10">
                         <input
                             id="password"
-                            type="password"
-                            className="form-control"
+                            type={inputType}
+                            className="admin-form-control w-full"
                             placeholder="Enter your password"
                             value={loginData.password}
                             onChange={(e) => setLoginData({...loginData, password: e.target.value})}
                         />
+                        <span
+                            className="flex justify-around items-center cursor-pointer"
+                            onClick={handlePassToggle}>
+                            {icon}
+                        </span>
                     </div>
                     <div
                         onClick={() => navigate('/password-reset')}
@@ -70,12 +87,12 @@ function LoginPage() {
                         )}
 
                     </div>
-                    <div className="flex flex-row gap-6">    
+                    <div className="flex flex-row -mt-10">    
                         <button type="submit" 
                             className="cursor-pointer
-                                        p-2
+                                        py-1 px-4
                                         bg-wiseSkin
-                                        text-wiseOffWhite
+                                        text-wiseGrey2
                                         text-lg
                                         font-normal
                                         transition

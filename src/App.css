@@ -21,7 +21,6 @@
       border-b 
       border-wiseSkin 
       font-lato
-      rounded-sm
       hover:bg-wiseSkin/20
       hover:shadow-xl/50
       focus:shadow-xl/100
@@ -31,7 +30,7 @@
 
   .register-login-components {
     @apply h-screen 
-      bg-wiseNavy3 
+      bg-wiseNavy5 
       flex 
       justify-center 
       items-center 
@@ -142,7 +141,7 @@
       ease-in-out
       hover:bg-wiseSkin/35
       focus:scale-101
-      focus:bg-wiseSkin/50
+      focus:outline-wiseRose1
       focus:text-wiseGrey1
   }
 
