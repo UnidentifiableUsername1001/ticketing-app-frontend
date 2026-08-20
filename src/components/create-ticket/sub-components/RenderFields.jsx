@@ -2,7 +2,7 @@ import { RichTextEditor } from "../../tip-tap-text-editor/TipTap";
 import React from "react";
 import { FileUpload } from "./FileUpload";
 
-function RenderFields ({field, updateHandlerNormal, formData, updateHandlerCustom, formStateFunc}) {
+function RenderFields ({field, updateHandlerNormal, formData, updateHandlerCustom, bodyTextState, formStateFunc}) {
 
     const fieldName = field.name;
     const expectedType = field.expectedType;
@@ -81,7 +81,7 @@ function RenderFields ({field, updateHandlerNormal, formData, updateHandlerCusto
         return (
             <div className=" text-wiseGrey1 bg-wiseOffWhite rounded-md">
                 <RichTextEditor
-                    formStateFunc={formStateFunc}
+                    stateFunc={bodyTextState}
                     form={formData}
                 />
             </div>

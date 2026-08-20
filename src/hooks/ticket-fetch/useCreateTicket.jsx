@@ -33,9 +33,9 @@ export function useCreateTicket() {
 
         },
 
-        onSuccess: (result) => {
-
+        onSuccess: (result) => {  
             addToast({msg: `${result.message}`, type: 'success'});
+            navigate(`/ticket/${result.id}`)
         },
 
         onError: (error) => {

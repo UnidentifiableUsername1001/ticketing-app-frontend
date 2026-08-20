@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
-import { config } from "../../../config";
-import { useAppContext } from "../../context/authContext";
+import { useNavigate } from "react-router";
 import Select  from 'react-select';
 import { useCreateTicket } from "../../hooks/ticket-fetch/useCreateTicket";
 import useGetDepartments from '../../hooks/department-fetch/useGetDepartments';
@@ -44,7 +43,8 @@ function CreateTicket() {
 
     const allDepartments = useGetDepartments();
     const selectedDepartment = useGetOneDepartment();
-    const assignableUsers = useAssignableUsers();
+
+    const navigate = useNavigate();
 
     // To make ticketTypes parsable by react-select
     const mappedTypesArray = async (option) => {
@@ -223,7 +223,8 @@ function CreateTicket() {
                                                 </label>
                                                 <RenderFields
                                                     formData={formData}
-                                                    formStateFunc={setBodyText}
+                                                    formStateFunc={setFormData}
+                                                    bodyTextState={setBodyText}
                                                     field={field}
                                                     updateHandlerNormal={handleNormalChange}
                                                     updateHandlerCustom={handleCustAttrChange}
