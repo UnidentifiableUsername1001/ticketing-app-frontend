@@ -8,16 +8,18 @@ import { faHouse, faPenToSquare } from '@fortawesome/free-regular-svg-icons';
 function Navbar() {
     const navigate = useNavigate();
 
-    const isAuthenticated = useAppContext();
+    const { isLoggedIn, setIsLoggedIn } = useAppContext();
+
     const handleLogout = () => {
         sessionStorage.removeItem('auth-token');
+        setIsLoggedIn(false);
         navigate('/login');
     };
 
     return (
         <nav className='bg-bgMain flex flex-row items-center p-3 justify-between'>
             <div className='flex w-full justify-center gap-12 -mr-10'>
-                {isAuthenticated ? (
+                {isLoggedIn ? (
                     <>
                         <NavLink to='/homepage' className="nav-item" title='Home Page'>
                             <FontAwesomeIcon icon={faHouse}/>

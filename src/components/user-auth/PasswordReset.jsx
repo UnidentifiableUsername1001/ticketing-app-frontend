@@ -12,6 +12,8 @@ export function PasswordReset () {
         newPassword: '',
     });
 
+    const navigate = useNavigate();
+
     const [newPassComparator, setNewPassComparator] = useState('');
 
     const [error, setError] = useState(null);
@@ -57,10 +59,16 @@ export function PasswordReset () {
 
     return (
         <div className="register-login-components">
-        <div className="absolute inset-0 bg-wiseNavy5"></div>
-            <div className="p-12 -mt-64 relative w-125">
+            <div className="row-start-2 col-start-2 w-125">
                 <h2 className="text-center -mt-6 mb-3 font-wise text-wiseGrey1 text-3xl font-medium">Reset Password</h2>
                 <div className="bg-wiseOffWhite border border-wiseGrey4 flex flex-col p-8 py-15 gap-12 items-center">
+                    <div
+                        className="
+                            self-start ml-2.5 -mb-8 text-wiseRose3 
+                            cursor-pointer hover:text-wiseRose1 hover:underline"
+                        onClick={() => navigate('/login')}>
+                            {"<--- Login"}
+                    </div>
                     <div className="flex flex-col gap-2 w-8/10">
                         <input
                             id="email"

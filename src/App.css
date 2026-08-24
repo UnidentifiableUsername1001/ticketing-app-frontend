@@ -31,9 +31,9 @@
   .register-login-components {
     @apply h-screen 
       bg-wiseNavy5 
-      flex 
-      justify-center 
-      items-center 
+      grid grid-cols-3
+      grid-rows-7
+      place-content-center
       bg-contain
       relative
   }
