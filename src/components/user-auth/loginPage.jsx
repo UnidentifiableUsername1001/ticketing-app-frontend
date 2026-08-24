@@ -40,7 +40,7 @@ function LoginPage() {
     return (
         <div className="register-login-components">
         <div className="absolute inset-0 bg-"></div>
-            <div className="p-12 -mt-128 relative w-125">
+            <div className="p-12 -mt-64 relative w-125">
                 <h2 className="text-center -mt-6 mb-3 font-wise text-wiseGrey1 text-3xl font-medium">Login</h2>
                 <form onSubmit={handleLogin} className="bg-wiseOffWhite border border-wiseGrey4 flex flex-col p-8 py-15 gap-12 items-center">
                     <div className="flex flex-col gap-2 w-8/10">
