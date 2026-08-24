@@ -126,10 +126,10 @@ export function NewComment({mentionsStateFunc, urlParams}) {
                     </div>
                 </div>
             </div>
-            <div className='flex flex-col p-2 gap-8 outline-3 outline-wiseNavy5 outline-offset-4 overflow-auto max-h-128'>
+            <div className='flex flex-col p-2 gap-8 overflow-auto max-h-128'>
 
                 {comments?.results && comments.results.length !== 0 ? comments.results.map((comment, index) => (
-                    <div key={index} className='bg-wiseGrey5 border border-wiseNavy5 p-3 '>
+                    <div key={index} className='bg-wiseOffWhite border-l border-wiseGrey4 p-3 '>
                         {comment ? (<>
                             <div className=''>
                                 <span className='font-lato font-medium text-1xl border-b border-wiseGrey4'>

@@ -54,7 +54,7 @@ function DetailView() {
     return (
         <div className='min-h-screen bg-wiseNavy5 pt-32'>
             <div className='grid grid-cols-20'>
-                <div className='bg-wiseGrey5 col-span-8 col-start-4 col-end-13 p-8 border-l border-t border-b border-wiseGrey5 rounded-sm'>
+                <div className='bg-wiseOffWhite col-span-8 col-start-4 col-end-13 p-8 border-l border-t border-b border-wiseGrey4 rounded-sm'>
                     <div className='flex flex-col gap-8'>
                         <div className='flex flex-col gap-8'>
                             <h1 className='font-wise font-bold text-2xl'>{ticket?.title ? ticket.title : 'No title'}</h1>
@@ -70,7 +70,7 @@ function DetailView() {
                         </>
                     </div>    
                 </div>
-                <div className='sidebar relative col-span-5 col-start-13 p-8 border-r border-t border-b bg-wiseGrey5 border-wiseGrey5 rounded-br-sm rounded-tr-sm'>
+                <div className='sidebar relative col-span-5 col-start-13 p-8 border-r border-t border-b bg-wiseOffWhite border-wiseGrey4 rounded-br-sm rounded-tr-sm'>
                     <div className='flex flex-col gap-8'>
                         <div className='grid gap-3'>
                             <h3 className='font-lato font-semibold text-1xl'>Status</h3>

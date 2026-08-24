@@ -4,6 +4,7 @@ import {eye} from 'react-icons-kit/icomoon/eye';
 import {eyeBlocked} from 'react-icons-kit/icomoon/eyeBlocked';
 import {longArrowDown} from 'react-icons-kit/fa/longArrowDown'
 import {longArrowUp} from 'react-icons-kit/fa/longArrowUp'
+import {angleDoubleLeft} from 'react-icons-kit/fa/angleDoubleLeft'
 
 const PasswordIcon = 
     withBaseIcon({

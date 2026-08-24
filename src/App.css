@@ -102,7 +102,7 @@
 
   .homepage-link-item {
     @apply
-      bg-wiseNavy 
+      bg-wiseGrey1 
       p-6 
       flex 
       flex-col 
@@ -150,7 +150,7 @@
     cursor-pointer
     w-19/40
     p-1
-    bg-wiseRose3
+    bg-wiseRose4
     text-lg
     font-normal
     transition
@@ -166,7 +166,7 @@
     @apply
     cursor-pointer
     p-0.5
-    bg-wiseRose3
+    bg-wiseRose4
     text-lg
     font-normal
     transition
@@ -265,38 +265,38 @@
   /* WISE COLORS */
 
   /* Supporting Greys */
-  --color-wiseGrey1: #040300;
-  --color-wiseGrey2: #363532;
-  --color-wiseGrey3: #686764;
-  --color-wiseGrey4: #CDCBC7;
-  --color-wiseGrey5: #fffdf9; 
+  --color-wiseGrey1: #1A1817;
+  --color-wiseGrey2: #383432;
+  --color-wiseGrey3: #6E6662;
+  --color-wiseGrey4: #B5B0AD;
+  --color-wiseGrey5: #F7F6F5; 
 
   /* Legacy variable  */
   --color-wiseOffWhite: #fffdf9;  
-  --color-wisePaleGrey: #E7E8EC;
+  --color-wisePaleGrey: #F7F6F5;
 
   /* Heritage Rose Shades */
-  --color-wiseRose1: #A73F3F;
-  --color-wiseRose2: #C46565;
-  --color-wiseRose3: #EC9797;
-  --color-wiseRose4: #F4C1C1;
-  --color-wiseRose5: #F9E0E0; 
+  --color-wiseRose1: #6B2D10;
+  --color-wiseRose2: #A34618;
+  --color-wiseRose3: #D96831;
+  --color-wiseRose4: #F2AD8D;
+  --color-wiseRose5: #FDF0EA; 
 
   /* Legacy variable  */
-  --color-wiseDarkPink: #C46565;
-  --color-wiseSkin: #EC9797;
-  --color-ultMutePink: #EC9797;
+  --color-wiseDarkPink: #A34618;
+  --color-wiseSkin: #F2AD8D;
+  --color-ultMutePink: #FDF0EA;
 
   /* Nightfall Navy Shades */
-  --color-wiseNavy1: #0D1226;
-  --color-wiseNavy2: #161E3F;
-  --color-wiseNavy3: #444B65;
-  --color-wiseNavy4: #A1A4B2;
-  --color-wiseNavy5: #E7E8EC;
+  --color-wiseNavy1: #0A2F25;
+  --color-wiseNavy2: #154D3D;
+  --color-wiseNavy3: #2D7A62;
+  --color-wiseNavy4: #8FBCAE;
+  --color-wiseNavy5: #EAF3F0;
 
   /* Legacy variable  */
-  --color-bgMain: #0D1226;
-  --color-wiseNavy: #161E3F;
+  --color-bgMain: #1A1817;
+  --color-wiseNavy: #0A2F25;
   --color-russianBlue: #444B65;
 
 
