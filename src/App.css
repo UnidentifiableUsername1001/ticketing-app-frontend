@@ -76,13 +76,11 @@
       text-wiseOffWhite
         font-lato
         font-bold
-        relative
-        text-2xl 
+        text-2xl
         cursor-pointer
         transition
         delay-75
         duration-200
-        hover:scale-115
         hover:text-wiseSkin
   }
 

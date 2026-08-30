@@ -1,8 +1,5 @@
 import React, { useState } from "react";
-import { config } from "../../../config";
-import { Link, useNavigate } from "react-router";
-import { useAppContext } from "../../context/authContext";
-import { jwtDecode } from "jwt-decode";
+import { useNavigate } from "react-router";
 import { useLogin } from "../../hooks/auth/useLogin";
 import { openEye, closedEye } from "../../hooks/assorted/react-icons";
 

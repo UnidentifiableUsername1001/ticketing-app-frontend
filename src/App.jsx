@@ -19,12 +19,40 @@ import { ToastProvider } from './context/toast-notification/ToastContext';
 // Icons
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faComments, faCircleUser, faBell, faHouse, faPenToSquare, faSquarePlus, faTrashCan, faUser, faIdBadge} from '@fortawesome/free-regular-svg-icons';
-import { faGear, faTrash, faCubesStacked, faArrowUpFromBracket, faGlobe, faShield, faBuilding, faChevronDown, faAngleUp, faChalkboardUser, faArrowRightFromBracket, faSquareCheck, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faComments, 
+  faCircleUser, 
+  faBell, 
+  faHouse, 
+  faPenToSquare, 
+  faSquarePlus, 
+  faTrashCan, 
+  faUser, 
+  faIdBadge} from '@fortawesome/free-regular-svg-icons';
+
+import { 
+  faGear, 
+  faTrash, 
+  faCubesStacked,
+  faArrowUpFromBracket, 
+  faGlobe, 
+  faShield, 
+  faBuilding, 
+  faChevronDown, 
+  faAngleUp, 
+  faChalkboardUser, 
+  faArrowRightFromBracket, 
+  faSquareCheck, 
+  faXmark, 
+  faScrewdriverWrench,
+  faArrowsLeftRightToLine 
+} from '@fortawesome/free-solid-svg-icons';
+
 import { ToastContainer } from './context/toast-notification/ToastContainer';
 
 
 library.add(
+  faScrewdriverWrench,
+  faArrowsLeftRightToLine,
   faComments, 
   faCircleUser, 
   faGlobe, 
@@ -56,39 +84,48 @@ function App() {
   return (
     <>
       <ToastProvider>
-        <Navbar />
-        <ToastContainer/>
-          <Routes>
-            <Route path='/' element={<LoginPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/password-reset" element={<PasswordReset/>}/>
-            <Route path="/register" element={<RegisterPage />} />
-            <Route path="/homepage" element={
-              <ProtectedRoute>
-                <Homepage />
-              </ProtectedRoute>
-            } />
-            <Route path="/dashboard" element={
-              <ProtectedRoute>
-                <Dashboard />
-              </ProtectedRoute>
-            } />
-            <Route path='/create-ticket' element={
-              <ProtectedRoute>
-                <CreateTicket />
-              </ProtectedRoute>
-            } />
-            <Route path='/ticket/:ticketId' element={
-              <ProtectedRoute>
-                <DetailView/>
-              </ProtectedRoute>
-            } />
-            <Route path='/admin-centre' element={
-              <ProtectedRoute>
-                <AdminCentre/>
-              </ProtectedRoute>
-            } />
-          </Routes>
+        <div 
+          className='h-screen flex'>
+          <Navbar />
+          <ToastContainer/>
+            <main 
+              className='flex-1'>
+                <div className='bg-wiseGrey1 h-8'>
+                    .
+                </div>
+              <Routes>
+                <Route path='/' element={<LoginPage />} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/password-reset" element={<PasswordReset/>}/>
+                <Route path="/register" element={<RegisterPage />} />
+                <Route path="/homepage" element={
+                  <ProtectedRoute>
+                    <Homepage />
+                  </ProtectedRoute>
+                } />
+                <Route path="/dashboard" element={
+                  <ProtectedRoute>
+                    <Dashboard />
+                  </ProtectedRoute>
+                } />
+                <Route path='/create-ticket' element={
+                  <ProtectedRoute>
+                    <CreateTicket />
+                  </ProtectedRoute>
+                } />
+                <Route path='/ticket/:ticketId' element={
+                  <ProtectedRoute>
+                    <DetailView/>
+                  </ProtectedRoute>
+                } />
+                <Route path='/admin-centre' element={
+                  <ProtectedRoute>
+                    <AdminCentre/>
+                  </ProtectedRoute>
+                } />
+              </Routes>
+            </main>
+          </div>
       </ToastProvider>
     </>
   )

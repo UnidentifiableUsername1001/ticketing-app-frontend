@@ -49,7 +49,7 @@ export function useLogin () {
 
         setIsLoggedIn(true);
 
-        navigate('/homepage');
+        navigate('/dashboard');
 
         } catch (e) {
             console.log('Error fetching details: ' + e);

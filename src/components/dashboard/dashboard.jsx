@@ -24,7 +24,7 @@ function Dashboard() {
     const ticketsForTable = activeView === 'team' ? departmentTickets : ticketsFromQuery.results;
 
     return (
-        <div className='bg- min-h-screen'>
+        <div className='bg-wiseOffWhite min-h-screen'>
             <div className='grid grid-cols-14'>
                 <div className='grid border-r border-wiseGrey4 col-start-1 col-span-3'>
                     <div className='flex flex-col'>
