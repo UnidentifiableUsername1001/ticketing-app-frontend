@@ -34,7 +34,7 @@ function RichTextEditor ({stateFunc}) {
     })
 
     return (
-        <div className='tiptap-container border border-wiseGrey4'>
+        <div className='tiptap-container bg-wiseOffWhite border border-wiseGrey4'>
             <MenuBar editor={editor} />
             <EditorContent editor={editor} />
             <FloatingMenu editor={editor}/>

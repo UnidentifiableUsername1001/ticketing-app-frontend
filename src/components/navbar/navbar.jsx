@@ -126,7 +126,7 @@ function Navbar() {
                         transition-all
                         font-lato
                         text-wiseGrey5/80 font-medium
-                        mt-6
+                        mt-6 px-2
                         grow
                         ${expand ? 'opacity-100' : 'opacity-0'} 
                     `}>

@@ -85,11 +85,12 @@ function App() {
     <>
       <ToastProvider>
         <div 
-          className='h-screen flex'>
+          className='h-screen flex overflow-auto'>
           <Navbar />
           <ToastContainer/>
+
             <main 
-              className='flex-1'>
+              className='flex-1 overflow-auto'>
                 <div className='bg-wiseGrey1 h-8'>
                     .
                 </div>

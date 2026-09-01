@@ -65,8 +65,9 @@ export function NewComment({mentionsStateFunc, urlParams}) {
             <div
                 onClick={() => setShowCommentInput(!showCommentInput)} 
                 className={`
-                    font-lato text-sm text-wiseGrey4 p-2 h-18 border border-wiseGrey4 
+                    font-lato text-sm text-wiseGrey4 p-2 h-18 border border-wiseGrey4/50 
                     cursor-text transition hover:text-wiseRose4 hover:border-wiseRose4
+                    bg-wiseOffWhite
                     ${showCommentInput ? 'hidden opacity-0' : 'block opacity-100'}`
                 }
                 >
@@ -126,7 +127,7 @@ export function NewComment({mentionsStateFunc, urlParams}) {
                     </div>
                 </div>
             </div>
-            <div className='flex flex-col p-2 gap-8 overflow-auto max-h-128'>
+            <div className='flex flex-col p-6 gap-8 overflow-auto max-h-128 bg-wiseOffWhite border border-wiseGrey4/50'>
 
                 {comments?.results && comments.results.length !== 0 ? comments.results.map((comment, index) => (
                     <div key={index} className='bg-wiseOffWhite border-l border-wiseGrey4 p-3 '>
