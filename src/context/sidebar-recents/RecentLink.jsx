@@ -14,7 +14,7 @@ return (
             hover:bg-wiseGrey2 hover:text-wiseRose4
             "
         onClick={() => navigate(`/ticket/${recentObj._id}`)}>
-        <span>{recentObj.ticketNumber + " " + "- " ?? ""}</span>
+        <span>{recentObj.ticketNumber + " " + "- "}</span>
         <span>{recentObj.title}</span>
     </div>
 )
