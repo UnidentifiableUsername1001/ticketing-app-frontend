@@ -15,6 +15,7 @@ import Homepage from './components/homepage/homepage';
 import AdminCentre from './components/admin-centre/adminCentre';
 import { PasswordReset } from './components/user-auth/PasswordReset';
 import { ToastProvider } from './context/toast-notification/ToastContext';
+import { RecentsProvider } from './context/sidebar-recents/RecentsContext';
 
 // Icons
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -84,6 +85,7 @@ function App() {
   return (
     <>
       <ToastProvider>
+      <RecentsProvider>
         <div 
           className='h-screen flex overflow-auto'>
           <Navbar />
@@ -127,6 +129,7 @@ function App() {
               </Routes>
             </main>
           </div>
+      </RecentsProvider>
       </ToastProvider>
     </>
   )

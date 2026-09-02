@@ -4,6 +4,8 @@ import { useAppContext } from '../../context/authContext';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightFromBracket, faArrowsLeftRightToLine, faChalkboardUser, faScrewdriverWrench } from '@fortawesome/free-solid-svg-icons';
 import { faHouse, faPenToSquare } from '@fortawesome/free-regular-svg-icons';
+import { RecentsProvider } from '../../context/sidebar-recents/RecentsContext';
+import { RecentsContainer } from '../../context/sidebar-recents/RecentsContainer';
 
 function Navbar() {
     const navigate = useNavigate();
@@ -125,19 +127,23 @@ function Navbar() {
                         history-section
                         transition-all
                         font-lato
-                        text-wiseGrey5/80 font-medium
                         mt-6 px-2
                         grow
                         ${expand ? 'opacity-100' : 'opacity-0'} 
                     `}>
-                    <h1>
-                        Recent
+                    <h1 
+                        className='
+                            font-base text-lg text-wiseGrey4/70
+                            pb-2
+                        '>
+                        Recents
                     </h1>
                     <div 
                         className={`
+                            text-sm
                             overflow-auto
                         `}>
-
+                        <RecentsContainer/>
                     </div>
                 </div>
                 <div 
