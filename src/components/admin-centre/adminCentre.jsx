@@ -24,7 +24,7 @@ export default function AdminCentre() {
     return (
         <div className="bg-wiseNavy5 min-h-screen flex flex-col">
             <div className="pt-5 flex flex-col items-center">
-                <div className="">
+                <div className="fixed">
                     <ul className="p-2 sticky flex flex-row gap-30 rounded-2xl">
                         <li onClick={() => setActiveTab('User')} className="group flex items-center justify-center relative cursor-pointer">
                             <FontAwesomeIcon icon={faCircleUser} 
@@ -63,7 +63,7 @@ export default function AdminCentre() {
                         </li>
                     </ul>
                 </div>
-                <div className="w-7/9 p-15 mt-5 bg-wiseOffWhite">
+                <div className="w-7/9 p-15 mt-15 bg-wiseOffWhite">
                     {renderActiveTab()}
                 </div>
             </div>

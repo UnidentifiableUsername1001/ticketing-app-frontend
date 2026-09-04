@@ -93,40 +93,42 @@ function App() {
 
             <main 
               className='flex-1 overflow-auto'>
-                <div className='bg-wiseGrey1 h-8'>
+                <div className='bg-wiseGrey1 h-12 z-50 fixed w-full'>
                     .
                 </div>
-              <Routes>
-                <Route path='/' element={<LoginPage />} />
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="/password-reset" element={<PasswordReset/>}/>
-                <Route path="/register" element={<RegisterPage />} />
-                <Route path="/homepage" element={
-                  <ProtectedRoute>
-                    <Homepage />
-                  </ProtectedRoute>
-                } />
-                <Route path="/dashboard" element={
-                  <ProtectedRoute>
-                    <Dashboard />
-                  </ProtectedRoute>
-                } />
-                <Route path='/create-ticket' element={
-                  <ProtectedRoute>
-                    <CreateTicket />
-                  </ProtectedRoute>
-                } />
-                <Route path='/ticket/:ticketId' element={
-                  <ProtectedRoute>
-                    <DetailView/>
-                  </ProtectedRoute>
-                } />
-                <Route path='/admin-centre' element={
-                  <ProtectedRoute>
-                    <AdminCentre/>
-                  </ProtectedRoute>
-                } />
-              </Routes>
+                <div className='mt-12'>
+                <Routes>
+                  <Route path='/' element={<LoginPage />} />
+                  <Route path="/login" element={<LoginPage />} />
+                  <Route path="/password-reset" element={<PasswordReset/>}/>
+                  <Route path="/register" element={<RegisterPage />} />
+                  <Route path="/homepage" element={
+                    <ProtectedRoute>
+                      <Homepage />
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/dashboard" element={
+                    <ProtectedRoute>
+                      <Dashboard />
+                    </ProtectedRoute>
+                  } />
+                  <Route path='/create-ticket' element={
+                    <ProtectedRoute>
+                      <CreateTicket />
+                    </ProtectedRoute>
+                  } />
+                  <Route path='/ticket/:ticketId' element={
+                    <ProtectedRoute>
+                      <DetailView/>
+                    </ProtectedRoute>
+                  } />
+                  <Route path='/admin-centre' element={
+                    <ProtectedRoute>
+                      <AdminCentre/>
+                    </ProtectedRoute>
+                  } />
+                </Routes>
+                </div>
             </main>
           </div>
       </RecentsProvider>
