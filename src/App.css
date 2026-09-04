@@ -43,8 +43,9 @@
       cursor-pointer 
 
       relative
-      w-full
-      p-2 
+      w-1/2
+      p-2
+      place-self-center 
 
       text-bgMain 
       font-bold 

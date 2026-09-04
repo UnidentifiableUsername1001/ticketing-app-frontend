@@ -127,7 +127,7 @@ export function NewComment({mentionsStateFunc, urlParams}) {
                     </div>
                 </div>
             </div>
-            <div className='flex flex-col p-6 gap-8 overflow-auto max-h-128 bg-wiseOffWhite border border-wiseGrey4/50'>
+            <div className='flex flex-col p-6 gap-8 overflow-auto max-h-128 bg-wiseOffWhite border-t border-wiseGrey4/50'>
 
                 {comments?.results && comments.results.length !== 0 ? comments.results.map((comment, index) => (
                     <div key={index} className='bg-wiseOffWhite border-l border-wiseGrey4 p-3 '>
