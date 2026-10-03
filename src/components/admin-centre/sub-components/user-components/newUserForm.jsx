@@ -63,7 +63,7 @@ export function NewUserForm() {
             </button>
             <div className={` 
                     ${showForm ? 'block opacity-100' : 'hidden opacity-0'}
-                    transition-all bg-wisOffWhite p-7 border border-wiseGrey4
+                    transition-all bg-wiseGrey5 p-7 border border-wiseGrey4
                 `}>
                 <form onSubmit={newUserHandler} className='grid grid-cols-7 gap-10 text-wiseGrey1'>
                     <div className='grid grid-cols-1 col-start-2 col-span-5 gap-2'>

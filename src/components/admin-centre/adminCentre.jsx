@@ -63,7 +63,7 @@ export default function AdminCentre() {
                         </li>
                     </ul>
                 </div>
-                <div className="w-7/9 p-15 mt-15 bg-wiseOffWhite">
+                <div className="w-7/9 p-15 mt-15">
                     {renderActiveTab()}
                 </div>
             </div>

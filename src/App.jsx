@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 
 // Components
-import RegisterPage from './components/user-auth/registerPage';
 import LoginPage from './components/user-auth/loginPage';
 import ProtectedRoute from './components/user-auth/ProtectedRoute';
 import Dashboard from './components/dashboard/dashboard';
@@ -13,6 +12,7 @@ import DetailView from './components/ticket-view/detailVIew';
 import Navbar from './components/navbar/navbar';
 import Homepage from './components/homepage/homepage';
 import AdminCentre from './components/admin-centre/adminCentre';
+import { Registration } from './components/registration/Registration';
 import { PasswordReset } from './components/user-auth/PasswordReset';
 import { ToastProvider } from './context/toast-notification/ToastContext';
 import { RecentsProvider } from './context/sidebar-recents/RecentsContext';
@@ -92,16 +92,18 @@ function App() {
           <ToastContainer/>
 
             <main 
-              className='flex-1 overflow-auto'>
-                <div className='bg-wiseGrey1 h-12 z-50 fixed w-full'>
+              className='flex-1 overflow-hidden'>
+                <div className={`
+                  ${window.location.pathname.includes('register')? 'hidden' : 'bg-wiseGrey1 h-12 z-50 sticky w-full'}
+                  `}>
                     .
                 </div>
-                <div className='mt-12'>
+                <div className=''>
                 <Routes>
                   <Route path='/' element={<LoginPage />} />
+                  <Route path='/register' element={<Registration/>} />
                   <Route path="/login" element={<LoginPage />} />
                   <Route path="/password-reset" element={<PasswordReset/>}/>
-                  <Route path="/register" element={<RegisterPage />} />
                   <Route path="/homepage" element={
                     <ProtectedRoute>
                       <Homepage />
