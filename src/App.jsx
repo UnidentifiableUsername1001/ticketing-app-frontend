@@ -28,7 +28,8 @@ import { faComments,
   faSquarePlus, 
   faTrashCan, 
   faUser, 
-  faIdBadge} from '@fortawesome/free-regular-svg-icons';
+  faIdBadge
+} from '@fortawesome/free-regular-svg-icons';
 
 import { 
   faGear, 
@@ -45,13 +46,15 @@ import {
   faSquareCheck, 
   faXmark, 
   faScrewdriverWrench,
-  faArrowsLeftRightToLine 
+  faArrowsLeftRightToLine,
+  faUserLock 
 } from '@fortawesome/free-solid-svg-icons';
 
 import { ToastContainer } from './context/toast-notification/ToastContainer';
 
 
 library.add(
+  faUserLock,
   faScrewdriverWrench,
   faArrowsLeftRightToLine,
   faComments, 

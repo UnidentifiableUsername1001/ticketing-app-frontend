@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useLogin } from "../../hooks/auth/useLogin";
 import { openEye, closedEye } from "../../hooks/assorted/react-icons";
 
@@ -36,7 +36,7 @@ function LoginPage() {
 
     return (
         <div className="register-login-components">
-            <div className="row-start-2 col-start-2 w-125">
+            <div className="grid row-start-2 col-start-2 w-125">
                 <h2 className="text-center -mt-6 mb-3 font-wise text-wiseGrey1 text-3xl font-medium">Login</h2>
                 <form onSubmit={handleLogin} className="bg-wiseOffWhite border border-wiseGrey4 flex flex-col p-8 py-15 gap-12 items-center">
                     <div className="flex flex-col gap-2 w-8/10">
@@ -66,7 +66,7 @@ function LoginPage() {
                     </div>
                     <div
                         onClick={() => navigate('/password-reset')}
-                        className="cursor-pointer font-lato text-wiseRose2 hover:underline hover:text-wiseRose1">
+                        className="cursor-pointer font-lato text-wiseRose4 hover:underline hover:text-wiseRose2">
                         I've forgotten my password.
                     </div>
                     <div className="subtext-section">
@@ -102,6 +102,17 @@ function LoginPage() {
                         </button>
                     </div>       
                 </form>
+                <Link 
+                    to={'/register'}
+                    className="
+                        w-full text-center mt-2
+                        text-wiseRose4 font-semibold text-lg
+                        hover:text-wiseRose2
+                        hover:underline
+                    "
+                >
+                    No Account? Register here!
+                </Link>
             </div>
         </div>
     )

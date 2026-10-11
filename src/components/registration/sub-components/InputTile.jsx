@@ -1,23 +1,23 @@
 import React from 'react';
 
-export function InputTile({label, inputValue, updateHandler}) {
+export function InputTile({label, inputValue, updateHandler, type, customClass}) {
 
     return (
         <div
             className={
                 `
-                    grid grid-cols-1 gap-2
+                    flex flex-col gap-4 ${customClass?.div}
                 `
             }
         >
             <label
-                className='admin-form-label'
+                className={customClass?.label}
             >
                 {label}
             </label>
             <input
-                className='admin-form-control'
-                type='text'
+                className={customClass?.input}
+                type={type}
                 placeholder='Type here...'
                 value={inputValue}
                 onChange={(event) => updateHandler(event.target.value)}
