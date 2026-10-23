@@ -179,7 +179,7 @@ function Navbar() {
                 (
                     <>
                         <div className={`nav-links flex flex-col gap-4`}>
-                            <NavLink to='/home' 
+                            <NavLink to='/homepage' 
                                 className={`
                                     nav-item self-start flex flex-row 
                                     w-9/10 py-1 px-2 rounded-2xl gap-2 

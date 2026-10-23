@@ -10,12 +10,12 @@ import Dashboard from './components/dashboard/dashboard';
 import CreateTicket from './components/create-ticket/createTicket';
 import DetailView from './components/ticket-view/detailVIew';
 import Navbar from './components/navbar/navbar';
-import Homepage from './components/homepage/homepage';
 import AdminCentre from './components/admin-centre/adminCentre';
 import { Registration } from './components/registration/Registration';
 import { PasswordReset } from './components/user-auth/PasswordReset';
 import { ToastProvider } from './context/toast-notification/ToastContext';
 import { RecentsProvider } from './context/sidebar-recents/RecentsContext';
+import { Home } from './components/homepage/homepage';
 
 // Icons
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -103,14 +103,12 @@ function App() {
                 </div>
                 <div className=''>
                 <Routes>
-                  <Route path='/' element={<LoginPage />} />
+                  <Route path='/' element={<Home />} />
                   <Route path='/register' element={<Registration/>} />
                   <Route path="/login" element={<LoginPage />} />
                   <Route path="/password-reset" element={<PasswordReset/>}/>
                   <Route path="/homepage" element={
-                    <ProtectedRoute>
-                      <Homepage />
-                    </ProtectedRoute>
+                      <Home />
                   } />
                   <Route path="/dashboard" element={
                     <ProtectedRoute>
