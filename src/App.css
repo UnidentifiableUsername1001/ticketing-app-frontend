@@ -236,17 +236,17 @@
   .dashboard-view-link {
     @apply
       cursor-pointer
-      ml-10 
+      ml-5
+      px-2 py-1
       font-lato 
       font-medium
-      underline
-      underline-offset-6
-      w-3/4
+      mr-3
       rounded-sm
       transition-all
       delay-75
       duration-200
-      hover:text-wiseDarkPink
+      hover:text-wiseRose2
+      hover:bg-wiseRose4/50
   }
 
 

@@ -23,72 +23,103 @@ function Dashboard() {
 
     const ticketsForTable = activeView === 'team' ? departmentTickets : ticketsFromQuery.results;
 
+    const views = ['team', 'assigned', 'raisedByUser', 'closed'];
+    const viewsText = (view) => {
+        return view === 'team' 
+        ? 'Team tickets'
+        : view === 'assigned'
+        ? 'My assigned tickets'
+        : view === 'raisedByUser' 
+        ? 'Tickets raised by me'
+        : 'Closed tickets'
+    };
+    const viewsParams = (view) => {
+        return view === 'team' 
+        ? {view: view}
+        : view === 'assigned'
+        ? { 
+            view: 'assigned', 
+            assignedTo: decodedJwt.user.id, 
+            status: ['Open', 'In progress'] 
+        }
+        : view === 'raisedByUser' 
+        ? { 
+            view: 'raisedByUser', 
+            createdBy: decodedJwt.user.id, 
+            status: ['Open', 'In progress'] 
+        }
+        : { view: 'closed', status: 'Closed' }
+    }
+
     return (
-        <div className='bg-wiseOffWhite min-h-screen'>
+        <div className='bg-wiseOffWhite min-h-screen max-h-screen'>
             <div className='grid grid-cols-14'>
-                <div className='grid border-r border-wiseGrey4 col-start-1 col-span-3'>
+                <div className='grid col-start-1 col-span-3'>
                     <div className='flex flex-col'>
-                        <div className=''>
-                            <h1 className='font-lato font-extrabold border-b border-wiseGrey4 text-center text-2xl py-3'>Views</h1>
+                        <div className='bg-wiseGrey1'>
+                            <h1 
+                                className='font-lato font-semibold text-wiseGrey5
+                                pl-5 text-2xl py-3'>
+                                Views
+                            </h1>
                         </div>
-                        <div className='mt-10 grid gap-6'>
-                            <div className='flex flex-row'>
-                                <h2 onClick={() =>  setSearchParams({ view: 'team'})}
-                                    className='dashboard-view-link'>
-                                        Team tickets
-                                </h2>
-                                <p className='text-sm text-wiseOffWhite bg-wiseDarkPink px-2 py-0.5 rounded-full'>
-                                    {ticketCounts?.team?.[0]?.ticketCount ?? 0}
-                                </p>
-                            </div>
-
-                            <div className='flex flex-row'>
-                                <h2 
-                                    onClick={() => 
-                                        setSearchParams({ 
-                                                view: 'assigned', 
-                                                assignedTo: decodedJwt.user.id, 
-                                                status: ['Open', 'In progress'] 
-                                            })} 
-                                    className='dashboard-view-link'>
-                                        My assigned tickets
-                                </h2>
-                                <p 
-                                    className={`${ticketCounts?.assigned?.[0]?.ticketCount 
-                                            ? 'text-sm text-wiseOffWhite bg-wiseDarkPink px-2 py-0.5 rounded-full'
-                                            : ''}`
-                                        }>
-                                    {ticketCounts?.assigned?.[0]?.ticketCount ?? ''}
-                                </p>
-                            </div>
-
-                            <div className='flex flex-row'>
-                                <h2 onClick={() => setSearchParams({ view: 'raisedByUser', createdBy: decodedJwt.user.id, status: ['Open', 'In progress'] })
-                                 } className='dashboard-view-link'>Tickets raised by me</h2>
-                                <p 
-                                    className={`${ticketCounts?.raisedByUser?.[0]?.ticketCount
-                                            ? 'text-sm text-wiseOffWhite bg-wiseDarkPink px-2 py-0.5 rounded-full'
-                                            : ''}`
-                                        }>
-                                    {ticketCounts?.raisedByUser?.[0]?.ticketCount ?? 0}
-                                </p>
-                            </div>
-                            <div className='flex flex-row'>
-                                <h2 onClick={() =>  setSearchParams({ view: 'closed', status: 'Closed' })} className='dashboard-view-link'>Closed tickets</h2>
-                                <p 
-                                    className={`${ticketCounts?.closed?.[0]?.ticketCount
-                                            ? 'text-sm text-wiseOffWhite bg-wiseDarkPink px-2 py-0.5 rounded-full'
-                                            : ''}`
-                                        }>
-                                    {ticketCounts?.closed?.[0]?.ticketCount ?? ''}
-                                </p>
-                            </div>
+                        <div className='mt-5 grid gap-3'>
+                            {views.map((view) => (
+                                <div 
+                                    key={views.indexOf(view)}
+                                    onClick={() => setSearchParams(viewsParams(view))}
+                                    className={
+                                        `
+                                            dashboard-view-link
+                                            cursor-pointer
+                                            flex flex-row justify-between
+                                            ${
+                                                activeView === view 
+                                                ? 'bg-wiseRose4/75 text-wiseRose1'
+                                                : ''
+                                            }
+                                        `
+                                    }
+                                >
+                                    <h2
+                                        
+                                        className={
+                                            `
+                                            `
+                                        }
+                                    >
+                                        {viewsText(view)}
+                                    </h2>
+                                    <p
+                                        className={`
+                                            ${ticketCounts?.[view]?.[0]?.ticketCount
+                                            ? 'text-sm text-wiseOffWhite bg-wiseRose3 px-2 py-0.5 rounded-full'
+                                            : ''}
+                                        `}
+                                    >
+                                        {ticketCounts?.[view]?.[0]?.ticketCount ?? ''}
+                                    </p>
+                                </div>
+                            ))}
                         </div>
                     </div>
                 </div>
-                <div className='grid col-start-4 col-span-11'>
-                    <div className=''>
-                        <h1 className='font-lato font-extrabold border-b border-wiseGrey4 text-center text-2xl py-3'>All Tickets</h1>
+                <div 
+                    className='
+                        grid col-start-4 col-span-11 max-h-screen min-h-screen w-full
+                        content-start border-l border-wiseGrey1
+                        
+                    '
+                >
+                    <div className='bg-wiseGrey1'>
+                        <h1 
+                            className='
+                                font-lato font-semibold ml-3
+                                text-2xl py-3 text-wiseGrey5
+                            '
+                        >
+                            {viewsText(activeView)}
+                        </h1>
                     </div>
                     <>
                         <TicketTable

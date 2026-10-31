@@ -25,55 +25,86 @@ export function TicketTable({tickets}) {
     }
 
     const colorRender = (status) => {
-        if (status === 'Open') return (<span className="bg-red-500 rounded-md p-1 text-wiseOffWhite">{status}</span>);
-        if (status === 'In progress') return (<span className="bg-yellow-500 rounded-md p-1 text-bgMain">{status}</span>);
-        if (status === 'Closed') return (<span className="bg-gray-500 rounded-md p-1 text-wiseOffWhite">{status}</span>);
+        if (status === 'Open') 
+            return (
+                <div className="bg-red-500 rounded-md p-1 text-sm w-1/2 text-center text-wiseOffWhite">
+                    {status}
+                </div>);
+        if (status === 'In progress') 
+            return (
+                <div className="bg-blue-500 rounded-md p-1 text-sm  text-wiseGrey5 w-1/2  text-center">
+                    Working
+                </div>
+            );
+        if (status === 'Closed') 
+            return (
+                <div className="bg-gray-500 rounded-md py-1 text-sm w-1/2  text-center text-wiseOffWhite">
+                    {status}
+                </div>);
     }
 
     return (
-        <div className='table border-gray-400/25'>
+        <div className=''>
             <table 
                 className='w-full text-left border-collapse'> 
                 <thead className=''>
-                    <tr className='text-gray-500 font-bold font-lato text-xl border-b border-bgMain'>
-                        <th className='py-3 px-4' >
+                    <tr className='text-wiseGrey3 font-lato text-lg'>
+                        <th className='py-3 px-4 underline underline-offset-2'>
+                            Status
+                        </th>
+                        <th className='py-3 px-4 underline underline-offset-2'>
                             Requester
                         </th>
                         <th 
-                            className='py-3 px-4 flex flex-row' 
+                            className='py-3 px-4 underline underline-offset-2' 
                             >
                             Title
                         </th>
-                        <th className='py-3 px-4'>
+                        <th className='py-3 px-4 underline underline-offset-2'>
                             Assignee
                         </th>
-                        <th className='py-3 px-4'>
-                            Status
-                        </th>
-                        <th className='py-3 px-4'>
+                        <th className='py-3 px-4 underline underline-offset-2'>
                             Requested
+                        </th>
+                        <th className='py-3 px-4 underline underline-offset-2'>
+                            Updated
                         </th>
                     </tr>
                 </thead>
-                <tbody className='font-lato font-light'>
+                <tbody className='font-lato font-light overflow-y-auto'>
                     {tickets.length !== 0 ? (
                         <>
                             {tickets.map((ticket, index) => (
-                                <tr key={index} onClick={() => {goToTicket(ticket)}} className='border-b border-bgMain/25 hover:bg-wiseSkin/30 cursor-pointer transition-colors duration-200'>
-                                    <td className='py-3 px-4'>{ticket.createdBy.firstName + " " + ticket.createdBy.lastName}</td>
-                                    <td className='py-3 px-4'>{ticket.title}</td>
-                                    {ticket.assignedTo ? (
-                                        <td className='py-4 px-4'>{ticket.assignedTo.firstName + " " + ticket.assignedTo.lastName}</td> 
-                                    ) : (
-                                        <td className='py-3 px-4'>
-                                            Unassigned
-                                    </td>    
-                                    )}
-                                    <td className='py-3 px-4'>
+                                <tr key={index} 
+                                    onClick={() => {goToTicket(ticket)}} 
+                                    className='
+                                        border-b border-wiseGrey1/25 
+                                        hover:bg-wiseRose4/30 cursor-pointer 
+                                        transition-colors duration-200'
+                                    >
+                                    <td className='py-2 px-4'>
                                         {colorRender(ticket.status)}
                                     </td>
-                                    <td className='py-3 px-4'>
+                                    <td className='py-2 px-4'>
+                                        {ticket.createdBy.firstName + " " + ticket.createdBy.lastName}
+                                    </td>
+                                    <td className='py-2 px-4'>
+                                        {ticket.title}
+                                    </td>
+                                    {ticket.assignedTo ? (
+                                        <td className='py-2 px-4'>
+                                            {ticket.assignedTo.firstName + " " + ticket.assignedTo.lastName}
+                                        </td> 
+                                    ) : (
+                                        <td className='py-2 px-4'>
+                                                Unassigned
+                                        </td>    
+                                    )}
+                                    <td className='py-2 px-4'>
                                         {new Date(ticket.createdAt).toLocaleDateString()}
+                                    </td>
+                                    <td className='py-2 px-4'>
+                                        {new Date(ticket.updatedAt).toLocaleDateString()}
                                     </td>
                                 </tr>
                             ))}

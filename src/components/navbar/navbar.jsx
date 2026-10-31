@@ -12,7 +12,7 @@ function Navbar() {
 
     const { isLoggedIn, setIsLoggedIn } = useAppContext();
 
-    const [expand, setExpand] = useState(false);
+    const [expand, setExpand] = useState(true);
 
     const handleLogout = () => {
         sessionStorage.removeItem('auth-token');

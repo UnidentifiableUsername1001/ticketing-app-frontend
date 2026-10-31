@@ -1,6 +1,7 @@
 // Default
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import './App.css';
 
 // Components
@@ -96,11 +97,10 @@ function App() {
 
             <main 
               className='flex-1 overflow-hidden'>
-                <div className={`
+                {/* <div className={`
                   ${window.location.pathname.includes('register')? 'hidden' : 'bg-wiseGrey1 h-12 z-50 sticky w-full'}
                   `}>
-                    .
-                </div>
+                </div> */}
                 <div className=''>
                 <Routes>
                   <Route path='/' element={<Home />} />
