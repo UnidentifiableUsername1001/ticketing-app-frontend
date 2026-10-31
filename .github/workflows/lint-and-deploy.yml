@@ -79,8 +79,9 @@ jobs:
             host: ${{ secrets.EC2_HOST }}
             username: ${{ secrets.EC2_USERNAME }}
             key: ${{ secrets.EC2_SSH_KEY }}
+            script_stop: true
             script: |
-              echo "${{ secrets.PAT }}" | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
+              echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
               cd ticketing-app
               docker compose pull frontend
               docker compose up -d --force-recreate frontend
