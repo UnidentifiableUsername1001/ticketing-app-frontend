@@ -272,13 +272,13 @@ export function Home() {
                 <div className="max-w-7xl mx-auto flex items-center justify-between">
                     {/* Brand Identifier Placeholder */}
                     <Link
-                        to="/home"
+                        to="/homepage"
                         className="text-2xl font-black tracking-tight text-wiseGrey1 flex items-center gap-2"
                     >
                         <span className="w-8 h-8 rounded-lg bg-wiseRose3 text-wiseOffWhite flex items-center justify-center text-base font-bold">
                             W
                         </span>
-                        <span>wisetickets</span>
+                        <span>WiseTickets</span>
                     </Link>
 
                     {/* Center Navigation Placeholders */}

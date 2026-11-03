@@ -10,6 +10,8 @@ import { useSearchParams } from "react-router";
 import { useUploadAttachment } from "../../hooks/ticket-fetch/useUploadAttachment";
 import { ToastContext } from "../../context/toast-notification/ToastContext";
 import { style1 } from "../../hooks/assorted/react-select-styles";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleXmark } from "@fortawesome/free-regular-svg-icons";
 
 function CreateTicket() {
 
@@ -33,13 +35,12 @@ function CreateTicket() {
 
     const { uploadFile, isUploading, uploadError } = useUploadAttachment();
 
-    // Evaluates to react-select object post-call of prepRenderFormState e.g. {label: <void>, value: {<ticketTypeObject>}}
+    // Evaluates to react-select object post-call of prepRenderFormState e.g. {label: <string>, value: {<ticketTypeObject>}}
     const [tickTypeToRender, setTickTypeToRender] = useState({})
 
-    // I need to remember to set-up a conditional check of this variable when coding return as React will crash on-load as is
     const [selectedDept, setSelectedDept] = useState(null);
     const [fetchedDept, setFetchedDept] = useState(null)
-    const [selectedDeptTickets, setSelectedDeptTickets] = useState(null)
+    const [selectedDeptTickets, setSelectedDeptTickets] = useState(null);
 
     const allDepartments = useGetDepartments();
     const selectedDepartment = useGetOneDepartment();
@@ -185,32 +186,119 @@ function CreateTicket() {
 
 
     return (
-        <div className='min-h-screen bg-wisePaleGrey pt-15'>
-            <div className={`transition-all w-5/9 bg-wiseOffWhite p-7 border-2 border-wiseGrey4 mx-auto`}>
-                <form onSubmit={handleSubmit} className='grid grid-cols-7 gap-15 text-bgMain'>
-                    <div className='grid grid-cols-1 col-start-2 col-span-5 gap-2'>
-                        <label className='admin-form-label' htmlFor='selectDepartment'>Select a department:</label>
-                        <Select
-                            unstyled
-                            classNames={style1}
-                            value={selectedDept}
-                            options={allDepartments}
-                            onChange={(selectedOption) => mappedTypesArray(selectedOption)} />
+        <div className=' bg-wisePaleGrey'>
+            <div className={`transition-all w-7/9 py-7 mx-auto`}>
+                <form 
+                    onSubmit={handleSubmit} 
+                    className='grid grid-cols-7 gap-7
+                    text-bgMain'
+                >
+                    <div 
+                        className={`
+                            grid ${
+                                allDepartments.length > 2
+                                ? 'grid-cols-3 gap-20'
+                                : 'grid-cols-2'
+                            }  
+                            col-start-2 col-span-5
+                            `}
+                    >
+                        {allDepartments.map((dept) => (
+                            <div
+                                key={allDepartments.indexOf(dept)}
+                                onClick={() => mappedTypesArray(dept)}
+                                className={
+                                    `
+                                        ${fetchedDept?.name === dept.label 
+                                            ? 'opacity-100 border scale-102 shadow-lg border-none shadow-wiseGrey1 bg-linear-to-br from-wiseGrey5 via-wiseRose4/10 to-wiseRose3/30'
+                                            : fetchedDept && Object.keys(fetchedDept).length !== 0
+                                            ? 'hidden'
+                                            : ''
+                                        }
+                                        relative hover:bg-linear-to-br from-wiseGrey5 via-wiseRose4/10 to-wiseRose3/30
+                                        cursor-pointer h-25 w-7/10 grid gap-2
+                                        p-3 rounded-lg shadow-sm shadow-wiseGrey4
+                                        transition-all hover:scale-102
+                                        hover:shadow-wiseGrey2
+                                    `
+                                }
+                                >
+                                    <h2
+                                        className={`
+                                                font-lato font-semibold text-wiseRose3
+                                            `}
+                                    >
+                                        {dept.label}
+                                    </h2>
+                                    <p
+                                        className={
+                                            `
+                                                text-sm text-wiseGrey2/80
+                                            `
+                                        }
+                                    >
+                                        {`Raise a request for ${dept.label} using the options provided`} 
+                                    </p>
+                            </div>
+                        ))}
                     </div>
                     {fetchedDept && Object.keys(fetchedDept).length !== 0 ? (
                         <>
-                            <div className='grid grid-cols-1 col-start-2 col-span-5 gap-2'>
-                                <label className='admin-form-label' htmlFor='ticketType'>What type of ticket are you raising?</label>
-                                <Select 
-                                    unstyled
-                                    value={tickTypeToRender}
-                                    options={selectedDeptTickets}
-                                    onChange={(selectedOption) => {prepRenderFormState(selectedOption);}}
-                                    classNames={style1} />
+                            <div className='grid grid-cols-1 col-start-2 col-span-5 gap-2 font-lato'>
+                                <label 
+                                    className={`
+                                            font-light
+                                            text-2xl mb-4
+                                        `} 
+                                    htmlFor='ticketType'>
+                                    What type of request?
+                                </label>
+                                <div
+                                    className={`
+                                            border-l-2 border-wiseGrey2/25
+                                        `}
+                                >
+                                    {selectedDeptTickets.map((ticket) => (
+                                        <div
+                                            key={selectedDeptTickets.indexOf(ticket)}
+                                            onClick={() => prepRenderFormState(ticket)}
+                                            className={`
+                                                    flex flex-row
+                                                    ${tickTypeToRender?.label === ticket.label
+                                                        ? 'opacity-100 cursor-default px-1 py-2 transition-all ml-4 w-1/2'
+                                                        : tickTypeToRender && Object.keys(tickTypeToRender).length !== 0
+                                                        ? 'hidden'
+                                                        : 'cursor-pointer px-1 py-2 transition-all hover:bg-wiseGrey4/15 ml-4 w-1/2'
+                                                    }
+                                                `}    
+                                        >
+                                            <h2
+                                                className={`
+                                                        text-wiseRose3 font-semibold
+                                                    `}
+                                            >
+                                                {ticket.label}
+                                            </h2>
+                                            {tickTypeToRender && Object.keys(tickTypeToRender).length !== 0 
+                                                ? (
+                                                <FontAwesomeIcon
+                                                    icon={faCircleXmark}
+                                                    onClick={() => setTickTypeToRender(null)}
+                                                    className={`
+                                                            m-auto cursor-pointer text-xl transition-all duration-150
+                                                            hover:text-wiseRose1
+                                                            text-wiseRose3
+                                                        `}
+                                                />
+                                                ) : (<></>)
+                                            }
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
                             {tickTypeToRender && Object.keys(tickTypeToRender).length !== 0 ? (
                                 <div className='grid grid-cols-1 col-start-2 col-span-5 gap-15'>
-                                    {tickTypeToRender.value.fields.map((field, index) => (
+                                    {tickTypeToRender?.value?.fields?.map((field, index) => (
                                         <>
                                             <div key={index} className="grid grid-cols-1 gap-3">
                                                 <label 
@@ -239,20 +327,44 @@ function CreateTicket() {
                                     Please select a ticket type.
                                 </div>
                             )}
-                            <div className='grid grid-cols-1 col-start-5 col-end-9 justify-items-stretch'>
-                                <button 
-                                    type='submit'
-                                    disabled={isUploading || isCreating} 
-                                    className='admin-form-button justify-self-end'>
-                                        {isUploading || isCreating ? 'Saving...' : 'Finish'}
-                                </button>
-                            </div>
                         </>
                     ) : (
                         <div className='col-start-2 col-span-5 text-center text-wiseSkin/60 py-10 font-bold'>
                             Please start by selecting a department.
                         </div>
                     )}
+                    <div className='flex flex-row justify-between col-start-2 col-span-5 mt-10'>
+                        <button 
+                            type='button'
+                            onClick={() => {
+                                setFetchedDept(null)
+                                setTickTypeToRender(null)
+                            }}
+                            className={
+                                `
+                                    button2-no-width w-30
+                                    ${fetchedDept
+                                        ? ''
+                                        : 'hidden'
+                                    }
+                                `
+                            }>
+                                Close
+                        </button>
+                        <button 
+                            type='button'
+                            onClick={(e) => handleSubmit(e)}
+                            disabled={isUploading || isCreating} 
+                            className={`
+                                button1-no-width w-30
+                                ${fetchedDept
+                                    ? ''
+                                    : 'hidden'
+                                }
+                            `}>
+                                {isUploading || isCreating ? 'Saving...' : 'Finish'}
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>

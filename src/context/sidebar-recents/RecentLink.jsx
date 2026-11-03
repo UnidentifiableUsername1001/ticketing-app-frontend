@@ -8,10 +8,10 @@ const navigate = useNavigate();
 return (
     <div 
         className="
-            cursor-pointer text-wiseGrey5
-            p-2 rounded-2xl
+            cursor-pointer text-wiseGrey5/80
+            p-2 rounded-md font-lato
             transition-all
-            hover:bg-wiseGrey2 hover:text-wiseRose4
+            hover:bg-wiseRose4/30 hover:text-wiseRose4
             "
         onClick={() => navigate(`/ticket/${recentObj._id}`)}>
         <span>{recentObj.ticketNumber + " " + "- "}</span>

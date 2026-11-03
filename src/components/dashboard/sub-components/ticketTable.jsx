@@ -27,84 +27,116 @@ export function TicketTable({tickets}) {
     const colorRender = (status) => {
         if (status === 'Open') 
             return (
-                <div className="bg-red-500 rounded-md p-1 text-sm w-1/2 text-center text-wiseOffWhite">
+                <div className="bg-red-300 rounded-xl text-sm w-fit px-3 justify-self-center py-1 text-center font-normal text-wiseGrey1">
                     {status}
                 </div>);
         if (status === 'In progress') 
             return (
-                <div className="bg-blue-500 rounded-md p-1 text-sm  text-wiseGrey5 w-1/2  text-center">
+                <div className="bg-blue-300 rounded-xl w-fit px-3 py-1 text-sm justify-self-center  text-wiseGrey1 font-normal text-center">
                     Working
                 </div>
             );
         if (status === 'Closed') 
             return (
-                <div className="bg-gray-500 rounded-md py-1 text-sm w-1/2  text-center text-wiseOffWhite">
+                <div className="bg-gray-500 rounded-xl w-fit px-3 py-1 justify-self-center text-sm text-center font-normal text-wiseOffWhite">
                     {status}
                 </div>);
     }
 
+    const calculateTimeElapsed = (updateDate) => {
+        const dateNow = Date.now();
+        const dateUpdated = new Date(updateDate);
+        const delta = dateNow - dateUpdated;
+
+        const minsPassed = delta / 60000;
+
+        return minsPassed < 1 
+        ? 'Just now'
+        : minsPassed > 1 && minsPassed < 60
+        ? `${Math.floor(minsPassed)} mins ago`
+        : minsPassed >= 60 && minsPassed < 1440
+        ? `${Math.floor(minsPassed / 60)} hours ago`
+        : dateUpdated.toString().slice(0, 10);
+    } 
+
     return (
-        <div className=''>
+        <div className='overflow-auto'>
             <table 
                 className='w-full text-left border-collapse'> 
-                <thead className=''>
-                    <tr className='text-wiseGrey3 font-lato text-lg'>
-                        <th className='py-3 px-4 underline underline-offset-2'>
+                <thead 
+                    className='
+                    bg-wiseGrey4/25 rounded-2xl
+                '>
+                    <tr className='text-wiseGrey3/80 font-lato text-lg *:shrink-0'>
+                        <th 
+                            className='py-3 px-4' 
+                            >
+                            Ticket # / Subject
+                        </th>
+                        <th className='py-3 px-4'>
                             Status
                         </th>
-                        <th className='py-3 px-4 underline underline-offset-2'>
-                            Requester
+                        <th className='py-3 px-4'>
+                            Team
                         </th>
-                        <th 
-                            className='py-3 px-4 underline underline-offset-2' 
-                            >
-                            Title
-                        </th>
-                        <th className='py-3 px-4 underline underline-offset-2'>
+
+                        <th className='py-3 px-4'>
                             Assignee
                         </th>
-                        <th className='py-3 px-4 underline underline-offset-2'>
+                        <th className='py-3 px-4'>
                             Requested
                         </th>
-                        <th className='py-3 px-4 underline underline-offset-2'>
-                            Updated
+                        <th className='py-3 px-4'>
+                            Last Updated
                         </th>
                     </tr>
                 </thead>
-                <tbody className='font-lato font-light overflow-y-auto'>
-                    {tickets.length !== 0 ? (
+                <tbody className='font-lato font-[375] overflow-y-auto'>
+                    {tickets?.length !== 0 ? (
                         <>
-                            {tickets.map((ticket, index) => (
+                            {tickets?.map((ticket, index) => (
                                 <tr key={index} 
                                     onClick={() => {goToTicket(ticket)}} 
                                     className='
-                                        border-b border-wiseGrey1/25 
+                                        border-b-2 border-wiseGrey4/35 
                                         hover:bg-wiseRose4/30 cursor-pointer 
-                                        transition-colors duration-200'
+                                        transition-colors duration-200 *:shrink-0'
                                     >
-                                    <td className='py-2 px-4'>
+                                    <td className='py-4 px-4 flex flex-row gap-4'>
+                                        <span
+                                            className={`
+                                                    font-bold
+                                                `}
+                                        >
+                                            {ticket.ticketNumber}
+                                        </span>
+                                        <span
+                                            className=''
+                                        >
+                                            {ticket.title}
+                                        </span>
+                                    </td>
+                                    <td className='py-4 px-4'>
                                         {colorRender(ticket.status)}
                                     </td>
-                                    <td className='py-2 px-4'>
-                                        {ticket.createdBy.firstName + " " + ticket.createdBy.lastName}
+                                    <td className='py-4 px-4'>
+                                        {ticket.departmentId.name}
                                     </td>
-                                    <td className='py-2 px-4'>
-                                        {ticket.title}
-                                    </td>
+
                                     {ticket.assignedTo ? (
-                                        <td className='py-2 px-4'>
+                                        <td className='py-4 px-4'>
                                             {ticket.assignedTo.firstName + " " + ticket.assignedTo.lastName}
                                         </td> 
                                     ) : (
-                                        <td className='py-2 px-4'>
+                                        <td className='py-3 px-4'>
                                                 Unassigned
                                         </td>    
                                     )}
-                                    <td className='py-2 px-4'>
-                                        {new Date(ticket.createdAt).toLocaleDateString()}
+                                    <td className='py-3 px-4'>
+                                        {new Date(ticket.createdAt).toString().slice(0, 10)}
                                     </td>
-                                    <td className='py-2 px-4'>
-                                        {new Date(ticket.updatedAt).toLocaleDateString()}
+                                    <td className='py-3 px-4'>
+                                        {calculateTimeElapsed(ticket.updatedAt)}
                                     </td>
                                 </tr>
                             ))}

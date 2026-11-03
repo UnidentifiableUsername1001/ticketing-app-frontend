@@ -20,110 +20,50 @@ function Navbar() {
         navigate('/login');
     };
 
+    const links = [
+        {label: 'Dashboard', linkTo: '/dashboard'},
+        {label: 'Create Issue', linkTo: '/create-ticket'},
+        {label: 'Settings', linkTo: '/admin-centre'}
+    ]
+
     return (
-        <nav className={`${!isLoggedIn ? '' : ''} bg-bgMain h-screen p-2 w-15 transition-all ${expand ? 'w-60' : ''}`}>
+        <nav className={`${!isLoggedIn ? 'hidden' : 'bg-wiseGrey1 p-2 transition-all w-60'} `}>
             <div 
                 className={`
                     flex flex-col gap-4 h-full pt-4
                 `}>
-                    <button 
-                        type='button'
-                        onClick={() => setExpand(!expand)}
-                        className={`
-                            nav-item self-start flex flex-row 
-                            w-9/10 py-1 px-2 rounded-2xl gap-2 
-                            ${expand ? 'hover:bg-wiseGrey4/25' : ''}
-                        `}
-                        title={`${expand ? 'Close Sidebar' : 'Open Sidebar'}`}
-                    >
-                        <FontAwesomeIcon icon={faArrowsLeftRightToLine}/>
-                        <h1
-                            className={`
-                                transition-all
-                                text-sm font-medium text-wiseGrey4 
-                                self-center 
-                                ${expand ? 
-                                    'opacity-100' 
-                                    : 
-                                    'opacity-0 hidden'
-                                }
-                            `}
-                        >
-                            Close Sidebar
-                        </h1>
-                    </button>
                 {isLoggedIn 
                 ? (<>
-                        <div className={`nav-links flex flex-col gap-4`}>
-                            <NavLink to='/dashboard' 
-                                className={`
-                                    nav-item self-start flex flex-row 
-                                    w-9/10 py-1 px-2 rounded-2xl gap-2 
-                                    ${expand ? 'hover:bg-wiseGrey4/25 ml-4' : ''}
-                                `}
-                                title='Dashboard'>
-                                <FontAwesomeIcon icon={faChalkboardUser}/>
-                                <h1
+                        <div className={` flex flex-col`}>
+                            <h2
+                                className='font-base text-lg underline underline-offset-8 text-wiseGrey4/70 px-1 mb-2 '
+                            >
+                                Quick Links
+                            </h2>
+                            {links.map((link) => (
+                                <NavLink to={link.linkTo} 
                                     className={`
-                                        transition-all
-                                        text-sm font-medium text-wiseGrey4 
-                                        self-center 
-                                        ${expand ? 
-                                            'opacity-100' 
-                                            : 
-                                            'opacity-0 hidden'
-                                        }
+                                        nav-item
+                                        text-[16px] font-medium text-wiseGrey5/80 hover:text-wiseRose4
+                                        w-full py-3 px-4 mx-auto rounded-md gap-2 
+                                        ${expand ? 'hover:bg-wiseRose4/30' : ''}
                                     `}
-                                >
-                                    Dashboard
-                                </h1>
-                            </NavLink>
-                            <NavLink to="/create-ticket" 
-                            className={`
-                                    nav-item self-start flex flex-row 
-                                    w-9/10 py-1 px-2 rounded-2xl gap-2 
-                                    ${expand ? 'hover:bg-wiseGrey4/25 ml-4' : ''}
-                                `} 
-                            title='Create Issue'>
-                                <FontAwesomeIcon icon={faPenToSquare}/>
-                                <h1
-                                    className={`
-                                        transition-all
-                                        text-sm font-medium text-wiseGrey4 
-                                        self-center 
-                                        ${expand ? 
-                                            'opacity-100' 
-                                            : 
-                                            'opacity-0 hidden'
-                                        }
-                                    `}
-                                >
-                                    Create Issue
-                                </h1>
-                            </NavLink>
-                            <NavLink to='/admin-centre' 
-                            className={`
-                                    nav-item self-start flex flex-row 
-                                    w-9/10 py-1 px-2 rounded-2xl gap-2 
-                                    ${expand ? 'hover:bg-wiseGrey4/25 ml-4' : ''}
-                                `} 
-                            title='Admin Centre'>
-                                <FontAwesomeIcon icon={faScrewdriverWrench}/>
-                                <h1
-                                    className={`
-                                        transition-all
-                                        text-sm font-medium text-wiseGrey4 
-                                        self-center 
-                                        ${expand ? 
-                                            'opacity-100' 
-                                            : 
-                                            'opacity-0 hidden'
-                                        }
-                                    `}
-                                >
-                                    Admin Centre
-                                </h1>
-                            </NavLink>
+                                    title={link.label}>
+                                    <h1
+                                        className={`
+                                            transition-all
+                                            self-center 
+                                            ${expand ? 
+                                                'opacity-100' 
+                                                : 
+                                                'opacity-0 hidden'
+                                            }
+                                        `}
+                                    >
+                                        {link.label}
+                                    </h1>
+                                </NavLink>
+                            ))}
                         </div>
                         <div 
                             className={`
@@ -136,8 +76,8 @@ function Navbar() {
                             `}>
                             <h1 
                                 className='
-                                    font-base text-lg text-wiseGrey4/70
-                                    pb-2
+                                    font-base text-lg text-wiseGrey4/70 underline underline-offset-8
+                                    mb-4
                                 '>
                                 Recents
                             </h1>
@@ -150,6 +90,7 @@ function Navbar() {
                             </div>
                         </div>
                         <div 
+                            onClick={handleLogout}
                             className={`
                                 user-profile-section
                                 nav-item
@@ -160,14 +101,13 @@ function Navbar() {
                             <h1
                                 className={`
                                     text-base font-medium text-wiseGrey4
-                                    ${expand ? 'opacity-100' : 'opacity-0 hidden'}
                                 `}
                             >
                                 Logout
                             </h1>
                             <button onClick={handleLogout} 
                                 className={`
-                                    cursor-pointer
+                                    cursor-pointer text-wiseGrey5 text-lg
                                 `} 
                                 title='Logout'>
                                 <FontAwesomeIcon icon={faArrowRightFromBracket}/>
@@ -204,22 +144,18 @@ function Navbar() {
                             </NavLink>
                             <NavLink to="/login" 
                             className={`
-                                    nav-item self-start flex flex-row 
-                                    w-9/10 py-1 px-2 rounded-2xl gap-2 
-                                    ${expand ? 'hover:bg-wiseGrey4/25 ml-4' : ''}
+                                    self-start flex flex-row 
+                                    w-9/10 py-1 px-2 rounded-2xl gap-2  
                                 `} 
                             title='Login'>
-                                <FontAwesomeIcon icon={faUserLock}/>
+                                <FontAwesomeIcon icon={faUserLock}
+                                    className='text-wiseGrey4'
+                                />
                                 <h1
                                     className={`
                                         transition-all
                                         text-sm font-medium text-wiseGrey4 
                                         self-center 
-                                        ${expand ? 
-                                            'opacity-100' 
-                                            : 
-                                            'opacity-0 hidden'
-                                        }
                                     `}
                                 >
                                     Login

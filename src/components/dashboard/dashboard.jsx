@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useAppContext } from '../../context/authContext';
 import { TicketTable } from './sub-components/ticketTable';
 import { jwtDecode } from 'jwt-decode';
-import { useSearchParams } from 'react-router';
+import { Link, useSearchParams } from 'react-router';
 import { useTicketSearch } from '../../hooks/ticket-fetch/useTicketSearch';
 import { useGetAllTickets } from '../../hooks/ticket-fetch/useGetAllTickets';
 import { useGetTicketViewCounts } from '../../hooks/ticket-fetch/useGetTicketViewCounts';
+import { SearchBar } from './sub-components/SearchBar';
 
 function Dashboard() {
 
@@ -13,7 +14,11 @@ function Dashboard() {
 
     // Everything needed for initial render
     const activeView = searchParams.get('view');
-    const departmentTickets = useGetAllTickets();
+    const {
+        isGettingTickets, 
+        tickets,
+        errorGettingTickets
+    } = useGetAllTickets();
     const decodedJwt = jwtDecode(sessionStorage.getItem('auth-token'));
 
     const ticketCounts = useGetTicketViewCounts();
@@ -21,17 +26,17 @@ function Dashboard() {
     // Everything needed for view change and re-render
     const ticketsFromQuery = useTicketSearch(searchParams);
 
-    const ticketsForTable = activeView === 'team' ? departmentTickets : ticketsFromQuery.results;
+    const ticketsForTable = activeView === 'team' ? tickets : ticketsFromQuery.results;
 
     const views = ['team', 'assigned', 'raisedByUser', 'closed'];
-    const viewsText = (view) => {
+    const viewsText = (view, seq) => {
         return view === 'team' 
-        ? 'Team tickets'
+        ? "All Open Issues"
         : view === 'assigned'
-        ? 'My assigned tickets'
+        ? 'Assigned to Me'
         : view === 'raisedByUser' 
-        ? 'Tickets raised by me'
-        : 'Closed tickets'
+        ? 'Raised by Me'
+        : 'Resolved Issues'
     };
     const viewsParams = (view) => {
         return view === 'team' 
@@ -52,74 +57,105 @@ function Dashboard() {
     }
 
     return (
-        <div className='bg-wiseOffWhite min-h-screen max-h-screen'>
-            <div className='grid grid-cols-14'>
-                <div className='grid col-start-1 col-span-3'>
-                    <div className='flex flex-col'>
-                        <div className='bg-wiseGrey1'>
+        <div className='bg-wiseRose5/25 h-full min-w-275'>
+            <div className='grid grid-rows-[auto_1fr] gap-10 h-full py-5 mx-10'>
+
+                {/* Views Section */}
+                
+                <div className='flex flex-col'>
+                    <div className='flex flex-row just'>
+                        <div>
                             <h1 
-                                className='font-lato font-semibold text-wiseGrey5
-                                pl-5 text-2xl py-3'>
-                                Views
+                                className='font-lato font-semibold text-wiseGrey1
+                                text-3xl'>
+                                Dashboard
                             </h1>
+                            <p
+                                className={`
+                                        font-lato text- text-wiseGrey3 mt-2
+                                    `}
+                            >
+                                A clear view of incoming work, ownership and progress.
+                            </p>
                         </div>
-                        <div className='mt-5 grid gap-3'>
-                            {views.map((view) => (
-                                <div 
-                                    key={views.indexOf(view)}
-                                    onClick={() => setSearchParams(viewsParams(view))}
+                    </div>
+
+                    {/* Summary Stats */}
+                    <div className='mt-10 grid grid-cols-4'>
+                        {views.map((view) => (
+                            <div 
+                                key={views.indexOf(view)}
+        
+                                className={
+                                    `
+                                        flex flex-col justify-center px-8 py-5 gap-2 w-3/4
+                                        font-lato font-medium mr-3 rounded-2xl bg-white border border-wiseGrey4/20
+                                    `
+                                }
+                            >
+                                <h2
+                                    
                                     className={
                                         `
-                                            dashboard-view-link
-                                            cursor-pointer
-                                            flex flex-row justify-between
-                                            ${
-                                                activeView === view 
-                                                ? 'bg-wiseRose4/75 text-wiseRose1'
-                                                : ''
-                                            }
+                                        text-xl font-bold font-lato text-wiseGrey2 capitalize
                                         `
                                     }
                                 >
-                                    <h2
-                                        
-                                        className={
-                                            `
-                                            `
-                                        }
-                                    >
-                                        {viewsText(view)}
-                                    </h2>
-                                    <p
-                                        className={`
-                                            ${ticketCounts?.[view]?.[0]?.ticketCount
-                                            ? 'text-sm text-wiseOffWhite bg-wiseRose3 px-2 py-0.5 rounded-full'
-                                            : ''}
-                                        `}
-                                    >
-                                        {ticketCounts?.[view]?.[0]?.ticketCount ?? ''}
-                                    </p>
-                                </div>
-                            ))}
-                        </div>
+                                    {viewsText(view)}
+                                </h2>
+                                <p
+                                    className={`
+                                        font-extrabold text-wiseGrey2 text-4xl
+                                    `}
+                                >
+                                    {ticketCounts?.[view]?.[0]?.ticketCount ?? '0'}
+                                </p>
+                            </div>
+                        ))}
                     </div>
                 </div>
+
+                {/* Ticket Table */}
                 <div 
                     className='
-                        grid col-start-4 col-span-11 max-h-screen min-h-screen w-full
-                        content-start border-l border-wiseGrey1
+                        flex flex-col min-h-75 w-full bg-white border border-wiseGrey4/20
+                        rounded-2xl p-7 row-span-2 gap-6 flex-none
                         
                     '
                 >
-                    <div className='bg-wiseGrey1'>
+                    <div className='flex flex-col gap-6'>
                         <h1 
                             className='
-                                font-lato font-semibold ml-3
-                                text-2xl py-3 text-wiseGrey5
+                                font-lato font-semibold
+                                text-xl text-wiseGrey1
                             '
                         >
                             {viewsText(activeView)}
                         </h1>
+                        <div
+                            className={`
+                                    flex flex-row gap-4
+                                `}
+                        >
+                            {views.map((view) => (
+                                <button
+                                    key={views.indexOf(view)}
+                                    onClick={() => setSearchParams(viewsParams(view))}
+                                    className={`
+                                            ${activeView === view
+                                                ? 'bg-wiseRose4 text-wiseGrey2'
+                                                : 'bg-wiseGrey4/50 text-wiseGrey2/88'
+                                            }
+                                            px-4 py-2 rounded-lg cursor-pointer transition-all duration-150
+                                            hover:bg-wiseRose3/30
+                                            font-semibold flex-none
+                                        `}
+                                >
+                                    {viewsText(view)}
+                                </button>
+                            ))}
+                            <SearchBar/>
+                        </div>
                     </div>
                     <>
                         <TicketTable

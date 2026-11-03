@@ -74,10 +74,7 @@
 
   .nav-item {
     @apply 
-      text-wiseOffWhite
         font-lato
-        font-bold
-        text-2xl
         cursor-pointer
         transition
         delay-75
@@ -233,21 +230,6 @@
     hover:text-wiseRose1
   }
 
-  .dashboard-view-link {
-    @apply
-      cursor-pointer
-      ml-5
-      px-2 py-1
-      font-lato 
-      font-medium
-      mr-3
-      rounded-sm
-      transition-all
-      delay-75
-      duration-200
-      hover:text-wiseRose2
-      hover:bg-wiseRose4/50
-  }
 
 
    /* THIS IS FOR THE DASHBOARD PAGES*/
