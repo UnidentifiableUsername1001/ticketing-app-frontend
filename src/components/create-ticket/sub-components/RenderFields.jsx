@@ -27,7 +27,10 @@ function RenderFields ({field, updateHandlerNormal, formData, updateHandlerCusto
         return (
             <>
                 <input
-                    className="admin-form-control"
+                    className="
+                        bg-wiseRose4/15 p-4 rounded-md outline-none transition-all duration-150 font-lato
+                        hover:bg-wiseRose4/35 focus:bg-wiseRose4/35 
+                    "
                     type="text"
                     name={fieldName}
                     value={formData.fieldName}
@@ -42,7 +45,11 @@ function RenderFields ({field, updateHandlerNormal, formData, updateHandlerCusto
         return (
             <>
                 <input
-                    className=""
+                    className="
+                        w-fit p-3 bg-wiseRose5 rounded-md
+                        border border-wiseGrey4/20 outline-none
+                        hover:border-wiseRose4 focus:border-wiseRose4
+                    "
                     type="date"
                     name={fieldName}
                     value={formData.fieldName}

@@ -35,7 +35,9 @@ import { faComments,
 } from '@fortawesome/free-regular-svg-icons';
 
 import { 
-  faGear, 
+  faGear,
+  faCircleQuestion,
+  faArrowLeft, 
   faTrash, 
   faCubesStacked,
   faArrowUpFromBracket, 
@@ -55,6 +57,8 @@ import {
 
 
 library.add(
+  faArrowLeft,
+  faCircleQuestion,
   faCircleXmark,
   faUserLock,
   faScrewdriverWrench,

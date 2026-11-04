@@ -105,7 +105,7 @@ export function SearchBar() {
             className={
                 `
                     flex flex-col relative w-full
-                    font-lato
+                    font-lato ml-24
                 `
             }
         >

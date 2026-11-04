@@ -61,13 +61,12 @@ function Dashboard() {
             <div className='grid grid-rows-[auto_1fr] gap-10 h-full py-5 mx-10'>
 
                 {/* Views Section */}
-                
                 <div className='flex flex-col'>
-                    <div className='flex flex-row just'>
+                    <div className='flex flex-row'>
                         <div>
                             <h1 
-                                className='font-lato font-semibold text-wiseGrey1
-                                text-3xl'>
+                                className='font-lato font-extrabold text-wiseGrey1
+                                text-4xl'>
                                 Dashboard
                             </h1>
                             <p

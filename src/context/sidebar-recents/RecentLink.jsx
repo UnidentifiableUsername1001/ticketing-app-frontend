@@ -9,7 +9,7 @@ return (
     <div 
         className="
             cursor-pointer text-wiseGrey5/80
-            p-2 rounded-md font-lato
+            px-1 py-2  rounded-md font-lato
             transition-all
             hover:bg-wiseRose4/30 hover:text-wiseRose4
             "

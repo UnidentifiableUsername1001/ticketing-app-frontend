@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { config } from '../../../config';
 import { useQuery } from '@tanstack/react-query';
+import { HttpError } from '../../utils/errors'
 
 export function useGetAllTickets(searchParams) {
 
@@ -20,7 +21,19 @@ export function useGetAllTickets(searchParams) {
                 });
                 
             if (!response.ok) {
-                throw new Error(`HTTP error: Status ${response.status}, ${response.message}`);
+                
+                let errorData = null;
+                
+                try {
+                    errorData = await response.json();
+                } catch (e) {
+                    throw new Error("Response Wasn't JSON", { cause: e });
+                }
+
+                const errorMessage = errorData?.message || response.statusText || 'Request failed';
+
+                throw new HttpError(response.status, errorMessage, errorData);
+
             };
 
             const data = await response.json();
@@ -31,6 +44,7 @@ export function useGetAllTickets(searchParams) {
     return {
         tickets: queryResult.data ?? [],
         isGettingTickets: queryResult.isPending,
-        errorGettingTickets: queryResult.isError
+        errorGettingTickets: queryResult.isError,
+        theError: queryResult.error
     }
 };

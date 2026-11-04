@@ -4,14 +4,13 @@ import Select  from 'react-select';
 import { useCreateTicket } from "../../hooks/ticket-fetch/useCreateTicket";
 import useGetDepartments from '../../hooks/department-fetch/useGetDepartments';
 import { useGetOneDepartment } from '../../hooks/department-fetch/useGetOneDepartment';
-import useAssignableUsers from "../../hooks/user-fetch-hooks/useGetAllUsers";
 import { RenderFields } from "./sub-components/RenderFields";
 import { useSearchParams } from "react-router";
 import { useUploadAttachment } from "../../hooks/ticket-fetch/useUploadAttachment";
 import { ToastContext } from "../../context/toast-notification/ToastContext";
 import { style1 } from "../../hooks/assorted/react-select-styles";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleXmark } from "@fortawesome/free-regular-svg-icons";
+import { faArrowLeft, faCircleQuestion } from "@fortawesome/free-solid-svg-icons";
 
 function CreateTicket() {
 
@@ -69,9 +68,6 @@ function CreateTicket() {
                 value: {
                     typeName: 'General Enquiry',
                     fields: [
-                        {name: 'title', expectedType: 'String', required: true},
-                        {name: 'description', expectedType: 'Textarea', required: true},
-                        {name: 'file_upload', expectedType: 'fileUpload', required: true}
                     ]
                 }
             });
@@ -82,35 +78,44 @@ function CreateTicket() {
 
     const prepRenderFormState = (ticketTypeObj) => {
 
-        if (ticketTypeObj.value.typeName === 'General Enquiry') {
+    if (!ticketTypeObj?.value) return;
 
-            setTickTypeToRender({...ticketTypeObj});
+        const defaultLeadingFields = [
+            { name: 'title', 
+                expectedType: 'String', 
+                required: true, 
+                toolTiptext: 'Placeholder text to illustrate the function of this element' 
+            },
+            { name: 'description', expectedType: 'Textarea', required: true, toolTiptext: 'Placeholder text to illustrate the function of this element'  }
+        ];
 
-            setFormData({
-                ...formData,
-                departmentId: fetchedDept?._id,
-                ticketType: ticketTypeObj.value.typeName
-            })
+        const defaultTrailingFields = [
+            { name: 'file_upload', expectedType: 'fileUpload', required: true, toolTiptext: 'Placeholder text to illustrate the function of this element'  }
+        ];
 
-            return;
-        }
+        const customFields = ticketTypeObj.value.typeName === 'General Enquiry'
+            ? []
+            : (ticketTypeObj.value.fields || []);
 
-        ticketTypeObj.value.fields.unshift(
-            {name: 'title', expectedType: 'String', required: true},
-            {name: 'description', expectedType: 'Textarea', required: true},
-        );
-        
-        ticketTypeObj.value.fields.push(
-            {name: 'File Upload', expectedType: 'fileUpload', required: true}
-        )
+        const fieldsToRender = [
+            ...defaultLeadingFields,
+            ...customFields,
+            ...defaultTrailingFields
+        ];
 
-        setTickTypeToRender({...ticketTypeObj});
+        setTickTypeToRender({
+            label: ticketTypeObj.label,
+            value: {
+                ...ticketTypeObj.value,
+                fields: fieldsToRender
+            }
+        });
 
-        setFormData({
-            ...formData,
+        setFormData(prev => ({
+            ...prev,
             departmentId: fetchedDept?._id,
             ticketType: ticketTypeObj.value.typeName
-        })
+        }));
     }
 
 
@@ -184,23 +189,74 @@ function CreateTicket() {
         return string.replace(string[0], string[0].toUpperCase());   
     }
 
+    const [isFocused, setIsFocused] = useState(null);
+
 
     return (
-        <div className=' bg-wisePaleGrey'>
-            <div className={`transition-all w-7/9 py-7 mx-auto`}>
-                <form 
-                    onSubmit={handleSubmit} 
-                    className='grid grid-cols-7 gap-7
-                    text-bgMain'
+        <div className='bg-wiseRose5/25 h-full min-w-275'>
+            <div className={`transition-all grid grid-rows-[auto_1fr] gap-10 h-full py-5 mx-20`}>
+                
+                <div className='flex flex-row'>
+                    <div>
+                        <p
+                            className={`
+                                    font-lato text-sm text-wiseGrey3 mb-4
+                                `}
+                        >
+                            Workspace / Create Issue
+                        </p>
+                        <h1 
+                            className='font-lato font-extrabold text-wiseGrey1
+                            text-4xl'>
+                            Create Issue
+                        </h1>
+                        <p
+                            className={`
+                                    font-lato text- text-wiseGrey3 mt-2
+                                `}
+                        >
+                            Choose a team and request type to route your issue correctly.
+                        </p>
+                    </div>
+                </div>
+                
+                <div 
+                    className={`
+                        bg-white py-10 px-25 border border-wiseGrey4/20 rounded-2xl
+                        grid grid-rows-[auto_1fr] h-fit relative
+                    `}
                 >
+                    {fetchedDept && Object.keys(fetchedDept).length > 0 
+                        ? (
+                            <div
+                                className={`
+                                        absolute inset-7 flex flex-row font-lato gap-1 justify-items-center
+                                        text-wiseRose3 hover:text-wiseRose2 h-fit w-fit p-2 cursor-pointer
+                                        ${fetchedDept
+                                            ? ''
+                                            : 'hidden'
+                                        }
+                                    `}
+                                onClick={() => {
+                                    setFetchedDept(null)
+                                    setTickTypeToRender(null)
+                                }}
+                                title="Previous page"
+                            >
+                                <FontAwesomeIcon
+                                    icon={faArrowLeft}
+                                    className={`
+                                            text-4xl  
+                                        `}
+                                />
+                            </div>
+                        )
+                        : (<></>) 
+                    }
                     <div 
                         className={`
-                            grid ${
-                                allDepartments.length > 2
-                                ? 'grid-cols-3 gap-20'
-                                : 'grid-cols-2'
-                            }  
-                            col-start-2 col-span-5
+                            grid grid-cols-3 gap-10 font-lato mt-15
+                            
                             `}
                     >
                         {allDepartments.map((dept) => (
@@ -210,22 +266,20 @@ function CreateTicket() {
                                 className={
                                     `
                                         ${fetchedDept?.name === dept.label 
-                                            ? 'opacity-100 border scale-102 shadow-lg border-none shadow-wiseGrey1 bg-linear-to-br from-wiseGrey5 via-wiseRose4/10 to-wiseRose3/30'
-                                            : fetchedDept && Object.keys(fetchedDept).length !== 0
+                                            ? 'opacity-100 bg-wiseRose4/15 col-span-3'
+                                            : fetchedDept && Object.keys(fetchedDept).length > 0 
                                             ? 'hidden'
                                             : ''
                                         }
-                                        relative hover:bg-linear-to-br from-wiseGrey5 via-wiseRose4/10 to-wiseRose3/30
-                                        cursor-pointer h-25 w-7/10 grid gap-2
-                                        p-3 rounded-lg shadow-sm shadow-wiseGrey4
-                                        transition-all hover:scale-102
-                                        hover:shadow-wiseGrey2
+                                        cursor-pointer min-h-30 flex flex-col justify-center gap-2 p-4 rounded-lg transition-all duration-250
+                                        bg-wiseRose4/15 hover:bg-wiseRose4/45 border border-wiseGrey4/15
+
                                     `
                                 }
                                 >
                                     <h2
                                         className={`
-                                                font-lato font-semibold text-wiseRose3
+                                                font-lato font-semibold text-wiseRose3 text-xl
                                             `}
                                     >
                                         {dept.label}
@@ -233,7 +287,7 @@ function CreateTicket() {
                                     <p
                                         className={
                                             `
-                                                text-sm text-wiseGrey2/80
+                                                text-wiseGrey2/80
                                             `
                                         }
                                     >
@@ -242,115 +296,128 @@ function CreateTicket() {
                             </div>
                         ))}
                     </div>
-                    {fetchedDept && Object.keys(fetchedDept).length !== 0 ? (
-                        <>
-                            <div className='grid grid-cols-1 col-start-2 col-span-5 gap-2 font-lato'>
-                                <label 
-                                    className={`
-                                            font-light
-                                            text-2xl mb-4
-                                        `} 
-                                    htmlFor='ticketType'>
-                                    What type of request?
-                                </label>
-                                <div
-                                    className={`
-                                            border-l-2 border-wiseGrey2/25
-                                        `}
-                                >
-                                    {selectedDeptTickets.map((ticket) => (
-                                        <div
-                                            key={selectedDeptTickets.indexOf(ticket)}
-                                            onClick={() => prepRenderFormState(ticket)}
-                                            className={`
-                                                    flex flex-row
-                                                    ${tickTypeToRender?.label === ticket.label
-                                                        ? 'opacity-100 cursor-default px-1 py-2 transition-all ml-4 w-1/2'
-                                                        : tickTypeToRender && Object.keys(tickTypeToRender).length !== 0
-                                                        ? 'hidden'
-                                                        : 'cursor-pointer px-1 py-2 transition-all hover:bg-wiseGrey4/15 ml-4 w-1/2'
-                                                    }
-                                                `}    
+                    <div 
+                        className={`
+                            font-lato mt-15 flex flex-col shrink-0 gap-3
+                                ${fetchedDept
+                                    ? ''
+                                    : 'hidden'
+                                }
+                        `}>
+                        <div 
+                            className={`
+                                    font-semibold
+                                    text-2xl mb-3 flex flex-row gap-3
+                                `} 
+                            htmlFor='ticketType'>
+                            <span>Request Type: </span>
+                            {tickTypeToRender && Object.keys(tickTypeToRender).length > 0
+                                ? (
+                                    <>
+                                        
+                                        <span
+                                            className="text-wiseGrey3/80"
                                         >
-                                            <h2
+                                            [ {tickTypeToRender.label} ]
+                                        </span>
+                                    </>
+                                )
+                                : (
+                                    <>
+                                    
+                                    </>
+                                )
+                            }
+                        </div>
+                        <div
+                            className={`
+                                    flex flex-col gap-3 shrink-0
+
+                                `}
+                        >
+
+                            <Select 
+                                unstyled
+                                classNames={style1}
+                                options={selectedDeptTickets}
+                                value={tickTypeToRender}
+                                onChange={(selectedOption) => prepRenderFormState(selectedOption)}
+                            />
+                        </div>
+                    </div>
+
+                    <div className={`
+                            grid grid-cols-1 mt-10 gap-10
+                        `}>
+                        {tickTypeToRender?.value?.fields?.map((field, index) => (
+                            <>
+                                <div key={index} className="grid grid-cols-1 gap-3">
+                                    <div
+                                        className="flex flex-row gap-2"
+                                    >
+                                        <label 
+                                            htmlFor={field.name} 
+                                            className="
+                                                admin-form-label
+                                                flex flex-row
+                                            ">
+                                                {field.name == 'file_upload' 
+                                                    ? 'Attachments' 
+                                                    : makeUpperCase(field.name)}
+                                                {
+                                                    field.required ? (
+                                                        <span
+                                                            className="text-red-600"
+                                                        >
+                                                            *
+                                                        </span>
+                                                    ) : (<></>)
+                                                }
+
+                                        </label>
+                                        {field.toolTiptext ? (
+                                            <div
                                                 className={`
-                                                        text-wiseRose3 font-semibold
+                                                        relative
                                                     `}
                                             >
-                                                {ticket.label}
-                                            </h2>
-                                            {tickTypeToRender && Object.keys(tickTypeToRender).length !== 0 
-                                                ? (
                                                 <FontAwesomeIcon
-                                                    icon={faCircleXmark}
-                                                    onClick={() => setTickTypeToRender(null)}
+                                                    onMouseEnter={() => setIsFocused(index)}
+                                                    onMouseLeave={() => setIsFocused(null)} 
+                                                    icon={faCircleQuestion} 
+                                                    
+                                                />
+                                                <p
                                                     className={`
-                                                            m-auto cursor-pointer text-xl transition-all duration-150
-                                                            hover:text-wiseRose1
-                                                            text-wiseRose3
+                                                        absolute transition-all delay-300 duration-200
+                                                        bg-white shadow-md border border-wiseGrey4/50
+                                                        bottom-0 left-8 font-lato
+                                                        p-4 min-w-50 min-h-25
+                                                            ${isFocused === index
+                                                                ? 'opacity-100'
+                                                                : 'opacity-0'
+                                                            }
                                                         `}
-                                                />
-                                                ) : (<></>)
-                                            }
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                            {tickTypeToRender && Object.keys(tickTypeToRender).length !== 0 ? (
-                                <div className='grid grid-cols-1 col-start-2 col-span-5 gap-15'>
-                                    {tickTypeToRender?.value?.fields?.map((field, index) => (
-                                        <>
-                                            <div key={index} className="grid grid-cols-1 gap-3">
-                                                <label 
-                                                    htmlFor={field.name} 
-                                                    className="admin-form-label">
-                                                        {field.name == 'file_upload' 
-                                                            ? 'File Upload' 
-                                                            : 
-                                                            makeUpperCase(field.name)}
-                                                </label>
-                                                <RenderFields
-                                                    formData={formData}
-                                                    formStateFunc={setFormData}
-                                                    bodyTextState={setBodyText}
-                                                    field={field}
-                                                    updateHandlerNormal={handleNormalChange}
-                                                    updateHandlerCustom={handleCustAttrChange}
-                                                />
+                                                >
+                                                    {field.toolTiptext}
+                                                </p>
                                             </div>
-                                        </>
-                                    ))}
+                                        ) : (<></>) }
+
+                                    </div>
+                                    <RenderFields
+                                        formData={formData}
+                                        formStateFunc={setFormData}
+                                        bodyTextState={setBodyText}
+                                        field={field}
+                                        updateHandlerNormal={handleNormalChange}
+                                        updateHandlerCustom={handleCustAttrChange}
+                                    />
                                 </div>
-                                
-                            ) : (
-                                <div className='col-start-2 col-span-5 text-center text-wiseSkin/60 py-10 font-bold'>
-                                    Please select a ticket type.
-                                </div>
-                            )}
-                        </>
-                    ) : (
-                        <div className='col-start-2 col-span-5 text-center text-wiseSkin/60 py-10 font-bold'>
-                            Please start by selecting a department.
-                        </div>
-                    )}
-                    <div className='flex flex-row justify-between col-start-2 col-span-5 mt-10'>
-                        <button 
-                            type='button'
-                            onClick={() => {
-                                setFetchedDept(null)
-                                setTickTypeToRender(null)
-                            }}
-                            className={
-                                `
-                                    button2-no-width w-30
-                                    ${fetchedDept
-                                        ? ''
-                                        : 'hidden'
-                                    }
-                                `
-                            }>
-                                Close
-                        </button>
+                            </>
+                        ))}
+                    </div>
+                    <div className='flex flex-row justify-end mt-10'>
                         <button 
                             type='button'
                             onClick={(e) => handleSubmit(e)}
@@ -365,7 +432,7 @@ function CreateTicket() {
                                 {isUploading || isCreating ? 'Saving...' : 'Finish'}
                         </button>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
     )

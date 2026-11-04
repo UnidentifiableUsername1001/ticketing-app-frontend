@@ -73,15 +73,27 @@ export function FileUpload ({fieldName, formData, formStateFunc}) {
         <>
             <label htmlFor='file-upload' 
                 className='
-                    cursor-pointer p-1 
-                    h- border 
-                    bg-wiseGrey4/45 
-                    border-dashed border-bgMain/20
-                    text-center font-lato rounded-sm 
-                    transition hover:border-bgMain
-                    hover:bg-wiseGrey4 w-1/5'
+                    flex flex-col justify-center gap-2
+                    min-h-30 border  
+                    border-dashed border-wiseGrey4/50
+                    font-lato rounded-sm 
+                    transition hover:border-wiseGrey4'
             >
-                    Choose a File <span><FontAwesomeIcon icon={faArrowUpFromBracket}/></span>
+                    <span
+                        className='
+                            mx-auto
+                        '
+                    >
+                        Drag and drop files, or browse.
+                    </span>
+                    <span
+                        className='
+                            mx-auto border border-wiseGrey4/50 rounded-md py-1 px-4
+                            cursor-pointer transition-all duration-150 hover:bg-wiseGrey4/50
+                        '
+                    >
+                        Browse
+                    </span>
             </label>
             <input
                 type="file"
