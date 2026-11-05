@@ -145,60 +145,51 @@
     @apply
     cursor-pointer
     w-19/40
-    p-1
+    p-2
+    rounded-lg
     bg-wiseRose4
     text-lg
     font-normal
     transition
     duration-200
-    hover:bg-bgMain
-    hover:text-wiseDarkPink
-    hover:outline
-    hover:outline-offset-2
-    hover:outline-wiseSkin
+    hover:bg-wiseRose3
   }
 
   .button1-no-width {
     @apply
     cursor-pointer
-    p-0.5
+    p-2
+    rounded-lg
     bg-wiseRose4
     text-lg
     font-normal
     transition
     duration-200
-    hover:bg-bgMain
-    hover:text-wiseDarkPink
-    hover:outline
-    hover:outline-offset-2
-    hover:outline-wiseSkin
+    hover:bg-wiseRose3
   }
 
   .button1-loading {
     @apply
     cursor-not-allowed
-    p-0.5
-    bg-wiseGrey3
+    p-2
+    rounded-lg
+    bg-wiseGrey4
     text-lg
     font-normal
-    transition
-    duration-200
   }
 
   .button2-no-width {
     @apply
     cursor-pointer
-    p-0.5
+    p-2
+    rounded-lg
     bg-wiseGrey4
     text-lg
     font-normal
     transition
     duration-200
     hover:bg-wiseGrey3
-    hover:text-wiseGrey5
-    hover:outline
-    hover:outline-offset-2
-    hover:outline-wiseNavy3
+
   }
 
   .page-number-button {

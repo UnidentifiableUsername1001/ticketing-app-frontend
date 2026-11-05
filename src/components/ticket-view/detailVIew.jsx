@@ -1,20 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { config } from '../../../config';
 import Select from 'react-select';
 import { useNavigate, useParams } from 'react-router';
 import useAssignableUsers from '../../hooks/user-fetch-hooks/useGetAllUsers';
 import { jwtDecode } from 'jwt-decode';
-import { useAppContext } from '../../context/authContext';
 import {statusMapping} from '../../hooks/assorted/ticketConstants';
 import { useGetTicketById } from '../../hooks/ticket-fetch/useGetTicketById';
-import { useAddComment } from '../../hooks/ticket-fetch/useAddComment';
-import { useGetComments } from '../../hooks/ticket-fetch/useGetCommments';
 import { ReadOnlyEditor } from './sub-components/ReadOnlyEditor';
-import { RichTextEditor } from '../tip-tap-text-editor/TipTap';
 import { style1 } from '../../hooks/assorted/react-select-styles';
 import { NewComment } from './sub-components/CommentTile';
-import { colorRender } from '../../hooks/assorted/ticketConstants';
 import { useUpdateTicketMeta } from '../../hooks/ticket-fetch/useUpdateTicketMeta';
+import { calculateTimeElapsed } from '../../hooks/assorted/ticketConstants';
 
 function DetailView() {
 
@@ -35,9 +30,10 @@ function DetailView() {
     const { ticket, isGettingTicket, ticketFetchError } = useGetTicketById(params.ticketId);
     const { updateTicket, ticketUpdating, ticketUpdated, errorUpdatingTicket } = useUpdateTicketMeta()
 
-    const handleMetaSubmit = (e) => {
+    const decodedJwt = jwtDecode(sessionStorage.getItem('auth-token'));
+    const canEditMetaData = decodedJwt.user.department === ticket?.departmentId?._id || decodedJwt.user.role === 'Admin';
 
-        e.preventDefault();
+    const handleMetaSubmit = (e) => {
 
         let payload = {
             assignedUser: draftAssignee?.value,
@@ -51,71 +47,206 @@ function DetailView() {
 
     }
 
+    if (isGettingTicket) {
+        return (
+            <div className='flex items-center justify-center h-full bg-wiseRose5/25'>
+                <p className='font-lato text-wiseGrey3 text-lg animate-pulse'>
+                    Loading ticket details...
+                </p>
+            </div>
+        );
+    }
+
+    if (ticketFetchError || !ticket) {
+        return (
+            <div className='flex flex-col items-center justify-center h-full gap-4 bg-wiseRose5/25'>
+                <p className='font-lato text-wiseGrey1 font-semibold text-xl'>
+                    Unable to load ticket
+                </p>
+                <p className='font-lato text-wiseGrey3 text-sm'>
+                    {ticketFetchError?.message || 'The requested ticket could not be found.'}
+                </p>
+                <button 
+                    onClick={() => navigate('/dashboard')}
+                    className='button1-no-width px-4 py-1.5'
+                >
+                    Back to Dashboard
+                </button>
+            </div>
+        );
+    }
+
     return (
-        <div className='min-h-screen bg-wiseNavy5'>
-            <div className='grid grid-cols-20'>
-                <div className='col-span-8 col-start-4 col-end-13 p-8 rounded-sm'>
-                    <div className='flex flex-col gap-8'>
-                        <div className='flex flex-col gap-8'>
-                            <h1 className='font-wise font-bold text-2xl'>{ticket?.title ? ticket.title : 'No title'}</h1>
-                            <div className='grid gap-5'>
-                                <h3 className='font-lato font-semibold text-1xl'>Description</h3>
-                                <div className='border border-wiseGrey4/50 bg-wiseOffWhite'>{ticket?.description?.bodyText ? <ReadOnlyEditor inputText={ticket.description.bodyText}/> : 'Description loading...'}</div>
-                            </div>
-                        </div>
-                        <>
-                            <NewComment 
-                                urlParams={params.ticketId}
-                                mentionsStateFunc={setNewFollowers} />
-                        </>
-                    </div>    
+        <div className='h-full bg-wiseRose5/25 min-w-275'>
+            <div 
+                className='
+                    grid grid-rows-[auto_1fr]
+                    py-10 mx-10
+                    '>
+
+                {/* Title and initial meta data */}
+                <div className='flex flex-col'>
+                    <p
+                        className={`
+                                font-lato text-sm text-wiseGrey3 mb-4
+                            `}
+                    >
+                        Workspace / Issue Details
+                    </p>
+                    <h1 className='font-lato font-extrabold text-wiseGrey1 text-4xl'>
+                        {ticket?.title ? ticket.title : 'No title'}
+                    </h1>
+                    <p
+                        className={`
+                                font-lato text-wiseGrey3 mt-2
+                            `}
+                    >
+                       Issue #{ticket?.ticketNumber + ' '}
+                        - Created by {
+                            ticket?.createdBy?.firstName 
+                            + ' ' 
+                            + ticket?.createdBy?.lastName[0] +'.' 
+                            + ' ' 
+                            + '-' 
+                            + ' '  
+                            + calculateTimeElapsed(ticket?.updatedAt)}
+                    </p>
                 </div>
-                <div className='sidebar relative col-span-5 col-start-13 p-8 rounded-br-sm rounded-tr-sm'>
-                    <div className='flex flex-col gap-8'>
+
+                {/* Meta data editing and submission */}
+                <div 
+                    className={`
+                        grid grid-cols-[auto_0.5fr] gap-10
+                        mt-10
+                    `}>
+
+                    <div 
+                        className={`
+                            grid gap-3 min-w-175
+                            bg-white p-9 rounded-2xl
+                        `}>
+                        <h3 className='font-lato font-semibold text-xl'>Description</h3>
+                        <div className='overflow-auto h-fit border-b-2 border-wiseGrey4/30 mb-4'>
+                            {ticket?.description?.bodyText 
+                            ? <ReadOnlyEditor inputText={ticket?.description?.bodyText}/> 
+                            : 'Description loading...'}
+                        </div>
+                        <NewComment 
+                            urlParams={params.ticketId}
+                            mentionsStateFunc={setNewFollowers} />
+                    </div>
+                    
+                    {/* Meta Data */}
+                    <div 
+                        className={`
+                            inner-outer-most flex flex-col gap-8
+                            bg-white p-9 rounded-2xl h-fit
+                        `}>
+                        <h1
+                            className={`
+                                   font-lato text-2xl font-bold 
+                                `}
+                        >
+                            Issue Details
+                        </h1>
                         <div className='grid gap-3'>
-                            <h3 className='font-lato font-semibold text-1xl'>Status</h3>
-                            <p className='font-lato font-light text-lg'>{ticket?.status ? colorRender(ticket.status) : 'Failed to load'}</p>
+                            <h3 className='font-lato font-semibold text-lg'>Department</h3>
+                            <p className='
+                                font-lato font-light
+                                bg-wiseRose5 p-3 rounded-lg
+                            '>
+                                {ticket?.departmentId?.name}
+                            </p>
                         </div>
-                        <div>
-                            <h3 className='font-lato font-semibold text-1xl'>Assignee</h3>
-                            <p className='font-lato font-light text-lg'>{ticket?.assignedTo ? ticket.assignedTo.firstName + " " + ticket.assignedTo.lastName : 'Unnassigned'}</p>
+                        <div className='grid gap-3'>
+                            <h3 className='font-lato font-semibold text-lg'>
+                                Request Type
+                            </h3>
+                            <p className='
+                                font-lato font-light
+                                bg-wiseRose5 p-3 rounded-lg
+                            '>
+                                {ticket?.ticketType}
+                            </p>
                         </div>
-                        <form className='grid grid-cols-1 gap-8' onSubmit={handleMetaSubmit}>
-                            <div className=' font-lato grid gap-3 w-4/7 '>
-                                <label htmlFor='assignedUser' className='font-lato font-semibold text-1xl'>Change assigned user?</label>
-                                <Select
-                                    unstyled
-                                    value={draftAssignee}
-                                    options={assignableUsers}
-                                    onChange={(selectedOption) => setDraftAssignee(selectedOption)}
-                                    classNames={style1} />
-                            </div>
-                            <div className='grid gap-3 w-4/7'>
-                                <label htmlFor='status' className='font-lato font-semibold text-1xl'>Change status?</label>
+                        <div className='grid gap-3'>
+                            <h3 className='font-lato font-semibold text-lg'>Status</h3>
+                            <p className='
+                                font-lato font-light
+                                bg-wiseRose5 p-3 rounded-lg
+                            '>
+                                {ticket?.status}
+                            </p>
+                        </div>
+                        <div
+                            className='flex flex-col gap-2'
+                        >
+                            <h3 className='font-lato font-semibold text-lg'>
+                                Assignee
+                            </h3>
+                            <p className='
+                                font-lato font-light
+                                bg-wiseRose5 p-3 rounded-lg
+                            '>
+                                {ticket?.assignedTo 
+                                    ? ticket?.assignedTo?.firstName + " " + ticket?.assignedTo?.lastName 
+                                    : 'Unnassigned'}
+                            </p>
+                        </div>
+
+                        {/* quasi-form for meta data editing and submission */}
+                        {canEditMetaData
+                            ? (
+                                <div className=' font-lato grid gap-3'>
+                                    <label htmlFor='assignedUser' className='font-lato font-semibold text-lg'>
+                                        Change assigned user?
+                                    </label>
+                                    <Select
+                                        unstyled
+                                        value={draftAssignee}
+                                        options={assignableUsers}
+                                        onChange={(selectedOption) => setDraftAssignee(selectedOption)}
+                                        classNames={style1} />
+                                </div>
+                            )
+                            : (<></>)
+                        }
+                        {canEditMetaData
+                            ? (
+                                <div className='grid gap-3'>
+                                    <label htmlFor='status' className='font-lato font-semibold text-lg'>
+                                        Change status?
+                                    </label>
                                     <Select
                                         unstyled
                                         value={draftStatus}
                                         options={statusOptions}
                                         onChange={(selectedOption) => setDraftStatus(selectedOption)}
                                         classNames={style1} />
-                            </div>
-                            <div className=''>
-                                {ticketUpdating ? (
-                                    <button 
-                                        type='submit'
-                                        className='button1-loading w-32'>
-                                            Saving...
-                                    </button>
-                                ) : (
-                                    <button 
-                                        type='submit'
-                                        className='button1-no-width w-32'>
-                                            Submit
-                                    </button>
-                                ) }
- 
-                            </div>
-                        </form>
+                                </div>   
+                            )
+                            : (<></>)
+                        }
+                        <div className='flex justify-end'>
+                                <button 
+                                    type='button'
+                                    onClick={() => handleMetaSubmit()}
+                                    className={`
+                                            ${ticketUpdating
+                                                ? 'button1-loading w-32'
+                                                : 'button1-no-width w-32'
+                                            }
+                                        `}
+                                >
+                                        {ticketUpdating 
+                                            ? (
+                                                <span>Saving...</span>
+                                            ) 
+                                            : (
+                                                <span>Submit</span>
+                                            )}
+                                </button>
+                        </div>
                     </div>    
                 </div>
             </div>

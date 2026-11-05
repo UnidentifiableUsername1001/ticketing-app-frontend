@@ -59,38 +59,34 @@ export function NewComment({mentionsStateFunc, urlParams}) {
     
     return (
         <div className='grid gap-5'>
-            <div className='flex flex-col gap-2'>
-                <h3 className='font-lato font-semibold text-1xl'>Comments</h3>
+            <div className='flex flex-col gap-2 mb-4'>
+                <h3 className='font-lato font-semibold text-xl'>Conversation</h3>
             </div>
-            <div
-                onClick={() => setShowCommentInput(!showCommentInput)} 
-                className={`
-                    font-lato text-sm text-wiseGrey4 p-2 h-18 border border-wiseGrey4/50 
-                    cursor-text transition hover:text-wiseRose4 hover:border-wiseRose4
-                    bg-wiseOffWhite
-                    ${showCommentInput ? 'hidden opacity-0' : 'block opacity-100'}`
-                }
-                >
-                Add comment...
+            <div className='flex flex-col gap-8 overflow-auto max-h-114'>
+                {comments?.results && comments.results.length !== 0 ? comments.results.map((comment, index) => (
+                    <div key={index} className='border-b-2 border-wiseGrey4/30'>
+                        {comment ? (<>
+                            <div className=''>
+                                <span className='font-lato font-semibold'>
+                                    {comment.postedBy?.firstName + " " + comment.postedBy?.lastName + " "}
+                                </span>
+                                <span className='pl-2'>/</span>
+                                <span className='text-wiseGrey3 font-lato italic pl-2 text-sm'>
+                                    {new Date(comment.createdAt).toLocaleString()}
+                                </span>
+                            </div>
+                            <div className='font-lato'>
+                                <ReadOnlyEditor inputText={comment.bodyText}/>
+                            </div>                           
+                        </>) : (<></>)}
+                    </div>
+                )) : (
+                    <div className='text-wiseGrey4'>
+                        No comments to show...
+                    </div>
+                )}
             </div>
-            <div className={`grid gap-5 ${showCommentInput ? 'block opacity-100' : 'hidden opacity-0'}`}>
-                <RichTextEditor stateFunc={setNewComment}/>
-                <div className='relative'>
-                    <button 
-                        type='button'
-                        onClick={handleCommentSubmit} 
-                        className='button1-no-width left-0 w-40'>
-                            Save Comment
-                    </button>
-                    <button 
-                        type='button'
-                        onClick={() => setShowCommentInput(!showCommentInput)} 
-                        className='button2-no-width right-0 w-20 absolute'>
-                            Close
-                    </button>
-                </div>
-            </div>
-            <div className='grid grid-cols-3 mt-10'>
+            <div className='grid grid-cols-3'>
                 <div className={`flex justify-center col-start-2`}>
                     <div className='flex'>
                         <button 
@@ -127,30 +123,35 @@ export function NewComment({mentionsStateFunc, urlParams}) {
                     </div>
                 </div>
             </div>
-            <div className='flex flex-col p-6 gap-8 overflow-auto max-h-128 bg-wiseOffWhite border-t border-wiseGrey4/50'>
-
-                {comments?.results && comments.results.length !== 0 ? comments.results.map((comment, index) => (
-                    <div key={index} className='bg-wiseOffWhite border-l border-wiseGrey4 p-3 '>
-                        {comment ? (<>
-                            <div className=''>
-                                <span className='font-lato font-medium text-1xl border-b border-wiseGrey4'>
-                                    {comment.postedBy?.firstName + " " + comment.postedBy?.lastName + " "}
-                                </span>
-                                <span className='text-gray-500 font-lato italic pl-3 text-xs border-b border-wiseGrey4'>
-                                    {new Date(comment.createdAt).toLocaleString()}
-                                </span>
-                            </div>
-                            <div className='font-lato bg-wiseOffWhite'>
-                                <ReadOnlyEditor inputText={comment.bodyText}/>
-                            </div>                           
-                        </>) : (<></>)}
-                    </div>
-                )) : (
-                    <div className='text-wiseGrey4'>
-                        No comments to show...
-                    </div>
-                )}
+            <div
+                onClick={() => setShowCommentInput(!showCommentInput)} 
+                className={`
+                    font-lato text-wiseGrey3/80 p-4 h-30 border border-wiseGrey4/30 
+                    cursor-text transition hover:text-wiseRose4 hover:border-wiseRose4
+                    rounded-lg bg-wiseRose5/50
+                    ${showCommentInput ? 'hidden opacity-0' : 'block opacity-100'}`
+                }
+                >
+                Write a reply...
             </div>
+            <div className={`grid gap-5 ${showCommentInput ? 'block opacity-100' : 'hidden opacity-0'}`}>
+                <RichTextEditor stateFunc={setNewComment}/>
+                <div className='flex flex-row justify-between'>
+                    <button 
+                        type='button'
+                        onClick={() => setShowCommentInput(!showCommentInput)} 
+                        className='button2-no-width w-40'>
+                            Close
+                    </button>
+                    <button 
+                        type='button'
+                        onClick={handleCommentSubmit} 
+                        className='button1-no-width w-40'>
+                            Save Comment
+                    </button>
+                </div>
+            </div>
+
         </div>
     )
 }

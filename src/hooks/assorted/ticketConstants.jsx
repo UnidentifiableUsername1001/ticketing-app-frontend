@@ -8,6 +8,22 @@ function statusMapping() {
     return mappedArray;
 };
 
+const calculateTimeElapsed = (updateDate) => {
+    const dateNow = Date.now();
+    const dateUpdated = new Date(updateDate);
+    const delta = dateNow - dateUpdated;
+
+    const minsPassed = delta / 60000;
+
+    return minsPassed < 1 
+    ? 'Just now'
+    : minsPassed > 1 && minsPassed < 60
+    ? `${Math.floor(minsPassed)} mins ago`
+    : minsPassed >= 60 && minsPassed < 1440
+    ? `${Math.floor(minsPassed / 60)} hours ago`
+    : dateUpdated.toString().slice(0, 10);
+} 
+
 const colorRender = (status) => {
     if (status === 'Open') return (<span className="bg-red-500 rounded-md p-2 text-wiseOffWhite">{status}</span>);
     if (status === 'In progress') return (<span className="bg-yellow-500 rounded-md p-2 text-bgMain">{status}</span>);
@@ -56,5 +72,6 @@ export {
     statusMapping,
     expectedTypeMapping,
     dataSources,
-    colorRender
+    colorRender,
+    calculateTimeElapsed
 };

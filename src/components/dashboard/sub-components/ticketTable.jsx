@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { RecentsContext } from '../../../context/sidebar-recents/RecentsContext';
 import { useNavigate } from 'react-router-dom';
-import { sortIcon1, sortIcon2 } from '../../../hooks/assorted/react-icons';
+import { calculateTimeElapsed } from '../../../hooks/assorted/ticketConstants';
 
 export function TicketTable({tickets}) {
 
@@ -42,22 +42,6 @@ export function TicketTable({tickets}) {
                     {status}
                 </div>);
     }
-
-    const calculateTimeElapsed = (updateDate) => {
-        const dateNow = Date.now();
-        const dateUpdated = new Date(updateDate);
-        const delta = dateNow - dateUpdated;
-
-        const minsPassed = delta / 60000;
-
-        return minsPassed < 1 
-        ? 'Just now'
-        : minsPassed > 1 && minsPassed < 60
-        ? `${Math.floor(minsPassed)} mins ago`
-        : minsPassed >= 60 && minsPassed < 1440
-        ? `${Math.floor(minsPassed / 60)} hours ago`
-        : dateUpdated.toString().slice(0, 10);
-    } 
 
     return (
         <div className='overflow-auto'>
