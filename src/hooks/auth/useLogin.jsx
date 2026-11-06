@@ -36,10 +36,8 @@ export function useLogin () {
             sessionStorage.setItem('auth-token', data.authToken);
 
             if(location.pathname !== '/password-reset') {
-                navigate('/password-reset');
+                return window.location.href('/password-reset');
             }
-            
-            return;
 
         };
 

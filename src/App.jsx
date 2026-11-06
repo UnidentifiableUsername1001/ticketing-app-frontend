@@ -98,7 +98,7 @@ function App() {
         <div 
           className='flex flex-col h-screen overflow-hidden'>
             <div className={`
-                ${window.location.pathname.includes('register') || window.location.pathname.includes('login') || window.location.pathname.includes('homepage')
+                ${window.location.pathname.includes('homepage')
                   ? 'hidden' 
                   : ''}
                 flex flex-row gap-3 items-center py-7

@@ -17,7 +17,7 @@ export function PasswordReset () {
 
     const [newPassComparator, setNewPassComparator] = useState('');
 
-    const [error, setError] = useState(null);
+    const [showError, setShowError] = useState(null);
 
     const [inputType, setInputType] = useState('password');
     const [icon, setIcon] = useState(openEye);
@@ -46,7 +46,7 @@ export function PasswordReset () {
             return setError("Your new password can't be your old password");
         };
 
-        const tempToken = await loginFunc({
+        await loginFunc({
             email: resetForm.email,
             password: resetForm.oldPassword,
             voluntaryReset: true
@@ -59,124 +59,186 @@ export function PasswordReset () {
     }
 
     return (
-        <div className="register-login-components">
-            <div className="row-start-2 col-start-2 w-125">
-                <h2 className="text-center -mt-6 mb-3 font-wise text-wiseGrey1 text-3xl font-medium">Reset Password</h2>
-                <div className="bg-wiseOffWhite relative border border-wiseGrey4 flex flex-col p-8 py-15 gap-12 items-center">
-                    <div
+        <>
+            <h1
+                className="
+                    font-extrabold font-lato text-wiseGrey1
+                    text-4xl
+                "
+            >
+                Reset Your Password
+            </h1>
+            <div className="flex flex-col gap-2">
+                <label
+                    className="
+                        flex flex-row justify-between
+                    "
+                >
+                    <span
                         className="
-                            absolute
-                            self-start ml-2.5 -mb-8 text-wiseRose3 left-2 top-4
-                            cursor-pointer hover:text-wiseRose1 hover:underline"
-                        onClick={() => navigate('/login')}>
-                            {`< Login`}
-                    </div>
-                    <div className="flex flex-col gap-2 w-8/10">
-                        <input
-                            id="email"
-                            type="email"
-                            className="admin-form-control"
-                            placeholder="Enter your email"
-                            value={resetForm.email}
-                            onChange={(e) => setResetForm({...resetForm, email: e.target.value})}
-                        />
-                    </div>
-                    <div className="flex gap-2 w-8/10">
-                        <input
-                            id="password" w-full
-                            type={inputType}
-                            className="admin-form-control w-full"
-                            placeholder="Enter your old password"
-                            value={resetForm.oldPassword}
-                            onClick={() => setCurrPassInput('oldPassword')}
-                            onChange={(e) => setResetForm({...resetForm, oldPassword: e.target.value})}
-                        />
-                        {currPassInput === 'oldPassword' ? (
-                            <span
-                                className="flex justify-around items-center cursor-pointer"
-                                onClick={handlePassToggle}>
-                                {icon}
-                            </span>
-                        ) : (
-                            <></>
-                        )}
-                    </div>
-                    <div className="flex gap-2 w-8/10">
-                        <input
-                            id="password"
-                            type={inputType}
-                            className="admin-form-control w-full"
-                            placeholder="Enter your new password"
-                            value={resetForm.newPassword}
-                            onClick={() => setCurrPassInput('newPassword')}
-                            onChange={(e) => setResetForm({...resetForm, newPassword: e.target.value})}
-                        />
-                        {currPassInput === 'newPassword' ? (
-                            <span
-                                className="flex justify-around items-center cursor-pointer"
-                                onClick={handlePassToggle}>
-                                {icon}
-                            </span>
-                        ) : (
-                            <></>
-                        )}
-                    </div>
-                    <div className="flex gap-2 w-8/10">
-                        <input
-                            id="password"
-                            type={inputType}
-                            className="admin-form-control w-full"
-                            placeholder="Re-enter your new password"
-                            value={newPassComparator}
-                            onClick={() => setCurrPassInput('reenterPassword')}
-                            onChange={(e) => setNewPassComparator(e.target.value)}
-                        />
-                        {currPassInput === 'reenterPassword' ? (
-                            <span
-                                className="flex justify-around items-center cursor-pointer"
-                                onClick={handlePassToggle}>
-                                {icon}
-                            </span>
-                        ) : (
-                            <></>
-                        )}
-                    </div>
-                    <div className="subtext-section">
-                        {error ? (
-                            <>
-                                <p className="error-pop-up">
-                                    {error}
-                                </p>
-                            </>
-                        ) : (
-                            <>
-                            </>
-                        )}
-
-                    </div> 
-                    <div className="flex flex-row -mt-10">    
-                        <button type="button"
-                            onClick={() => handleSubmit()} 
-                            className="cursor-pointer
-                                        py-1 px-4
-                                        bg-wiseSkin
-                                        text-wiseGrey2
-                                        text-lg
-                                        font-normal
-                                        transition
-                                        duration-200
-                                        hover:bg-bgMain
-                                        hover:text-wiseDarkPink
-                                        hover:outline
-                                        hover:outline-offset-2
-                                        hover:outline-wiseSkin">
-                            Reset
-                        </button>
-                    </div>    
-                </div>
-                   
+                            font-lato text-wiseGrey1 font-semibold
+                        "
+                    >
+                        Email
+                    </span>
+                </label>
+                <input
+                    id="email"
+                    type="email"
+                    placeholder="Enter your email"
+                    value={resetForm.email}
+                    onChange={(e) => setResetForm({...resetForm, email: e.target.value})}
+                    className="
+                    bg-wiseRose4/15 p-4 rounded-md outline-none transition-all duration-150 font-lato
+                    hover:bg-wiseRose4/35 focus:bg-wiseRose4/35 
+                    "
+                />
             </div>
-        </div>
-    )
+            <div className="flex flex-col gap-2">
+                <label
+                    className="
+                        flex flex-row justify-between
+                    "
+                >
+                    <span
+                        className="
+                            font-lato text-wiseGrey1 font-semibold
+                        "
+                    >
+                        Password
+                    </span>
+                </label>
+                <input
+                    id="password"
+                    type={inputType}
+                    className="
+                        bg-wiseRose4/15 p-4 rounded-md outline-none transition-all duration-150 font-lato
+                        hover:bg-wiseRose4/35 focus:bg-wiseRose4/35 w-full
+                    "
+                    placeholder="Enter your old password"
+                    value={resetForm.oldPassword}
+                    onClick={() => setCurrPassInput('oldPassword')}
+                    onChange={(e) => setResetForm({...resetForm, oldPassword: e.target.value})}
+                />
+                {currPassInput === 'oldPassword' ? (
+                    <p
+                        className="
+                            cursor-pointer font-lato text-wiseRose3 font-bold transition-all duration-150
+                            hover:underline hover:text-wiseRose2
+                        "
+                        onClick={handlePassToggle}>
+                        Show password?
+                    </p>
+                ) : (
+                    <></>
+                )}
+            </div>
+            <div className="flex flex-col gap-2">
+                <label
+                    className="
+                        flex flex-row justify-between
+                    "
+                >
+                    <span
+                        className="
+                            font-lato text-wiseGrey1 font-semibold
+                        "
+                    >
+                        Enter your new password
+                    </span>
+                </label>
+                <input
+                    id="password"
+                    type={inputType}
+                    className="
+                        bg-wiseRose4/15 p-4 rounded-md outline-none transition-all duration-150 font-lato
+                        hover:bg-wiseRose4/35 focus:bg-wiseRose4/35 w-full
+                    "
+                    placeholder="Enter your new password"
+                    value={resetForm.newPassword}
+                    onClick={() => setCurrPassInput('newPassword')}
+                    onChange={(e) => setResetForm({...resetForm, newPassword: e.target.value})}
+                />
+                {currPassInput === 'newPassword' ? (
+                    <p
+                        className="
+                            cursor-pointer font-lato text-wiseRose3 font-bold transition-all duration-150
+                            hover:underline hover:text-wiseRose2
+                        "
+                        onClick={handlePassToggle}>
+                        Show password?
+                    </p>
+                ) : (
+                    <></>
+                )}
+            </div>
+            <div className="flex flex-col gap-2">
+                <label
+                    className="
+                        flex flex-row justify-between
+                    "
+                >
+                    <span
+                        className="
+                            font-lato text-wiseGrey1 font-semibold
+                        "
+                    >
+                        Re-enter your new password
+                    </span>
+                </label>
+                <input
+                    id="password"
+                    type={inputType}
+                    className="
+                        bg-wiseRose4/15 p-4 rounded-md outline-none transition-all duration-150 font-lato
+                        hover:bg-wiseRose4/35 focus:bg-wiseRose4/35 w-full
+                    "
+                    placeholder="Re-enter your new password"
+                    value={newPassComparator}
+                    onClick={() => setCurrPassInput('reenterPassword')}
+                    onChange={(e) => setNewPassComparator(e.target.value)}
+                />
+                {currPassInput === 'reenterPassword' ? (
+                    <p
+                        className="
+                            cursor-pointer font-lato text-wiseRose3 font-bold transition-all duration-150
+                            hover:underline hover:text-wiseRose2
+                        "
+                        onClick={handlePassToggle}>
+                        Show password?
+                    </p>
+                ) : (
+                    <></>
+                )}
+            </div>
 
+            <div className="subtext-section">
+                {showError ? (
+                    <>
+                        <p className="error-pop-up">
+                            {showError}
+                        </p>
+                    </>
+                ) : (
+                    <>
+                        {/* nothing to see here */}
+                    </>
+                )}
+
+            </div>
+            <div className="-mt-10">    
+                <button type="button"
+                    onClick={() => handleSubmit()} 
+                    className="cursor-pointer
+                                py-2 bg-wiseSkin rounded-lg
+                                text-wiseGrey1 text-xl font-normal
+                                transition w-full
+                                duration-200
+                                hover:bg-wiseRose3 
+                            ">
+                    Reset Password
+                </button>
+            </div>
+        </>
+    )
 }

@@ -36,7 +36,7 @@ function Navbar() {
                 ? (<>
                         <div className={` flex flex-col`}>
                             <h2
-                                className='font-base text-lg underline underline-offset-8 text-wiseGrey4/70 px-2 mb-2 '
+                                className='font-base text-lg text-wiseGrey4/70 px-2'
                             >
                                 Quick Links
                             </h2>
@@ -45,7 +45,7 @@ function Navbar() {
                                     className={`
                                         nav-item
                                         text-[16px] font-medium text-wiseGrey5/80 hover:text-wiseRose4
-                                        w-full py-3 px-2 rounded-md gap-2 
+                                        w-full py-3 px-4 rounded-md gap-2 
                                         ${expand ? 'hover:bg-wiseRose4/30' : ''}
                                     `}
                                     title={link.label}>
@@ -76,8 +76,8 @@ function Navbar() {
                             `}>
                             <h1 
                                 className='
-                                    font-base text-lg text-wiseGrey4/70 underline underline-offset-8
-                                    mb-4
+                                    font-base text-lg text-wiseGrey4/70 mb-2
+                                    
                                 '>
                                 Recents
                             </h1>

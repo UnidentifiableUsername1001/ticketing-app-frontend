@@ -264,7 +264,7 @@ export function Home() {
     };
 
     return (
-        <div className="flex-1 h-screen overflow-y-auto bg-wiseOffWhite text-wiseGrey1 font-lato selection:bg-wiseRose4 selection:text-wiseGrey1">
+        <div className="flex-1 h-screen overflow-y-auto bg-wiseRose5/25 text-wiseGrey1 font-lato selection:bg-wiseRose4 selection:text-wiseGrey1">
             {/* =========================================================
                 TOP STICKY SUB-NAVIGATION BAR
             ========================================================= */}
@@ -445,7 +445,7 @@ export function Home() {
             {/* =========================================================
                 2. TRUSTED BY LOGO STRIP
             ========================================================= */}
-            <section className="bg-wiseOffWhite py-12 px-6 lg:px-16 border-b border-wiseGrey5">
+            <section className="bg-wiseRose5/25 py-12 px-6 lg:px-16 border-b border-wiseGrey5">
                 <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-8">
                     <p className="text-xs font-bold uppercase tracking-wider text-wiseGrey3 max-w-[220px] text-center lg:text-left">
                         OVER 22,000 SERVICE TEAMS TRUST OUR PLATFORM
@@ -466,7 +466,7 @@ export function Home() {
             {/* =========================================================
                 3. VALUE PROPOSITION & CONNECTED WORKFLOW CARDS
             ========================================================= */}
-            <section className="py-20 px-6 lg:px-16 bg-wiseOffWhite">
+            <section className="py-20 px-6 lg:px-16 bg-wiseRose5/25">
                 <div className="max-w-6xl mx-auto">
                     {/* Centered Section Header */}
                     <div className="text-center max-w-3xl mx-auto flex flex-col items-center gap-5">
@@ -566,7 +566,7 @@ export function Home() {
             {/* =========================================================
                 4. METRICS & STATS SECTION
             ========================================================= */}
-            <section className="py-16 px-6 lg:px-16 bg-gradient-to-b from-wiseOffWhite via-wiseRose5/40 to-wiseOffWhite">
+            <section className="py-16 px-6 lg:px-16 bg-gradient-to-b from-wiseOffWhite via-wiseRose5/40 to-bg-wiseRose5/25">
                 <div className="max-w-5xl mx-auto text-center">
                     <h3 className="text-xl sm:text-2xl font-bold text-wiseGrey1 max-w-xl mx-auto mb-12">
                         Thousands of daily requests turned into streamlined, trackable outcomes.
@@ -593,7 +593,7 @@ export function Home() {
             {/* =========================================================
                 5. SPLIT SPOTLIGHT BANNER
             ========================================================= */}
-            <section className="py-16 px-6 lg:px-16 bg-wiseOffWhite">
+            <section className="py-16 px-6 lg:px-16 bg-wiseRose5/25">
                 <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
                     <div className="lg:col-span-6 flex flex-col gap-4">
                         <div className="flex items-center gap-2">

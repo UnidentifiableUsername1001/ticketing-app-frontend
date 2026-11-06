@@ -117,8 +117,8 @@ function Dashboard() {
                 {/* Ticket Table */}
                 <div 
                     className='
-                        flex flex-col min-h-75 w-full bg-white border border-wiseGrey4/20
-                        rounded-2xl p-7 row-span-2 gap-6 flex-none
+                        flex flex-col w-full bg-white border border-wiseGrey4/20
+                        rounded-2xl p-7 row-span-2 gap-6 flex-none h-fit
                         
                     '
                 >

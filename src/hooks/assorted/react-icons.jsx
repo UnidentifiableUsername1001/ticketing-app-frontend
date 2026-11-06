@@ -8,7 +8,7 @@ import {angleDoubleLeft} from 'react-icons-kit/fa/angleDoubleLeft'
 
 const PasswordIcon = 
     withBaseIcon({
-        className: 'absolute mr-10 text-wiseGrey3/90 transition hover:text-wiseGrey2',
+        className: 'text-wiseGrey3/90 transition hover:text-wiseGrey2',
         size: 20
 
     });
