@@ -6,7 +6,7 @@ export function InputTile({label, inputValue, updateHandler, type, customClass})
         <div
             className={
                 `
-                    flex flex-col gap-4 ${customClass?.div}
+                    ${customClass?.div}
                 `
             }
         >

@@ -39,7 +39,7 @@ function LoginPage() {
 
     return (
         <div className="h-screen bg-wiseRose5/25">
-            <div className="grid grid-rows-[auto_1fr] py-20 mx-45 relative">
+            <div className="grid grid-rows-[auto_1fr] pt-5 mx-auto max-w-300">
                 <div
                     className="
                         flex flex-col mb-6
@@ -47,13 +47,13 @@ function LoginPage() {
                 >
                     <h1
                         className="
-                            flex flex-row
+                            flex flex-row justify-start
                         "
                     >
                         <FontAwesomeIcon
                             icon={faArrowLeft}
                             className={`
-                                    font-lato gap-1 text-4xl absolute -ml-35 top-7
+                                    font-lato gap-1 text-4xl mb-5
                                     text-wiseRose3 hover:text-wiseRose2 h-fit w-fit p-2 cursor-pointer
                                 `}
                             onClick={() => navigate('/homepage')}
@@ -75,14 +75,15 @@ function LoginPage() {
                 </div>
                 
                 <div className="
-                        bg-white border border-wiseGrey4/30 grid grid-cols-[auto_1fr]
-                        min-h-200 rounded-3xl w-fit
+
+                        bg-white border border-wiseGrey4/30 grid lg:grid-cols-[auto_1fr]
+                        min-h-100 rounded-3xl min-w-fit lg:min-w-150
                     "
                 >
                     <div
                         className="
-                                flex flex-col gap-20 rounded-3xl
-                                bg-wiseGrey1 pl-16 py-12 min-w-160
+                                hidden lg:flex flex-col gap-20 rounded-3xl
+                                bg-wiseGrey1 px-14 py-12 
                         "
                     >
                         <h3
@@ -119,8 +120,8 @@ function LoginPage() {
                     </div>
                     <div
                         className={`
-                                py-20 px-30 flex flex-col
-                                min-w-250 gap-7
+                                py-10 px-30 flex flex-col
+                                gap-7 min-w-125
                             `}
                     >
                         {!showResetJSX

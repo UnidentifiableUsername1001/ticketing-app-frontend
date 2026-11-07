@@ -1,6 +1,9 @@
 import React, { Fragment, useState } from 'react';
 import { useCompanyRegistration } from '../../hooks/registration/useCompanyRegistration';
 import { InputTile } from './sub-components/InputTile';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { useNavigate } from 'react-router-dom';
 
 
 export function Registration() {
@@ -44,9 +47,17 @@ export function Registration() {
         }
     });
 
+    const navigate = useNavigate();
+
     const [stage, setStage] = useState(1);
 
-    const { companyRegFunc, companyRegError, companyRegPending, companyRegSuccess, companyErrorData } = useCompanyRegistration();
+    const { 
+        companyRegFunc, 
+        companyRegError, 
+        companyRegPending, 
+        companyRegSuccess, 
+        companyErrorData 
+    } = useCompanyRegistration();
 
     const handleSubmit = async () => {
         try {
@@ -120,363 +131,453 @@ export function Registration() {
     }
 
     return (
-        <div className='min-h-screen bg-wiseOffWhite bg-[url(/images/Dashboard-screenshot.png)]'>
+        <div className='h-full bg-wiseRose5/25'>
             <div
-                className={
-                    `
-                        grid grid-cols-5 min-h-screen place-content-start gap-10 pt-10
-                        font-lato bg-wiseGrey1/70 backdrop-blur-[2px]
-                    `
-                }
+                className='grid grid-rows-[auto_1fr] pt-5 mx-auto max-w-400'
+                
             >
                 <div
+                    className="
+                        flex flex-col mb-6 min-w-135
+                    "
+                >
+                    <h1
+                        className="
+                            flex flex-row
+                        "
+                    >
+                        <FontAwesomeIcon
+                            icon={faArrowLeft}
+                            className={`
+                                    font-lato gap-1 text-4xl -ml-3 mb-2
+                                    text-wiseRose3 hover:text-wiseRose2 h-fit w-fit p-2 cursor-pointer
+                                `}
+                            onClick={() => navigate('/homepage')}
+                        />
+                    </h1>
+                    <h2 
+                        className="
+                            font-lato text-wiseGrey1 mb-2
+                            text-3xl font-extrabold">
+                        Set your team up for success.
+                    </h2>
+                    <p
+                        className="
+                            font-lato text-wiseGrey3
+                        "
+                    >
+                        We're looking forward to helping you build a Wise team!
+                    </p>
+                </div>
+            
+                <div
                     className={
-                        ` 
-                            progress-bar
-                            relative flex justify-between items-center w-1/2 place-self-center  
-                            col-span-3 col-start-2
+                        `
+                            lg:grid lg:grid-cols-[auto_1fr]
+                            grid grid-cols-1
+                            font-lato gap-10
                         `
                     }
                 >
-                    <div
-                        className='absolute top-1/2 left-0 right-0 h-1 -translate-y-1/2 bg-wiseGrey4/5 z-0'
-                    />
+
+                    {/* 
+                    =====================
+                    Progress Bar Section
+                    =====================
+                    */}
                     <div
                         className={
-                            `
-                                absolute top-1/2 left-0 h-1 -translate-y-1/2 bg-wiseRose3
-                                transition-all duration-300 ease-in-out z-0 ${getLineWidth()}
+                            ` 
+                                progress-section bg-white rounded-3xl p-10
+                                lg:min-w-50 lg:flex lg:flex-col gap-7 h-fit text-sm
+                                flex flex-row min-w-135 justify-evenly border border-wiseGrey4/30
                             `
                         }
-                    />
-                    {[1,2,3].map((step) => {
-                        const isReached = stage >= step;
-                        return (
-                            <div
-                                key={step}
-                                onClick={() => setStage(step)}
+                    >
+                        <div
+                            className='
+                                w-full
+                            '
+                        >
+                            <h3
+                                onClick={() => setStage(1)}
                                 className={`
-                                        relative z-10 w-12 h-12 rounded-full flex items-center justify-center
-                                        cursor-pointer transition-all duration-300 text-2xl
-                                        ${
-                                            isReached
-                                                ? 'bg-wiseRose3 text-white delay-150'
-                                                : 'bg-wiseGrey5 text-wiseGrey4 delay-0'
+                                         p-2 rounded-xl lg:-ml-3
+                                         transition-all duration-150
+                                         hover:bg-wiseRose4 cursor-pointer
+                                        ${stage === 1
+                                            ? 'bg-wiseRose4/60'
+                                            : 'bg-wiseRose5'
                                         }
                                     `}
                             >
-                                {step}
-                            </div>
-                        )
-                    })}
-                </div>
-                <div
-                    className={
-                        `
-                            grid col-start-2 col-span-3 -mt-
-                            grid-cols-11
-
-                        `
-                    }
-                >
-                    <div 
-                        className={`
-                                col-start-3 col-span-7 grid
-                                ${stage === 1 ? 
-                                    'tranaition-all opacity-100' 
-                                    : 
-                                    'hidden opacity-0'
-                               }
-                            `}
-                    >
-                        <div 
-                            className={
-                                `
-                                    bg-wiseGrey5 grid grid-cols-1 gap-10 min-h-75/100
-                                    mb-5 p-10 rounded-sm border border-wiseGrey4/25 
-                                `
-                            }
-                        >
-                            <h1
-                                className={
-                                    `
-                                    text-center text-3xl w-6/10
-                                    border-b-2 border-wiseRose3 place-self-center
-                                    `
-                                }
-                            > 
-                                Tell us about your company
-                            </h1>
-                            <div
-                                className={
-                                    `
-                                        grid grid-cols-2 gap-10
-                                    `
-                                }
-                            >
-                                {Object.entries(regForm.companyData).map(([childKey, childValue]) => (
-                                    <InputTile
-                                        key={childKey}
-                                        label={labelText(childKey)}
-                                        inputValue={childValue.value}
-                                        updateHandler={(value) => {
-                                            handleInput(Object.keys(regForm)[0], childKey, value)
-                                        }}
-                                        customClass={{
-                                            div: 'nth-3:col-span-2',
-                                            label: 'admin-form-label',
-                                            input: 'admin-form-control'
-                                        }}
-                                        type={childValue.inputType}
-                                    />
-                                ))}
-                            </div>
-
-                            <button 
-                                type='button'
-                                className={
-                                    `
-                                    button1-no-width
-                                    w-20 h-10 text-center place-self-end
-                                    cursor-pointer
-                                    `
-                                }
-                                onClick={() => setStage((prev) => prev === 1 ? 2 : 1)}
-                            >
-                                Next
-                            </button>
+                                1. Your company
+                            </h3>
+                            
                         </div>
-                    </div>
-                    <div 
-                        className={`
-                                col-start-3 col-span-7 grid
-                                ${stage === 2 ? 
-                                    'opacity-100' : 
-                                    'hidden opacity-0'}
-                                `}
-                    >
-                        <div 
-                            className={
-                                `
-                                bg-wiseGrey5 grid grid-cols-2 gap-10 min-h-75/100
-                                mb-5 p-10 rounded-sm border border-wiseGrey4/25 
-                                `
-                            }
+                        <div
+                            className='
+                            w-full
+                            '
                         >
-                            <h1
-                                className={
-                                    `
-                                    text-3xl text-center col-span-2 w-5/10
-                                    border-b-2 border-wiseRose3 place-self-center
-                                    `
-                                }
-                            > 
-                                Now tell us about you
-                            </h1>
-                            {Object.entries(regForm.userData).map(([childKey, childValue]) => (
-                                <InputTile
-                                    key={childKey}
-                                    label={labelText(childKey)}
-                                    inputValue={childValue.value}
-                                    updateHandler={(value) => {
-                                        handleInput(Object.keys(regForm)[1], childKey, value)
-                                    }}
-                                    customClass={{
-                                        div: 'nth-4:col-span-2',
-                                        label: 'admin-form-label',
-                                        input: 'admin-form-control'
-                                    }}
-                                    type={childValue.inputType}
-                                />
-                        ))}
-                            <div className='grid grid-cols-2 col-span-2'>
-                                <button 
-                                    type='button'
-                                    className={
-                                        `
-                                        button1-no-width
-                                        place-self-start w-20 h-10 text-center
-                                        cursor-pointer
-                                        ${stage === 1 ? 
-                                            'hidden'
-                                            :
-                                            ''
+                            <h3
+                                onClick={() => setStage(2)}
+                                className={`
+                                         p-2 rounded-xl lg:-ml-3 transition-all duration-150
+                                         hover:bg-wiseRose4 cursor-pointer
+                                        ${stage === 2
+                                            ? 'bg-wiseRose4/60'
+                                            : 'bg-wiseRose5'
                                         }
-                                        `
-                                    }
-                                    onClick={() => setStage((prev) => prev === 3 ? 2 : 1)}
-                                >
-                                    Back
-                                </button>
-                                <button 
-                                    type='button'
-                                    className={
-                                        `
-                                        button1-no-width
-                                        w-20 h-10 text-center
-                                        place-self-end
-                                        cursor-pointer
-                                        `
-                                    }
-                                    onClick={() => {
-                                        stage !== 3 ? 
-                                            setStage((prev) => prev === 1 ? 2 : 3)
-                                            :
-                                            handleSubmit()
-                                    }}
-                                >
-                                    {stage === 1 || stage === 2 ? 'Next' : 'Finish'}
-                                </button>
-                            </div>
+                                    `}
+                            >
+                                2. About you
+                            </h3>
+                            
                         </div>
+                        <div
+                            className='w-full'
+                        >
+                            <h3
+                                onClick={() => setStage(3)}
+                                className={`
+                                         p-2 rounded-xl lg:-ml-3
+                                         transition-all duration-150
+                                         hover:bg-wiseRose4 cursor-pointer
+                                        ${stage === 3
+                                            ? 'bg-wiseRose4/60'
+                                            : 'bg-wiseRose5'
+                                        }
+                                    `}
+                            >
+                                3. Review
+                            </h3>
+                            
+                        </div>
+
                     </div>
                     <div
-                            className={
-                                `
-                                    col-start-2 col-span-9 grid
-                                    ${stage === 3
-                                        ? 'opacity-100'
-                                        : 'hidden opacity-0'
-                                    }
-                                `
-                            }
+                        className={
+                            `
+                                bg-white rounded-3xl p-10
+                                border border-wiseGrey4/30 
+                            `
+                        }
                     >
-                        <div
-                            className={
-                                `
-                                    bg-wiseGrey5 grid grid-cols-1 gap-10 max-h-85/100
-                                    mb-5 p-10 rounded-sm border border-wiseGrey4/25 
-                                `
-                            }
-                        >
-                            <h1
-                                className={
-                                    `
-                                    text-3xl text-center col-span-2 w-5/10
-                                    border-b-2 border-wiseRose3 place-self-center
-                                    `
+                        <div 
+                            className={`
+                                    
+                                    ${stage === 1 ? 
+                                        'tranaition-all opacity-100' 
+                                        : 
+                                        'hidden opacity-0'
                                 }
-                            > 
-                                Review Your Input
-                            </h1>
-                            <div
+                                `}
+                        >
+                            <div 
                                 className={
                                     `
-                                        grid grid-cols-1 
-                                        max-h-80/100 overflow-y-scroll
+                                        flex flex-col gap-8 
                                     `
                                 }
                             >
-                                {Object.entries(regForm).map(([parentKey, parentValue]) => (
-                                    <div 
-                                        key={parentKey}
-                                        className={
-                                            `
-                                                grid grid-cols-1
-                                                ${parentKey == 'companyData'
-                                                    ? 'col'
-                                                    : ''
-                                                }
-                                            `
-                                        }
-                                    >
-                                        <h2
-                                            className='
-                                                w-full border border-wiseGrey4 bg-wiseGrey4/40
-                                                text-md font-semibold text-center col-span-2 mb-5
-                                            '
-                                        >
-                                            {parentKey === 'companyData'
-                                                ? "Your Company's Details"
-                                                : "Your Details"
-                                            }
-                                        </h2>
-                                        <div
-                                            className={
-                                                `
-                                                    w-full grid grid-cols-2 mb-12 gap-4
-                                                    p-3 border border-wiseGrey4/25
-                                                `
-                                            }
-                                        >
-                                            {Object.entries(parentValue).map(([childKey, childValue]) => (
-                                                <div 
-                                                    key={childKey}
-                                                    className={`
-                                                            mb-4 grid grid-cols-1 gap-3
-                                                            p-2 
-                                                        `}
-                                                >
-                                                    <h3
-                                                        className=' text-wiseGrey1/60 font-bold'
-                                                    >
-                                                        {labelText(childKey)}
-                                                    </h3>
-                                                    <p
-                                                        className='
-                                                            p-1 pl-2 border-l border-wiseGrey3/50 text-wiseRose3
-                                                        '
-                                                    >
-                                                        {childValue.value}
-                                                    </p>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
+                                <h1
+                                    className={
+                                        `
+                                        text-2xl font-bold
+                                        `
+                                    }
+                                > 
+                                    Tell us about your company
+                                </h1>
+                                <div
+                                    className={
+                                        `
+                                            flex flex-col gap-10 px-4
+                                        `
+                                    }
+                                >
+                                    {Object.entries(regForm.companyData).map(([childKey, childValue]) => (
+                                        <InputTile
+                                            key={childKey}
+                                            label={labelText(childKey)}
+                                            inputValue={childValue.value}
+                                            updateHandler={(value) => {
+                                                handleInput(Object.keys(regForm)[0], childKey, value)
+                                            }}
+                                            customClass={{
+                                                div: 'flex flex-col gap-3',
+                                                label: 'font-lato text-wiseGrey1 font-semibold',
+                                                input: 'admin-form-control'
+                                            }}
+                                            type={childValue.inputType}
+                                        />
+                                    ))}
+                                </div>
 
-                            <div className='flex flex-row justify-between -mt-30 col-span-2'>
                                 <button 
                                     type='button'
                                     className={
                                         `
                                         button1-no-width
-                                        w-20 h-10 text-center
+                                        w-40 h-10 text-center place-self-end
                                         cursor-pointer
-                                        ${stage === 1 ? 
-                                            'hidden'
-                                            :
-                                            ''
-                                        }
                                         `
                                     }
-                                    onClick={() => setStage((prev) => prev === 3 ? 2 : 1)}
+                                    onClick={() => setStage((prev) => prev === 1 ? 2 : 1)}
                                 >
-                                    Back
+                                    Next
                                 </button>
-                                <button 
-                                    type='button'
+                            </div>
+                        </div>
+                        <div 
+                            className={`
+                                    ${stage === 2 ? 
+                                        'opacity-100' : 
+                                        'hidden opacity-0'}
+                                    `}
+                        >
+                            <div 
+                                className={
+                                    `
+                                        flex flex-col gap-5 
+                                    `
+                                }
+                            >
+                                <h1
                                     className={
                                         `
-                                        ${companyRegPending 
-                                            ? `
-                                                button1-loading
-                                                w-20 h-10 text-center
-                                                cursor-pointer                                                
-                                            `
-                                            : `
-                                                button1-no-width
-                                                w-20 h-10 text-center
-                                                cursor-pointer                                           
-                                            `
-                                        }
+                                            text-2xl font-bold
                                         `
                                     }
-                                    onClick={() => {
-                                        stage !== 3 ? 
-                                            setStage((prev) => prev === 1 ? 2 : 3)
-                                            :
-                                            handleSubmit()
-                                    }}
+                                > 
+                                    Now tell us about you
+                                </h1>
+                                <div
+                                    className='
+                                        grid grid-cols-2 gap-5 mb-4 px-4
+                                        
+                                    '
                                 >
-                                    {stage === 1 || stage === 2 ? 'Next' : 'Finish'}
-                                </button>
-                            </div>                        
+                                    {Object.entries(regForm.userData).map(([childKey, childValue]) => (
+                                        <InputTile
+                                            key={childKey}
+                                            label={labelText(childKey)}
+                                            inputValue={childValue.value}
+                                            updateHandler={(value) => {
+                                                handleInput(Object.keys(regForm)[1], childKey, value)
+                                            }}
+                                            customClass={{
+                                                div: 'flex flex-col gap-3 nth-[n+3]:col-span-2',
+                                                label: 'admin-form-label',
+                                                input: 'admin-form-control'
+                                            }}
+                                            type={childValue.inputType}
+                                        />
+                                    ))}
+                                </div>
+                                    
+                                <div className='grid grid-cols-2 col-span-2'>
+                                    <button 
+                                        type='button'
+                                        className={
+                                            `
+                                            button2-no-width
+                                            place-self-start w-40 h-10 text-center
+                                            cursor-pointer
+                                            ${stage === 1 ? 
+                                                'hidden'
+                                                :
+                                                ''
+                                            }
+                                            `
+                                        }
+                                        onClick={() => setStage((prev) => prev === 3 ? 2 : 1)}
+                                    >
+                                        Back
+                                    </button>
+                                    <button 
+                                        type='button'
+                                        className={
+                                            `
+                                            button1-no-width
+                                            w-40 h-10 text-center
+                                            place-self-end
+                                            cursor-pointer
+                                            `
+                                        }
+                                        onClick={() => {
+                                            stage !== 3 ? 
+                                                setStage((prev) => prev === 1 ? 2 : 3)
+                                                :
+                                                handleSubmit()
+                                        }}
+                                    >
+                                        {stage === 1 || stage === 2 ? 'Next' : 'Finish'}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                                className={
+                                    `
+                                        font-lato
+                                        ${stage === 3
+                                            ? ''
+                                            : 'hidden '
+                                        }
+                                    `
+                                }
+                        >
+                            <div
+                                className={
+                                    `
+
+                                    `
+                                }
+                            >
+                                <h1
+                                    className={
+                                        `
+                                            text-2xl font-extrabold mb-6
+                                        `
+                                    }
+                                > 
+                                    Review Your Input
+                                </h1>
+                                <div
+                                    className={
+                                        `
+                                            flex flex-col gap-4 px-4
+                                        `
+                                    }
+                                >
+                                    {Object.entries(regForm).map(([parentKey, parentValue]) => (
+                                        <div 
+                                            key={parentKey}
+                                            className={
+                                                `
+                                                    
+                                                    ${parentKey == 'companyData'
+                                                        ? ''
+                                                        : 'pt-4'
+                                                    }
+                                                `
+                                            }
+                                        >
+                                            <h2
+                                                className='
+                                                    text-lg  font-bold mb-6
+                                                '
+                                            >
+                                                {parentKey === 'companyData'
+                                                    ? "Your Company's Details"
+                                                    : "Your Details"
+                                                }
+                                            </h2>
+                                            <div
+                                                className={
+                                                    `
+                                                        w-full  
+                                                        grid grid-cols-2 gap-4 px-4
+                                                    `
+                                                }
+                                            >
+                                                {Object.entries(parentValue).map(([childKey, childValue]) => (
+                                                    <div 
+                                                        key={childKey}
+                                                        className={`
+                                                                grid grid-cols-1 gap-2
+                                                                ${childKey === 'companyAddress'
+                                                                    ? 'col-span-2'
+                                                                    : ''
+                                                                }
+                                                                 
+                                                            `}
+                                                    >
+                                                        <h3
+                                                            className={`
+                                                                    text-wiseGrey1/60 font-bold
+                                                                    ${childKey === 'password'
+                                                                    ? 'hidden'
+                                                                    : ''
+                                                                    } 
+                                                                `}
+                                                        >
+                                                            {labelText(childKey)}
+                                                        </h3>
+                                                        <p
+                                                            className={`
+                                                                text-wiseRose3 font-semibold text-sm
+                                                                bg-wiseRose5 p-2 rounded-xl min-h-10
+                                                                ${childKey === 'password'
+                                                                    ? 'hidden'
+                                                                    : ''
+                                                                } 
+                                                            `}
+                                                        >
+                                                            {childValue.value}
+                                                        </p>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+
+                                <div className='flex flex-row justify-between mt-8'>
+                                    <button 
+                                        type='button'
+                                        className={
+                                            `
+                                            button2-no-width
+                                            w-40 h-10 text-center
+                                            cursor-pointer
+                                            ${stage === 1 ? 
+                                                'hidden'
+                                                :
+                                                ''
+                                            }
+                                            `
+                                        }
+                                        onClick={() => setStage((prev) => prev === 3 ? 2 : 1)}
+                                    >
+                                        Back
+                                    </button>
+                                    <button 
+                                        type='button'
+                                        className={
+                                            `
+                                            ${companyRegPending 
+                                                ? `
+                                                    button1-loading
+                                                    w-40 h-10 text-center
+                                                    cursor-pointer                                                
+                                                `
+                                                : `
+                                                    button1-no-width
+                                                    w-40 h-10 text-center
+                                                    cursor-pointer                                           
+                                                `
+                                            }
+                                            `
+                                        }
+                                        onClick={() => {
+                                            stage !== 3 ? 
+                                                setStage((prev) => prev === 1 ? 2 : 3)
+                                                :
+                                                handleSubmit()
+                                        }}
+                                    >
+                                        {stage === 1 || stage === 2 ? 'Next' : 'Finish'}
+                                    </button>
+                                </div>                        
+                            </div>
                         </div>
                     </div>
+                
                 </div>
-            </div>
+            </div> 
         </div>
     )
 }

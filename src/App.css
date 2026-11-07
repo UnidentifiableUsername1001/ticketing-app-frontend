@@ -127,18 +127,8 @@
 
   .admin-form-control {
     @apply
-      bg-wiseNavy4/15
-      border-b
-      border-wiseSkin
-      outline-none
-      p-1.5
-      transition
-      duration-150
-      ease-in-out
-      hover:bg-wiseSkin/27
-      focus:outline-wiseRose1
-      focus:bg-wiseRose4/40
-      focus:text-wiseGrey1
+      bg-wiseRose4/15 p-4 rounded-md outline-none transition-all duration-150 font-lato
+      hover:bg-wiseRose4/35 focus:bg-wiseRose4/35 
   }
 
   .admin-form-button {
