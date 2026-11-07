@@ -194,7 +194,7 @@ function CreateTicket() {
 
     return (
         <div className='bg-wiseRose5/25 h-full min-w-275'>
-            <div className={`transition-all grid grid-rows-[auto_1fr] gap-10 h-full py-5 mx-20`}>
+            <div className={`transition-all grid grid-rows-[auto_1fr] gap-10 h-full py-5 mx-10`}>
                 
                 <div className='flex flex-row'>
                     <div>

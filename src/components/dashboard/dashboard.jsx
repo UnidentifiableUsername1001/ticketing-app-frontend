@@ -64,6 +64,13 @@ function Dashboard() {
                 <div className='flex flex-col'>
                     <div className='flex flex-row'>
                         <div>
+                            <p
+                                className={`
+                                        font-lato text-sm text-wiseGrey3 mb-4
+                                    `}
+                            >
+                                Workspace / Create Issue
+                            </p>
                             <h1 
                                 className='font-lato font-extrabold text-wiseGrey1
                                 text-4xl'>

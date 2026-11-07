@@ -59,9 +59,6 @@ export function NewComment({mentionsStateFunc, urlParams}) {
     
     return (
         <div className='grid gap-5'>
-            <div className='flex flex-col gap-2 mb-4'>
-                <h3 className='font-lato font-semibold text-xl'>Conversation</h3>
-            </div>
             <div className='flex flex-col gap-8 overflow-auto max-h-114'>
                 {comments?.results && comments.results.length !== 0 ? comments.results.map((comment, index) => (
                     <div key={index} className='border-b-2 border-wiseGrey4/30'>

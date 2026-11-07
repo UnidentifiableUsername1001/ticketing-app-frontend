@@ -81,36 +81,60 @@ function DetailView() {
             <div 
                 className='
                     grid grid-rows-[auto_1fr]
-                    py-10 mx-10
+                    py-5 mx-10
                     '>
 
                 {/* Title and initial meta data */}
-                <div className='flex flex-col'>
-                    <p
-                        className={`
-                                font-lato text-sm text-wiseGrey3 mb-4
-                            `}
+                <div className='flex flex-row justify-between'>
+                    <div
+                        className='flex flex-col'
                     >
-                        Workspace / Issue Details
-                    </p>
-                    <h1 className='font-lato font-extrabold text-wiseGrey1 text-4xl'>
-                        {ticket?.title ? ticket.title : 'No title'}
-                    </h1>
-                    <p
-                        className={`
-                                font-lato text-wiseGrey3 mt-2
-                            `}
-                    >
-                       Issue #{ticket?.ticketNumber + ' '}
-                        - Created by {
-                            ticket?.createdBy?.firstName 
-                            + ' ' 
-                            + ticket?.createdBy?.lastName[0] +'.' 
-                            + ' ' 
-                            + '-' 
-                            + ' '  
-                            + calculateTimeElapsed(ticket?.updatedAt)}
-                    </p>
+                        <p
+                            className={`
+                                    font-lato text-sm text-wiseGrey3 mb-4
+                                `}
+                        >
+                            Workspace / Issue Details
+                        </p>
+                        <h1 className='font-lato font-extrabold text-wiseGrey1 text-4xl'>
+                            {ticket?.title ? ticket.title : 'No title'}
+                        </h1>
+                        <p
+                            className={`
+                                    font-lato text-wiseGrey3 mt-2
+                                `}
+                        >
+                        Issue #{ticket?.ticketNumber + ' '}
+                            - Created by {
+                                ticket?.createdBy?.firstName 
+                                + ' ' 
+                                + ticket?.createdBy?.lastName[0] +'.' 
+                                + ' ' 
+                                + '-' 
+                                + ' '  
+                                + calculateTimeElapsed(ticket?.updatedAt)}
+                        </p>
+                    </div>
+                    <div className='content-end'>
+                            <button 
+                                type='button'
+                                onClick={() => handleMetaSubmit()}
+                                className={`
+                                        ${ticketUpdating
+                                            ? 'button1-loading w-32 h'
+                                            : 'button1-no-width w-32'
+                                        }
+                                    `}
+                            >
+                                    {ticketUpdating 
+                                        ? (
+                                            <span>Saving...</span>
+                                        ) 
+                                        : (
+                                            <span>Submit</span>
+                                        )}
+                            </button>
+                    </div>
                 </div>
 
                 {/* Meta data editing and submission */}
@@ -122,11 +146,11 @@ function DetailView() {
 
                     <div 
                         className={`
-                            grid gap-3 min-w-175
+                            grid gap-3 min-w-130
                             bg-white p-9 rounded-2xl
                         `}>
-                        <h3 className='font-lato font-semibold text-xl'>Description</h3>
-                        <div className='overflow-auto h-fit border-b-2 border-wiseGrey4/30 mb-4'>
+                        <h3 className='font-lato font-semibold text-xl'>Conversation</h3>
+                        <div className='overflow-auto h-fit border-b-4 border-wiseGrey4/30'>
                             {ticket?.description?.bodyText 
                             ? <ReadOnlyEditor inputText={ticket?.description?.bodyText}/> 
                             : 'Description loading...'}
@@ -140,7 +164,7 @@ function DetailView() {
                     <div 
                         className={`
                             inner-outer-most flex flex-col gap-8
-                            bg-white p-9 rounded-2xl h-fit
+                            bg-white p-9 rounded-2xl h-fit min-w-75
                         `}>
                         <h1
                             className={`
@@ -227,26 +251,6 @@ function DetailView() {
                             )
                             : (<></>)
                         }
-                        <div className='flex justify-end'>
-                                <button 
-                                    type='button'
-                                    onClick={() => handleMetaSubmit()}
-                                    className={`
-                                            ${ticketUpdating
-                                                ? 'button1-loading w-32'
-                                                : 'button1-no-width w-32'
-                                            }
-                                        `}
-                                >
-                                        {ticketUpdating 
-                                            ? (
-                                                <span>Saving...</span>
-                                            ) 
-                                            : (
-                                                <span>Submit</span>
-                                            )}
-                                </button>
-                        </div>
                     </div>    
                 </div>
             </div>
