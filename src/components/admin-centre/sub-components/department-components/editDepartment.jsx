@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import Select from 'react-select';
 import { useEditDepartment } from '../../../../hooks/department-fetch/useEditDepartment';
-import  useGetDepartments from '../../../../hooks/department-fetch/useGetDepartments';
+import { useGetDepartments } from '../../../../hooks/department-fetch/useGetDepartments';
 import { useGetOneDepartment } from '../../../../hooks/department-fetch/useGetOneDepartment';
 import { AddTicketType } from './addTicketType';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -13,7 +13,7 @@ export function EditDepartment() {
 
     const [formData, setFormData] = useState({});
     
-    const departments = useGetDepartments();
+    const { deptData, deptPending, errorGetting } = useGetDepartments();
     const [targetDeptId, setTargetDeptId] = useState(null);
     
     const [showForm, setShowForm] = useState(false);
@@ -117,7 +117,7 @@ export function EditDepartment() {
                             unstyled
                             classNames={style1}
                             value={targetDeptId}
-                            options={departments}
+                            options={deptData}
                             onChange={(selectedOption) => handleSetTargDept(selectedOption) } />
                     </div>
                     {formData && Object.keys(formData).length !== 0 ? (

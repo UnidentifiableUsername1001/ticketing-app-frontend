@@ -3,17 +3,7 @@ import Fuse from 'fuse.js';
 import { useGetAllTickets } from "../../../hooks/ticket-fetch/useGetAllTickets";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { RecentsContext } from "../../../context/sidebar-recents/RecentsContext";
-
-function useDebounce(value, delay) {
-    const [debounced, setDebounced] = useState(value)
-
-    useEffect(() => {
-        const timer = setTimeout(() => setDebounced(value), delay)
-        return () => clearTimeout(timer)
-    }, [value, delay])
-
-    return debounced
-}
+import { useDebounce } from "../../../hooks/assorted/useDebounce";
 
 export function SearchBar() {
 

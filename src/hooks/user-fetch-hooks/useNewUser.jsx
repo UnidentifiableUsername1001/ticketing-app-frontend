@@ -1,17 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext } from "react";
 import { config } from "../../../config";
+import { useMutation } from "@tanstack/react-query";
+import { ToastContext } from "../../context/toast-notification/ToastContext";
 
-export default function useNewUser(formData, setFormData) {
+export function useNewUser() {
 
-        const postUrl = `${config.backendUrl}/api/users/new-user`;
-        const jwtInStore = sessionStorage.getItem('auth-token');
+    const postUrl = `${config.backendUrl}/api/users/new-user`;
+    const jwtInStore = sessionStorage.getItem('auth-token');
+    const { addToast } = useContext(ToastContext);
 
-        const handleNewUser = async (e) => {
-        e.preventDefault();
-
-        try {
-
-            const pairsArray = Object.entries(formData);
+    const mutate = useMutation({
+        mutationFn: async (payload) => {
+    
+            const pairsArray = Object.entries(payload);
             const cleanPairs = pairsArray.filter((pair) => {
                 const sanitised = typeof pair[1] === 'string' ? pair[1].trim()  : pair[1]; 
                 switch(sanitised) {
@@ -50,23 +51,23 @@ export default function useNewUser(formData, setFormData) {
 
             if (!response.ok) {
                 throw new Error(`HTTP error: ${response.status} ${response.message}`);
-            };
+            };      
+        },
 
-            setFormData({
-                jobTitle: "",
-                firstName: "",
-                lastName: "",
-                email: "",
-                password: "",
-                passwordResetRequired: null,
-                departmentId: "",
-                role: ""
-            });
+        onSuccess: (data) => {
+            addToast({msg: `New user added!`, type: 'success'});
+        },
 
-        } catch (e) {
-            console.log(e);
+        onError: (error) => {
+            addToast({msg: error.message, type: 'error'});
+            console.log(error.message);
         }
-    };
 
-    return handleNewUser;
-};
+    })
+
+    return {
+        addUser: mutate.mutate,
+        isAdded: mutate.isSuccess,
+        errorAdding: mutate.isError
+    }
+} 

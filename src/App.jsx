@@ -12,6 +12,8 @@ import CreateTicket from './components/create-ticket/createTicket';
 import DetailView from './components/ticket-view/detailVIew';
 import Navbar from './components/navbar/navbar';
 import AdminCentre from './components/admin-centre/adminCentre';
+import { AdminTeams } from './components/admin-centre/sub-components/department-components/AdminTeams';
+import { AdminUsers } from './components/admin-centre/sub-components/user-components/AdminUsers';
 import { Registration } from './components/registration/Registration';
 import { PasswordReset } from './components/user-auth/PasswordReset';
 import { ToastProvider } from './context/toast-notification/ToastContext';
@@ -36,6 +38,7 @@ import { faComments,
 
 import { 
   faGear,
+  faBars,
   faCircleQuestion,
   faArrowLeft, 
   faTrash, 
@@ -52,12 +55,19 @@ import {
   faXmark, 
   faScrewdriverWrench,
   faArrowsLeftRightToLine,
-  faUserLock 
+  faUserLock,
+  faUsersGear,
+  faPeopleRoof,
+  faDesktop 
 } from '@fortawesome/free-solid-svg-icons';
 
 
 library.add(
   faArrowLeft,
+  faBars,
+  faDesktop,
+  faPeopleRoof,
+  faUsersGear,
   faCircleQuestion,
   faCircleXmark,
   faUserLock,
@@ -151,7 +161,18 @@ function App() {
                       <ProtectedRoute>
                         <AdminCentre/>
                       </ProtectedRoute>
-                    } />
+                    }>
+                      <Route path='users' element={
+                        <ProtectedRoute>
+                          <AdminUsers/>
+                        </ProtectedRoute>
+                      } />
+                      <Route path='teams' element={
+                        <ProtectedRoute>
+                          <AdminTeams/>
+                        </ProtectedRoute>
+                      } />
+                    </Route>
                   </Routes>
                 </div>
             

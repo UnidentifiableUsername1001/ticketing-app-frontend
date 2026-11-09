@@ -21,10 +21,7 @@ function useAssignableUsers() {
                 throw new Error(`HTTP error: Status ${response.status}, ${response.message}`);
             };
             const data = await response.json();
-            const mappedArray = data.userArray.map(({_id, firstName, lastName}) => ({
-                value: _id, 
-                label: firstName + " " + lastName}))
-            setAssignableUsers(mappedArray);
+            setAssignableUsers(data.userArray);
         } catch (e) {
             console.error('Error fetching data: ' + e);
         }

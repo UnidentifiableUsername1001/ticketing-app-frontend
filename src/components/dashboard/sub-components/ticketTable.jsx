@@ -49,7 +49,7 @@ export function TicketTable({tickets}) {
                 className='w-full text-left border-collapse'> 
                 <thead 
                     className='
-                    bg-wiseGrey4/25 rounded-2xl
+                    bg-wiseGrey4/25
                 '>
                     <tr className='text-wiseGrey3/80 font-lato text-lg *:shrink-0'>
                         <th 

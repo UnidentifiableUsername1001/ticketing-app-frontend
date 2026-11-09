@@ -128,7 +128,7 @@
   .admin-form-control {
     @apply
       bg-wiseRose4/15 p-4 rounded-md outline-none transition-all duration-150 font-lato
-      hover:bg-wiseRose4/35 focus:bg-wiseRose4/35 
+      hover:bg-wiseRose4/35 focus:bg-wiseRose4/35 border border-wiseRose3/10
   }
 
   .admin-form-button {
@@ -151,8 +151,6 @@
     p-2
     rounded-lg
     bg-wiseRose4
-    text-lg
-    font-normal
     transition
     duration-200
     hover:bg-wiseRose3
@@ -174,8 +172,6 @@
     p-2
     rounded-lg
     bg-wiseGrey4
-    text-lg
-    font-normal
     transition
     duration-200
     hover:bg-wiseGrey3

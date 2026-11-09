@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { config } from '../../../config';
+import { useQuery } from '@tanstack/react-query';
+import { HttpError } from '../../utils/errors';
+import { data } from 'react-router-dom';
 
-export default function useGetDepartments() {
-    const [allDepartments, setAllDepartments] = useState([]);
+export function useGetDepartments() {
+
     const url = `${config.backendUrl}/api/department/`;
     const jwtInStore = sessionStorage.getItem('auth-token');
+    
+    const queryResult = useQuery({
+        queryKey: ['departments'],
+        queryFn: async () => {
 
-    useEffect (() => {
-        const fetchDepartments = async () => {
-            try {
-                const response = await fetch(url, {
+            const response = await fetch(url, {
                     method: 'GET',
                     headers: {
                         Accept: 'application/JSON',
@@ -18,24 +22,30 @@ export default function useGetDepartments() {
                     }
                 });
 
-                if(!response.ok) {
-                    throw new Error(`HTTP error: ${response.status}, ${response.message}`);
+            if(!response.ok) {
+
+                let errorData = null;
+
+                try {
+                    errorData = await response.json();
+                } catch (e) {
+                    throw new Error(`Error received not JSON. Status: ${response.status}`)
                 }
 
-                const data = await response.json();
-                const mappedArray = data.departments.map(({_id, name}) => ({
-                    value: _id,
-                    label: name
-                }));
+                const errorMessage = errorData?.message || response.statusText || 'Request Failed';
 
-                setAllDepartments(mappedArray);
-            } catch (e) {
-                console.log(e);
+                throw new HttpError(response.status, errorMessage, errorData);
             }
-        };
 
-        fetchDepartments();
-    }, []);
+            const data = await response.json();
 
-    return allDepartments;
+            return data;
+        }
+    })
+
+    return {
+        deptData: queryResult.data,
+        errorGetting: queryResult.isError,
+        deptPending: queryResult.isPending
+    }
 }

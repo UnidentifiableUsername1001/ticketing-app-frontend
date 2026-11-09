@@ -2,7 +2,7 @@ import React from 'react'
 import { CreateDepartment } from './createDepartment';
 import { EditDepartment } from './editDepartment';
 
-export function DepartmentAmend() {
+export function AdminTeams() {
 
     return (
         <div className='grid gap-10'>

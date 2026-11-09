@@ -1,35 +1,78 @@
 import React, { useState, useEffect } from 'react';
-import useGetDepartments from '../../../../hooks/department-fetch/useGetDepartments';
-import { config } from '../../../../../config';
-import useNewUser from '../../../../hooks/user-fetch-hooks/useNewUser';
+import { useGetDepartments } from '../../../../hooks/department-fetch/useGetDepartments';
+import { useNewUser } from '../../../../hooks/user-fetch-hooks/useNewUser';
 import Select from 'react-select';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { style1 } from '../../../../hooks/assorted/react-select-styles';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
 
-export function NewUserForm() {
+export function NewUserForm({closeForm}) {
         const [newFormData, setNewFormData] = useState({
-        jobTitle: "",
         firstName: "",
         lastName: "",
+        jobTitle: "",
         email: "",
         password: "",
-        passwordResetRequired: null,
         departmentId: {},
         role: {}
     });
 
-    const departments = useGetDepartments();
+    const metaData = {
+        firstName: {
+            labelText: "First Name",
+            group: 1,
+        },
+        lastName: {
+            labelText: "Last Name",
+            group: 1,
+        },
+        email: {
+            labelText: "Email",
+            group: 1,
+        },
+        password: {
+            labelText: "Temporary Password",
+            group: 1,
+        },
+        jobTitle: {
+            labelText: "Job Title",
+            group: 2,
+        },
+        departmentId: {
+            labelText: "Department",
+            group: 2,
+        },
+        role: {
+            labelText: "Role",
+            group: 2,
+        },
+    };
 
-    const newUserHandler = useNewUser(newFormData, setNewFormData);
+    const [group, setGroup] = useState(1);
+
+    const { deptData, errorGettingrror, deptPending } = useGetDepartments();
+
+    const { addUser, isAdded, errorAdding } = useNewUser();
 
     const roleOptions = [
         {value: 'Admin', label: 'Admin'},
-        {value: 'Manager', label: 'Department Manager'},
+        {value: 'Manager', label: 'Team Manager'},
         {value: 'User', label: 'Standard user'}
     ];
+
+    const selectOptions = (key) => {
+        
+        if(key === 'role') return roleOptions
+        
+        return deptData?.departments?.map(({name, _id}) => (
+            {
+                label: name,
+                value: _id
+            }            
+        ))
+    }
     
-    const updateEventHandler = (event, setFormData) => {
+    const updateEventHandler = (event) => {
         let targetName = event.target.name;
         let targetValue = event.target.value;
 
@@ -46,110 +89,184 @@ export function NewUserForm() {
         })
     };
 
-    const [showForm, setShowForm] = useState(false);
+    const nextOrSubmit = () => {
+        group === 1 
+        ? setGroup(2)
+        : addUser(newFormData)
+    }
     
     return (
-        <div className='top-div grid grid-cols-1 gap-5 font-lato'>
-            <button type='button' className='form-dropDown-button' onClick={() => setShowForm(!showForm)}>
-                <div className='width-full flex flex-row justify-between relative z-10'>
-                    <span className=''>Add New User</span>
-                    <span className=''>
-                        {showForm === false ? 
-                            <><FontAwesomeIcon icon={faChevronDown}/></> 
-                            : 
-                            <><FontAwesomeIcon icon={faAngleUp}/></>}
-                    </span>
+        <div className={` 
+                bg-white w-200 mx-auto rounded-xl border border-wiseGrey4/25
+                p-7 font-lato grid grid-rows-[auto_1fr] gap-5 relative -top-10 shadow-xl
+            `}>
+            <div
+
+            >
+                <h2
+                    className='
+                        font-bold text-xl mb-3
+                    '
+                >
+                    Create new team member
+                </h2>
+                <p
+                    className='
+                        text-wiseGrey3/90
+                    '
+                >
+                    Get new team members up and running in just a couple of steps.
+                </p>
+            </div>
+            <div
+                className='
+                    grid grid-rows-[auto_1fr] gap-3
+                '
+            >
+                <div
+                    className='
+                        flex flex-col 
+                    '
+                >
+                    <h3
+                        className={`
+                                p-1 text-center flex flex-row gap-3
+                                ${group === 1 
+                                    ? ''
+                                    : 'hidden'
+                                }
+                            `}
+                    >
+                        <span
+                            className={`
+                                    bg-wiseRose4/40 p-1 rounded-full w-8 font-bold
+                                `}
+                        >
+                            1.
+                        </span>
+                        <span
+                            className='self-center font-semibold'
+                        >
+                            User profile
+                            
+                        </span>
+                        
+                    </h3>
+                    <h3
+                        className={`
+                                p-1 text-center flex flex-row gap-3
+                                ${group === 2 
+                                    ? ''
+                                    : 'hidden'
+                                }
+                            `}
+                    >
+                        <span
+                            className={`
+                                    bg-wiseRose4/40 p-1 rounded-full w-8 font-bold
+                                `}
+                        >
+                            2.
+                        </span>
+                        <span
+                            className='self-center font-semibold'
+                        >
+                            Department & Role
+                            
+                        </span>
+                        
+                    </h3>
                 </div>
-            </button>
-            <div className={` 
-                    ${showForm ? 'block opacity-100' : 'hidden opacity-0'}
-                    transition-all bg-wiseGrey5 p-7 border border-wiseGrey4
-                `}>
-                <form onSubmit={newUserHandler} className='grid grid-cols-7 gap-10 text-wiseGrey1'>
-                    <div className='grid grid-cols-1 col-start-2 col-span-5 gap-2'>
-                        <label htmlFor='firstName' className='admin-form-label'>First Name:</label>
-                        <input
-                            className='admin-form-control'
-                            type='text'
-                            name='firstName'
-                            value={newFormData.firstName}
-                            onChange={updateEventHandler}
-                            placeholder='John'
-                        />
-                    </div>
-                    <div className='grid grid-cols-1 col-start-2 col-span-5 gap-2'>
-                        <label htmlFor='lastName' className='admin-form-label'>Last Name:</label>
-                        <input
-                            className='admin-form-control'
-                            type='text'
-                            name='lastName'
-                            value={newFormData.lastName}
-                            onChange={updateEventHandler}
-                            placeholder='Smith'
-                        />
-                    </div>
-                    <div className='grid grid-cols-1 col-start-2 col-span-5 gap-2'>
-                        <label htmlFor='jobTitle' className='admin-form-label'> Job title:</label>
-                        <input
-                            className='admin-form-control'
-                            type='text'
-                            name='jobTitle'
-                            value={newFormData.jobTitle}
-                            onChange={updateEventHandler}
-                            placeholder='Technical Production Manager'
-                        />
-                    </div>
-                    <div className='grid grid-cols-1 col-start-2 col-span-5 gap-2'>
-                        <label htmlFor='email' className='admin-form-label'>Email:</label>
-                        <input
-                            className='admin-form-control'
-                            type='text'
-                            name='email'
-                            value={newFormData.email}
-                            onChange={updateEventHandler}
-                            placeholder='name@businessdomain.com'
-                        />
-                    </div>
-                    <div className='grid grid-cols-1 col-start-2 col-span-5 gap-2'>
-                        <label htmlFor='password' className='admin-form-label'> Password:</label>
-                        <input
-                            className='admin-form-control'
-                            type='text'
-                            name='password'
-                            value={newFormData.password}
-                            onChange={updateEventHandler}
-                            placeholder="Set a default password"
-                        />
-                    </div>
-                    <div className='grid grid-cols-1 col-start-2 col-span-5 gap-2'>
-                        <label htmlFor='department' className='admin-form-label'>Department:</label>
-                        <Select
-                            unstyled
-                            classNames={style1}
-                            value={newFormData.departmentId}
-                            options={departments}
-                            onChange={(selectedOption) => handleExplicitChange('departmentId', selectedOption)} />
-                    </div>
-                    <div className='grid grid-cols-1 col-start-2 col-span-5 gap-2'>
-                        <label htmlFor='role' className='admin-form-label'>Permission Level:</label>
-                        <div className='text-wiseNavy'>
-                            <Select
-                                unstyled
-                                classNames={style1}
-                                value={newFormData.role}
-                                options={roleOptions}
-                                onChange={(selectedOption) => handleExplicitChange('role', selectedOption)} />
+                <div
+                    className='
+                        grid grid-cols-2 gap-4 mx-7
+                        
+                    '
+                >
+                    {Object.entries(newFormData).map(([key, value], index) => (
+                        <div key={index}
+                            data-group={metaData[key].group}
+                            className={`
+                                flex flex-col gap-2 nth-[n+3]:col-span-2 
+                                ${group === metaData[key].group
+                                    ? ''
+                                    : 'hidden'
+                                }
+
+                            `}>
+                            <label
+                                className='
+
+                                '
+                            >
+                                {metaData[key].labelText}
+                            </label>
+                            {key === 'departmentId' || key === 'role'
+                                ? (
+                                    <Select
+                                        unstyled
+                                        classNames={style1}
+                                        value={newFormData[key]}
+                                        options={selectOptions(key)}
+                                        onChange={(selectedOption) => handleExplicitChange(key, selectedOption)} 
+                                            />
+                                )
+                                : (
+                                    <input
+                                        name={key}
+                                        type='text'
+                                        value={newFormData[key]}
+                                        onChange={updateEventHandler}
+                                        placeholder='Type here...'
+                                        className='admin-form-control'
+                                    />
+                                )
+                            }
                         </div>
-                    </div>
-                    <button 
-                        type='submit' 
-                        className='cursor-pointer p-1 bg-wiseSkin text-lg font-normal transition duration-200
-                            hover:bg-bgMain hover:text-wiseDarkPink hover:outline hover:outline-offset-2 hover:outline-wiseSkin 
-                            col-start-3 col-span-3 text-center'>
-                            Add User
-                    </button>
-                </form>
+                    ))}
+                </div>
+            </div>
+                <FontAwesomeIcon
+                    icon={faXmark}
+                    onClick={() => closeForm('')}
+                    className='
+                        absolute top-0 right-0 p-6
+                        text-3xl cursor-pointer transtion-all duration-150 hover:scale-110
+                        hover:text-wiseDarkPink
+                    '
+                />
+            <div
+                className='
+                    flex flex-row justify-between
+                '
+            >
+                <button
+                    type='button'
+                    onClick={() => setGroup((prev) => prev - 1)}
+                    className={`
+                        
+                        w-25 
+                        ${group === 1
+                            ? 'opacity-0'
+                            : 'button2-no-width opacity-100'
+                        }
+                    `}
+                >
+                    Back
+                </button>
+                <button 
+                    type='button'
+                    onClick={() => nextOrSubmit()} 
+                    className='
+                        button1-no-width w-25
+                    '>
+                        {group === 1
+                            ? 'Next'
+                            : 'Submit'
+                        }
+                </button>
             </div>
         </div>
+        
     )
 };

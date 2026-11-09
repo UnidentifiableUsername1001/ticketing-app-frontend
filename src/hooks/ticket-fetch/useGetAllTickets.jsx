@@ -18,7 +18,7 @@ export function useGetAllTickets(searchParams) {
                     'Content-Type': 'application/JSON',
                     Authorization: `Bearer ${jwtInStore}`
                 }
-                });
+            });
                 
             if (!response.ok) {
                 
