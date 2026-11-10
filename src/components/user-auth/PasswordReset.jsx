@@ -40,10 +40,10 @@ export function PasswordReset () {
     const handleSubmit = async () => {
 
         if (resetForm.newPassword !== newPassComparator) {
-            return setError("The new passwords don't match.");
+            return setShowError("The new passwords don't match.");
 
         } else if (resetForm.newPassword == resetForm.oldPassword) {
-            return setError("Your new password can't be your old password");
+            return setShowError("Your new password can't be your old password");
         };
 
         await loginFunc({
