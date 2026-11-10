@@ -5,7 +5,7 @@ import useAssignableUsers from '../../../../hooks/user-fetch-hooks/useGetAllUser
 import { UserSearchBar } from './UserSearchBar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
-import { NewUserForm } from './NewUserForm';
+import { NewUserForm } from './newUserForm';
 
 export function AdminUsers() {
 
