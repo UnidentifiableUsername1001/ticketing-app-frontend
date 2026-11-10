@@ -19,7 +19,7 @@ export function useFuseSearch(data = [], query, keys, fuseOptions, delay = 200) 
             keys: keys,
         })
         
-    }, [data])
+    }, [data, keys, fuseOptions])
 
     const displayItems = useMemo(() => {
         return debouncedQuery ? fuse.search(debouncedQuery).map(({item}) => item) : [];
