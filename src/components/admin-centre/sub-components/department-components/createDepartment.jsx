@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Select from 'react-select';
-import { useCreateDepartment } from '../../../../hooks/department-fetch/useCreateDepartment';
+import { useCreateDepartment } from '../../../../hooks/department-fetch/useDepartments';
 import { AddTicketType } from './addTicketType';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleUp, faChevronDown, faDeleteLeft, faXmark } from '@fortawesome/free-solid-svg-icons';
@@ -15,8 +15,8 @@ export function CreateDepartment() {
         }
     });
 
-    const newDeptHandler = useCreateDepartment(formData, setFormData);
-    
+    const { createDepartment, deptCreated, deptPending, deptError } = useCreateDepartment();
+
     const [showTicketType, setShowTicketType] = useState(false);
 
     const [showForm, setShowForm] = useState(false);
@@ -71,7 +71,7 @@ export function CreateDepartment() {
                     ${showForm ? 'block opacity-100' : 'hidden opacity-0'}
                     transition-all bg-wiseOffWhite p-7 border border-wiseGrey4
                 `}>
-                <form onSubmit={newDeptHandler} className='grid grid-cols-7 gap-10 text-wiseGrey1'>
+                <form className='grid grid-cols-7 gap-10 text-wiseGrey1'>
                     <div className='grid grid-cols-1 col-start-2 col-span-5 gap-2'>
                         <label htmlFor='name' className='admin-form-label'>Department Name:</label>
                         <input
@@ -152,7 +152,8 @@ export function CreateDepartment() {
                     </div>
                     <div className='grid grid-cols-1 col-start-5 col-end-9 justify-items-stretch'>
                         <button 
-                            type='submit' 
+                            type='button'
+                            onClick={() => createDepartment(formData)} 
                             className='admin-form-button justify-self-end'>
                                 Finish
                         </button>

@@ -1,8 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import Select from 'react-select';
-import { useEditDepartment } from '../../../../hooks/department-fetch/useEditDepartment';
-import { useGetDepartments } from '../../../../hooks/department-fetch/useGetDepartments';
-import { useGetOneDepartment } from '../../../../hooks/department-fetch/useGetOneDepartment';
+import { 
+    useGetDepartments, 
+    useEditDepartment, 
+    useGetOneDepartment } from '../../../../hooks/department-fetch/useDepartments';
 import { AddTicketType } from './addTicketType';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleUp, faChevronDown, faPenToSquare, faXmark } from '@fortawesome/free-solid-svg-icons';
@@ -12,30 +13,27 @@ import { style1 } from '../../../../hooks/assorted/react-select-styles';
 export function EditDepartment() {
 
     const [formData, setFormData] = useState({});
-    
-    const { deptData, deptPending, errorGetting } = useGetDepartments();
     const [targetDeptId, setTargetDeptId] = useState(null);
-    
     const [showForm, setShowForm] = useState(false);
-    const targetDepartment = useGetOneDepartment();
+
+    // For editing ticket types
+    const [showEditTicket, setShowEditTicket] = useState(null);
+    const [ticketToEdit, setTicketToEdit] = useState({});
+    
+    const { departments, departmentsPending, errorGetting } = useGetDepartments();
+    const { update, errorUpdating, isUpdating } = useEditDepartment();
+    const { deptData, deptError, deptPending } = useGetOneDepartment(targetDeptId);
 
     const handleSetTargDept = async (option) => {
-
-        setTargetDeptId(option);
-
-        const deptData = await targetDepartment(option);
-
+        setTargetDeptId(option._id);
         if (deptData && Object.keys(deptData).length !== 0) {
             setFormData({...deptData});
         }
     }; 
-    
-    const submitHandler = useEditDepartment(formData, setFormData, targetDeptId);
 
     const updateHandler = (event) => {
         const targetName = event.target.name;
         const targetValue = event.target.value;
-
         setFormData({
             ...formData,
             [targetName]:targetValue
@@ -68,11 +66,6 @@ export function EditDepartment() {
         setShowTicketType(bool);
     }
 
-    // For editing ticket types
-
-    const [showEditTicket, setShowEditTicket] = useState(null);
-    const [ticketToEdit, setTicketToEdit] = useState({});
-
     const handleEditTicketType = (newTypeData, index) => {
 
         const ticketTypes = formData.ticketTypes;
@@ -95,29 +88,19 @@ export function EditDepartment() {
 
     return (
         <div className='top-div grid grid-cols-1 gap-10 font-lato'>
-            <button type='button' className='form-dropDown-button' onClick={() => setShowForm(!showForm)}>
-                <div className='width-full flex flex-row justify-between relative z-10'>
-                    <span className=''>Edit Departments</span>
-                    <span className=''>
-                        {showForm === false ? 
-                            <><FontAwesomeIcon icon={faChevronDown}/></> 
-                            : 
-                            <><FontAwesomeIcon icon={faAngleUp}/></>}
-                    </span>
-                </div>
-            </button>
             <div className={` 
-                    ${showForm ? 'block opacity-100' : 'hidden opacity-0'}
-                    transition-all bg-wiseOffWhite p-7 border border-wiseGrey4
                 `}>
-                <form onSubmit={submitHandler} className='grid grid-cols-7 gap-10 text-wiseGrey1'>
+                <form className='grid grid-cols-7 gap-10 text-wiseGrey1'>
                     <div className='grid grid-cols-1 col-start-2 col-span-5 gap-2'>
                         <label className='admin-form-label' htmlFor='selectUser'>Select a department:</label>
                         <Select
                             unstyled
                             classNames={style1}
                             value={targetDeptId}
-                            options={deptData}
+                            options={departments.map(dept => ({
+                                label: dept.name,
+                                value: dept
+                            }))}
                             onChange={(selectedOption) => handleSetTargDept(selectedOption) } />
                     </div>
                     {formData && Object.keys(formData).length !== 0 ? (
@@ -214,7 +197,8 @@ export function EditDepartment() {
                             </div>
                             <div className='grid grid-cols-1 col-start-5 col-end-9 justify-items-stretch'>
                                 <button 
-                                    type='submit' 
+                                    type='button'
+                                    onClick={() => update()} 
                                     className='admin-form-button justify-self-end'>
                                         Finish
                                 </button>

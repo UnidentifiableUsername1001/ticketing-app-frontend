@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useGetDepartments } from '../../../../hooks/department-fetch/useGetDepartments';
+import { useGetDepartments } from '../../../../hooks/department-fetch/useDepartments';
 import { useNewUser } from '../../../../hooks/user-fetch-hooks/useNewUser';
 import Select from 'react-select';
 import { style1 } from '../../../../hooks/assorted/react-select-styles';
@@ -50,7 +50,7 @@ export function NewUserForm({closeForm}) {
 
     const [group, setGroup] = useState(1);
 
-    const { deptData, errorGettingrror, deptPending } = useGetDepartments();
+    const { departments, errorGetting, departmentsPending } = useGetDepartments();
 
     const { addUser, isAdded, errorAdding } = useNewUser();
 
@@ -64,7 +64,7 @@ export function NewUserForm({closeForm}) {
         
         if(key === 'role') return roleOptions
         
-        return deptData?.departments?.map(({name, _id}) => (
+        return departments?.departments?.map(({name, _id}) => (
             {
                 label: name,
                 value: _id

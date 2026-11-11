@@ -1,58 +1,65 @@
-import React from "react";
-import { useNavigate, useLocation } from "react-router-dom";
 import { config } from "../../../config";
 import { useAppContext } from "../../context/authContext";
+import { useMutation } from '@tanstack/react-query';
+import { HttpError } from "../../utils/errors";
 import { jwtDecode } from "jwt-decode";
 
-export function useLogin () {
-    const navigate = useNavigate();
-    const location = useLocation();
-    const {setIsLoggedIn} = useAppContext();
+export function useLogin (object) {
 
-    const lazyLoginFunc = async (loginData) => {
+    const { setIsLoggedIn } = useAppContext();
+    const url = `${config.backendUrl}/api/auth/login`;
 
-        const url = `${config.backendUrl}/api/auth/login`;
+    const login = useMutation({
+        mutationFn: async (payload) => {
 
-        try { 
             const response = await fetch(url, {
-            method: 'POST',
-            headers: {
-                Accept: 'application/JSON',
-                'Content-Type': 'application/json',
-            }, body: JSON.stringify(loginData) 
-        });
+                method: 'POST',
+                headers: {
+                    Accept: 'application/JSON',
+                    'Content-Type': 'application/json',
+                }, body: JSON.stringify(payload) 
+            });
 
-        const data = await response.json();
+            const data = await response.json();
 
-        if (!response.ok) {
-            throw new Error(`HTTP error: ${response.message}`)
-        };
+            if (!response.ok) {
+                
+                try {
+                    
+                } catch (e){
+                    throw new Error(`Error was not JSON. Status: ${response.status}`)
+                }
 
-        const decoded = jwtDecode(data.authToken);
+                const errorMessage = data?.message || response.statusText || 'Request failed';
 
-        // Set temp token in session and only navigate to /password-reset if not already there
-        if (decoded.user.scope == 'password_reset_only') {
+                throw new HttpError(response.status, errorMessage, data)
+            };
+            
+            setIsLoggedIn(true);
+
+            return data
+        },
+
+        onSuccess: (data) => {
+            const decodedJwt = jwtDecode(data.authToken);
 
             sessionStorage.setItem('auth-token', data.authToken);
 
-            if(location.pathname !== '/password-reset') {
-                return window.location.href('/password-reset');
-            }
+            if(decodedJwt.user.scope !== 'password_reset_only') setIsLoggedIn(true);
 
-        };
+            return {
+                scope: decodedJwt.user.scope,
+                response: data,
+            };
+        },
+    })
 
-        sessionStorage.setItem('auth-token', data.authToken);
-        sessionStorage.setItem('name', data.firstName + " " + data.lastName);
-        sessionStorage.setItem('email', data.email);
-
-        setIsLoggedIn(true);
-
-        navigate('/dashboard');
-
-        } catch (e) {
-            console.log('Error fetching details: ' + e);
-        }
+    return {
+        loginFunc: login.mutateAsync,
+        successData: login.data,
+        loggingIn: login.isPending,
+        loggedIn: login.isSuccess,
+        errorData: login.error,
+        isError: login.isError,
     }
-
-    return lazyLoginFunc;
 }

@@ -1,9 +1,7 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { usePasswordReset } from "../../hooks/user-fetch-hooks/usePasswordReset";
 import { useLogin } from "../../hooks/auth/useLogin";
-import { openEye, closedEye } from "../../hooks/assorted/react-icons";
-
 
 export function PasswordReset () {
 
@@ -20,22 +18,19 @@ export function PasswordReset () {
     const [showError, setShowError] = useState(null);
 
     const [inputType, setInputType] = useState('password');
-    const [icon, setIcon] = useState(openEye);
     const [currPassInput, setCurrPassInput] = useState('oldPassword');
 
     const handlePassToggle = () => {
         if (inputType === 'password') {
-            setIcon(closedEye);
             setInputType('text');
         } else {
-            setIcon(openEye);
             setInputType('password');
         };
     };
 
     const { resetPassFunc, isResetting, errorResetting } = usePasswordReset();
 
-    const loginFunc = useLogin();
+    const { loginFunc, successData, loggingIn, loggedIn, errorData, isError } = useLogin();
 
     const handleSubmit = async () => {
 

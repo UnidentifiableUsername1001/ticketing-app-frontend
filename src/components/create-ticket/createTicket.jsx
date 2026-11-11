@@ -2,8 +2,8 @@ import React, { useState, useEffect, useRef, useContext } from "react";
 import { useNavigate } from "react-router";
 import Select  from 'react-select';
 import { useCreateTicket } from "../../hooks/ticket-fetch/useCreateTicket";
-import { useGetDepartments } from "../../hooks/department-fetch/useGetDepartments";
-import { useGetOneDepartment } from '../../hooks/department-fetch/useGetOneDepartment';
+import { useGetDepartments } from "../../hooks/department-fetch/useDepartments";
+import { useGetOneDepartment } from '../../hooks/department-fetch/useDepartments';
 import { RenderFields } from "./sub-components/RenderFields";
 import { useSearchParams } from "react-router";
 import { useUploadAttachment } from "../../hooks/ticket-fetch/useUploadAttachment";
@@ -27,9 +27,7 @@ function CreateTicket() {
     const [bodyText, setBodyText] = useState(null);
 
     const { addToast } = useContext(ToastContext);
-
     const { createTicket, isCreating, creationError } = useCreateTicket();
-
     const { uploadFile, isUploading, uploadError } = useUploadAttachment();
 
     // Evaluates to react-select object post-call of prepRenderFormState e.g. {label: <string>, value: {<ticketTypeObject>}}
@@ -37,18 +35,20 @@ function CreateTicket() {
 
     const [fetchedDept, setFetchedDept] = useState(null)
     const [selectedDeptTickets, setSelectedDeptTickets] = useState(null);
+    const [deptId, setDeptId] = useState(null);
 
-    const { deptData, deptPending, errorGetting } = useGetDepartments();
-    const selectedDepartment = useGetOneDepartment();
+    const { departments, departmentsPending, errorGetting } = useGetDepartments();
+
+    const { deptData, deptPending, deptError } = useGetOneDepartment(deptId);
 
     // To make ticketTypes parsable by react-select
-    const mappedTypesArray = async (option) => {
+    const mappedTypesArray = async (dept) => {
 
-        const deptData = await selectedDepartment(option._id);
+        setDeptId(dept);
 
         setFetchedDept(deptData);
 
-        const ticketTypes = deptData.ticketTypes;
+        const ticketTypes = deptData?.ticketTypes;
 
         if(ticketTypes && ticketTypes.length !== 0) {
             const mappedArray = ticketTypes.map((type) => ({
@@ -252,9 +252,9 @@ function CreateTicket() {
                             
                             `}
                     >
-                        {deptData?.departments?.map((dept) => (
+                        {departments?.map((dept) => (
                             <div
-                                key={deptData?.departments?.indexOf(dept)}
+                                key={departments?.indexOf(dept)}
                                 onClick={() => mappedTypesArray(dept)}
                                 className={
                                     `

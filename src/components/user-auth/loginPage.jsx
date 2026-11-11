@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router";
 import { useLogin } from "../../hooks/auth/useLogin";
-import { openEye, closedEye } from "../../hooks/assorted/react-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { PasswordReset } from "./PasswordReset";
-
+import { ToastContext } from "../../context/toast-notification/ToastContext";
+import { jwtDecode } from "jwt-decode";
 
 function LoginPage() {
 
@@ -13,28 +13,43 @@ function LoginPage() {
         email: '',
         password: ''
     });
+
+    const {loginFunc, loggedIn, loggingIn, successData, errorData, isError} = useLogin();
+
+    const { addToast } = useContext(ToastContext);
     
-    const loginFunc = useLogin();
+    const [error, setError] = useState(null)
+    
     const navigate = useNavigate();
 
-    const [showError, setShowError] = useState('');
     const [showResetJSX, setShowResetJSX] = useState(false);
 
     const [inputType, setInputType] = useState('password');
-    const [icon, setIcon] = useState(openEye);
 
     const handlePassToggle = () => {
         if (inputType === 'password') {
-            setIcon(closedEye);
             setInputType('text');
         } else {
-            setIcon(openEye);
             setInputType('password');
         };
     };
 
-    const handleLogin = async (e) => {
-        loginFunc(loginData);
+    const handleLogin = async () => {
+        await loginFunc(loginData);
+
+        if(isError) {
+            setError(errorData.message);
+            console.log(errorData);
+        };
+
+        if(loggedIn && successData.scope === 'password_reset_only') {
+            addToast({msg: 'Password reset required', type: 'warn'});
+            return navigate('/password-reset');
+        }
+
+        addToast({msg: `Welcome ${successData?.firstName}!`, type: 'success'});
+        return navigate('/dashboard');
+
     }
 
     return (
@@ -231,10 +246,10 @@ function LoginPage() {
                                     </div>
 
                                     <div className="subtext-section">
-                                        {showError ? (
+                                        {error ? (
                                             <>
                                                 <p className="error-pop-up">
-                                                    {showError}
+                                                    {error}
                                                 </p>
                                             </>
                                         ) : (
@@ -247,13 +262,25 @@ function LoginPage() {
                                     <div className="-mt-10">    
                                         <button type="button"
                                             onClick={() => handleLogin()} 
-                                            className="cursor-pointer
+                                            className={`
+                                                ${loggingIn 
+                                                    ? `
+                                                        cursor-progress
+                                                        py-2 bg-wiseGre4/60 rounded-lg
+                                                        text-wiseGrey1 text-xl font-normal
+                                                        w-full
+                                                    `
+                                                    : `
+                                                        cursor-pointer
                                                         py-2 bg-wiseSkin rounded-lg
                                                         text-wiseGrey1 text-xl font-normal
                                                         transition w-full
                                                         duration-200
-                                                        hover:bg-wiseRose3 
-                                                    ">
+                                                        hover:bg-wiseRose3
+                                                    `
+                                                }
+                                                 
+                                                    `}>
                                             Login
                                         </button>
                                     </div>

@@ -23,7 +23,6 @@ export function UpdateUserForm(){
 
     const departments = useGetDepartments();
 
-    const allUsers = useAssignableUsers();
     const [targetUserId, setTargetUserId] = useState({});
     const { user } = useGetOneUser(targetUserId);
 
@@ -56,31 +55,12 @@ export function UpdateUserForm(){
 
     return (
         <div className='top-div grid grid-cols-1 gap-5 font-lato'>
-            <button type='button' className='form-dropDown-button' onClick={() => setShowForm(!showForm)}>
-                <div className='width-full flex flex-row justify-between relative z-10'>
-                    <span className=''>Edit Existing User</span>
-                    <span className=''>
-                        {showForm === false ? 
-                            <><FontAwesomeIcon icon={faChevronDown}/></> 
-                            : 
-                            <><FontAwesomeIcon icon={faAngleUp}/></>}
-                    </span>
-                </div>
-            </button>
+            
             <div className={` 
-                    ${showForm ? 'block opacity-100' : 'hidden opacity-0'}
-                    transition-all bg-wiseOffWhite shadow-wiseSkin p-7 border border-wiseGrey4
+
                 `}>
-                <form onSubmit={updateUserHandler} className='grid grid-cols-7 gap-10 text-wiseGrey1'>
-                    <div className='grid grid-cols-1 col-start-2 col-span-5 gap-2'>
-                        <label className='admin-form-label' htmlFor='selectUser'>Select a user:</label>
-                        <Select
-                            unstyled
-                            classNames={style1}
-                            value={targetUserId}
-                            options={allUsers}
-                            onChange={(selectedOption) => setTargetUserId(selectedOption)} />
-                    </div>
+                <div  className='grid grid-cols-7 gap-10 text-wiseGrey1'>
+
                     <div className='grid grid-cols-1 col-start-2 col-span-5 gap-2'>
                         <label className='admin-form-label' htmlFor='firstName'>First Name - <span className='text-wiseRose3'>Current: <span className='text-wiseRose1'>{user ? user.firstName : ""}</span></span></label>
                         <input
@@ -152,14 +132,15 @@ export function UpdateUserForm(){
                         </div>
                     </div>
  
-                 <button 
-                    type='submit' 
-                    className='cursor-pointer p-1 bg-wiseSkin text-lg font-normal transition duration-200
-                            hover:bg-bgMain hover:text-wiseDarkPink hover:outline hover:outline-offset-2 hover:outline-wiseSkin 
-                            col-start-3 col-span-3 text-center'>
-                        Update Details
-                </button>
-                </form>
+                    <button 
+                        type='button'
+                        onClick={() => updateUserHandler()} 
+                        className='cursor-pointer p-1 bg-wiseSkin text-lg font-normal transition duration-200
+                                hover:bg-bgMain hover:text-wiseDarkPink hover:outline hover:outline-offset-2 hover:outline-wiseSkin 
+                                col-start-3 col-span-3 text-center'>
+                            Update Details
+                    </button>
+                </div>
             </div>
         </div>
     )

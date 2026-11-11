@@ -3,7 +3,6 @@ import Select from 'react-select';
 import { useNavigate, useParams } from 'react-router';
 import useAssignableUsers from '../../hooks/user-fetch-hooks/useGetAllUsers';
 import { jwtDecode } from 'jwt-decode';
-import {statusMapping} from '../../hooks/assorted/ticketConstants';
 import { useGetTicketById } from '../../hooks/ticket-fetch/useGetTicketById';
 import { ReadOnlyEditor } from './sub-components/ReadOnlyEditor';
 import { style1 } from '../../hooks/assorted/react-select-styles';
@@ -22,7 +21,6 @@ function DetailView() {
     const [newFollowers, setNewFollowers] = useState(null);
 
     const assignableUsers = useAssignableUsers();
-    const statusOptions = statusMapping();
 
     const navigate = useNavigate();
     const params = useParams();
