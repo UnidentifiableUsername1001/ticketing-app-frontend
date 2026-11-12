@@ -1,32 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import { useAppContext } from '../../context/authContext';
 import { TicketTable } from './sub-components/ticketTable';
 import { jwtDecode } from 'jwt-decode';
-import { Link, useSearchParams } from 'react-router';
-import { useTicketSearch } from '../../hooks/ticket-fetch/useTicketSearch';
-import { useGetAllTickets } from '../../hooks/ticket-fetch/useGetAllTickets';
-import { useGetTicketViewCounts } from '../../hooks/ticket-fetch/useGetTicketViewCounts';
+import { useSearchParams } from 'react-router';
+import { useTicketSearch, useGetAllTickets, useGetTicketViewCounts } from '../../hooks/ticket-fetch/useTickets';
 import { SearchBar } from './sub-components/SearchBar';
 
 function Dashboard() {
-
     const [searchParams, setSearchParams] = useSearchParams({view: 'team'});
-
-    // Everything needed for initial render
     const activeView = searchParams.get('view');
-    const {
-        isGettingTickets, 
-        tickets,
-        errorGettingTickets
-    } = useGetAllTickets();
+
+    const { searchData, searching, searchError } = useTicketSearch(searchParams);
+    const { counts, countError, counting } = useGetTicketViewCounts(); 
+    const { isGettingTickets, tickets, errorGettingTickets } = useGetAllTickets();
     const decodedJwt = jwtDecode(sessionStorage.getItem('auth-token'));
 
-    const ticketCounts = useGetTicketViewCounts();
-
-    // Everything needed for view change and re-render
-    const ticketsFromQuery = useTicketSearch(searchParams);
-
-    const ticketsForTable = activeView === 'team' ? tickets : ticketsFromQuery.results;
+    const ticketsForTable = activeView === 'team' ? tickets : searchData.results;
 
     const views = ['team', 'assigned', 'raisedByUser', 'closed'];
     const viewsText = (view, seq) => {
@@ -114,7 +101,7 @@ function Dashboard() {
                                         font-extrabold text-wiseGrey2 text-4xl
                                     `}
                                 >
-                                    {ticketCounts?.[view]?.[0]?.ticketCount ?? '0'}
+                                    {counts?.[view]?.[0]?.ticketCount ?? '0'}
                                 </p>
                             </div>
                         ))}

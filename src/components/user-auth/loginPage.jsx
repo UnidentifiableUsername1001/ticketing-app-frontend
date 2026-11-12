@@ -47,7 +47,7 @@ function LoginPage() {
             return navigate('/password-reset');
         }
 
-        addToast({msg: `Welcome ${successData?.firstName}!`, type: 'success'});
+        addToast({msg: `Welcome ${successData?.firstName ?? ''}!`, type: 'success'});
         return navigate('/dashboard');
 
     }

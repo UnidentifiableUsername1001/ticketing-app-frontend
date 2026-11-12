@@ -3,12 +3,12 @@ import Select from 'react-select';
 import { useNavigate, useParams } from 'react-router';
 import useAssignableUsers from '../../hooks/user-fetch-hooks/useGetAllUsers';
 import { jwtDecode } from 'jwt-decode';
-import { useGetTicketById } from '../../hooks/ticket-fetch/useGetTicketById';
 import { ReadOnlyEditor } from './sub-components/ReadOnlyEditor';
 import { style1 } from '../../hooks/assorted/react-select-styles';
 import { NewComment } from './sub-components/CommentTile';
-import { useUpdateTicketMeta } from '../../hooks/ticket-fetch/useUpdateTicketMeta';
+import { useUpdateTicketMeta, useGetTicketById } from '../../hooks/ticket-fetch/useTickets';
 import { calculateTimeElapsed } from '../../hooks/assorted/ticketConstants';
+import { statusMapping } from '../../hooks/assorted/ticketConstants';
 
 function DetailView() {
 
@@ -21,6 +21,7 @@ function DetailView() {
     const [newFollowers, setNewFollowers] = useState(null);
 
     const assignableUsers = useAssignableUsers();
+    const statusOptions = statusMapping();
 
     const navigate = useNavigate();
     const params = useParams();
@@ -31,18 +32,14 @@ function DetailView() {
     const decodedJwt = jwtDecode(sessionStorage.getItem('auth-token'));
     const canEditMetaData = decodedJwt.user.department === ticket?.departmentId?._id || decodedJwt.user.role === 'Admin';
 
-    const handleMetaSubmit = (e) => {
+    const handleMetaSubmit = () => {
 
         let payload = {
-            assignedUser: draftAssignee?.value,
+            assignedTo: draftAssignee?.value,
             status: draftStatus?.value,
-            follower: newFollowers
+            followers: newFollowers
         };
-
-        updateTicket(payload, {
-             onSuccess: () => navigate('/dashboard')
-        });
-
+        updateTicket(payload);
     }
 
     if (isGettingTicket) {

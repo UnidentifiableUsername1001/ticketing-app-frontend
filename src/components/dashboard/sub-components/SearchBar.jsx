@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState, useContext, useRef } from "react";
 import Fuse from 'fuse.js';
-import { useGetAllTickets } from "../../../hooks/ticket-fetch/useGetAllTickets";
+import { useGetAllTickets } from "../../../hooks/ticket-fetch/useTickets";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { RecentsContext } from "../../../context/sidebar-recents/RecentsContext";
 import { useDebounce } from "../../../hooks/assorted/useDebounce";

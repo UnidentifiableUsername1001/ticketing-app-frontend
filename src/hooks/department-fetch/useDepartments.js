@@ -102,15 +102,10 @@ function useEditDepartment () {
             return data;
         },
         onMutate: async (updatedDepartment) => {
-
             await queryClient.cancelQueries({ queryKey: ['departments'] });
-
             const previousDepts = queryClient.getQueryData(['departments']);
-
             queryClient.setQueryData(['departments'], (old) => {
-                
                 return old.map((dept) => dept._id === updatedDepartment._id ? updatedDepartment : dept);
-                
             });
 
             return { previousDepts }
@@ -131,7 +126,6 @@ function useEditDepartment () {
 };
 
 function useGetDepartments() {
-    const queryClient = useQueryClient();
     const jwtInStore = sessionStorage.getItem('auth-token');
     const queryResult = useQuery({
         queryKey: ['departments'],

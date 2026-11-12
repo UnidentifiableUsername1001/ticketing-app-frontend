@@ -1,18 +1,20 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
 import { useNavigate } from "react-router";
 import Select  from 'react-select';
-import { useCreateTicket } from "../../hooks/ticket-fetch/useCreateTicket";
+import { useCreateTicket } from "../../hooks/ticket-fetch/useTickets";
 import { useGetDepartments } from "../../hooks/department-fetch/useDepartments";
 import { useGetOneDepartment } from '../../hooks/department-fetch/useDepartments';
 import { RenderFields } from "./sub-components/RenderFields";
 import { useSearchParams } from "react-router";
-import { useUploadAttachment } from "../../hooks/ticket-fetch/useUploadAttachment";
+import { useUploadAttachment } from "../../hooks/ticket-fetch/useTickets";
 import { ToastContext } from "../../context/toast-notification/ToastContext";
 import { style1 } from "../../hooks/assorted/react-select-styles";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faCircleQuestion } from "@fortawesome/free-solid-svg-icons";
 
 function CreateTicket() {
+    const { addToast } = useContext(ToastContext);
+    const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
         title: '',
@@ -24,21 +26,16 @@ function CreateTicket() {
         customAttributes: []
     });
 
-    const [bodyText, setBodyText] = useState(null);
-
-    const { addToast } = useContext(ToastContext);
-    const { createTicket, isCreating, creationError } = useCreateTicket();
-    const { uploadFile, isUploading, uploadError } = useUploadAttachment();
-
     // Evaluates to react-select object post-call of prepRenderFormState e.g. {label: <string>, value: {<ticketTypeObject>}}
     const [tickTypeToRender, setTickTypeToRender] = useState({})
-
     const [fetchedDept, setFetchedDept] = useState(null)
     const [selectedDeptTickets, setSelectedDeptTickets] = useState(null);
     const [deptId, setDeptId] = useState(null);
+    const [bodyText, setBodyText] = useState(null);
 
+    const { createTicket, isCreating, creationError, ticketErrorData, ticketSuccessData } = useCreateTicket();
+    const { uploadFile, isUploading, uploadError } = useUploadAttachment();
     const { departments, departmentsPending, errorGetting } = useGetDepartments();
-
     const { deptData, deptPending, deptError } = useGetOneDepartment(deptId);
 
     // To make ticketTypes parsable by react-select
@@ -142,10 +139,8 @@ function CreateTicket() {
         });
     };
 
-    const handleSubmit = async (e) => {
-
+    const handleSubmit = async () => {
         try {
-            e.preventDefault();
 
             let finalPayload;
 
@@ -157,8 +152,6 @@ function CreateTicket() {
             const mentionIds = Array.from(idArr).map(node => node.getAttribute('data-id'));
             
             const filePromises = formData.description.attachments.map((file) => uploadFile(file));
-
-
             const completedFileArray = await Promise.all(filePromises);
 
             finalPayload = {
@@ -170,11 +163,14 @@ function CreateTicket() {
                 }
             };
 
-            createTicket(finalPayload);
+            await createTicket(finalPayload);
+
+            addToast({msg: `Ticket #${ticketSuccessData.ticketNumber} created!`, type: 'success'});
+            navigate('/dashboard');
 
         } catch (e) {
-            console.log(e);
-            addToast({msg: `Error uploading: ${e}`, type: 'error'});
+            addToast({msg: e.message, type: 'error'});
+            return console.error(e);
         }
     };
 
@@ -413,7 +409,7 @@ function CreateTicket() {
                     <div className='flex flex-row justify-end mt-10'>
                         <button 
                             type='button'
-                            onClick={(e) => handleSubmit(e)}
+                            onClick={() => handleSubmit()}
                             disabled={isUploading || isCreating} 
                             className={`
                                 button1-no-width w-30

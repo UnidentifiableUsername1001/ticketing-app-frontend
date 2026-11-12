@@ -1,24 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams, useSearchParams } from 'react-router';
-import { useAppContext } from '../../../context/authContext';
-import { useAddComment } from '../../../hooks/ticket-fetch/useAddComment';
-import { useGetComments } from '../../../hooks/ticket-fetch/useGetCommments';
+import { useSearchParams } from 'react-router';
+import { useGetComments, useAddComment } from '../../../hooks/ticket-fetch/useTickets';
 import { ReadOnlyEditor } from './ReadOnlyEditor';
 import { RichTextEditor } from '../../tip-tap-text-editor/TipTap';
-import { useQueryClient } from '@tanstack/react-query';
 
 export function NewComment({mentionsStateFunc, urlParams}) {
 
     const [searchParams, setSearchParams] = useSearchParams();
-    const params = useParams();
 
     const [showCommentInput, setShowCommentInput] = useState(false);
     const [newComment, setNewComment] = useState(null);
     
-    const { comments, isGettingComments, errorGettingComments } = useGetComments(urlParams, searchParams);
+    const { comments, isGettingComments, errorGettingComments } = useGetComments(searchParams);
     const { addComment, isAdding, errorAdding, commentAdded } = useAddComment();
-
-    const queryClient = useQueryClient();
 
     const pageSelect = (event) => {
         setSearchParams({page: event.target.value});
