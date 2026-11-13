@@ -1,7 +1,6 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { useNavigate } from "react-router";
+import { useState, useRef, useEffect } from 'react';
 import { useFuseSearch } from '../../../../hooks/assorted/useFuseSearch';
-import useAssignableUsers from '../../../../hooks/user-fetch-hooks/useGetAllUsers';
+import { useGetAllUsers } from '../../../../hooks/user-fetch-hooks/useUsers';
 import { UserSearchBar } from './UserSearchBar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
@@ -47,7 +46,7 @@ export function AdminUsers() {
         },
     ]
 
-    const allUsers = useAssignableUsers();
+    const { allUsers, allUsersError, allUsersPending } = useGetAllUsers();
 
     const searchResults = useFuseSearch(allUsers, searchQuery, fuseKeys);
 
@@ -279,7 +278,7 @@ export function AdminUsers() {
                                             {user.email}
                                         </td>
                                         <td className='py-2 px-3'>
-                                            {user?.departmentId?.name}
+                                            {user?.departmentId?.name }
                                         </td>
                                         <td className='py-2 px-3'>
                                             {user.role}

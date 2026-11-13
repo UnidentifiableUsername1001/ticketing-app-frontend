@@ -1,11 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import useGetDepartments from '../../../../hooks/department-fetch/useGetDepartments';
-import useAssignableUsers from '../../../../hooks/user-fetch-hooks/useGetAllUsers';
+import { useState } from 'react';
+import { useGetDepartments } from '../../../../hooks/department-fetch/useDepartments';
 import useUpdateUser from '../../../../hooks/user-fetch-hooks/useUpdateUser';
 import Select from 'react-select';
 import { useGetOneUser } from '../../../../hooks/user-fetch-hooks/useGetOneUser'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { style1 } from '../../../../hooks/assorted/react-select-styles';
 
 export function UpdateUserForm(){
@@ -21,7 +18,7 @@ export function UpdateUserForm(){
         role: {}
     });
 
-    const departments = useGetDepartments();
+    const { departments, departmentsPending, errorGetting } = useGetDepartments();
 
     const [targetUserId, setTargetUserId] = useState({});
     const { user } = useGetOneUser(targetUserId);
@@ -117,7 +114,10 @@ export function UpdateUserForm(){
                             unstyled
                             classNames={style1}
                             value={updateFormData.departmentId}
-                            options={departments}
+                            options={departments.map((dept) => ({
+                                label: dept.name,
+                                value: dept._id
+                            }))}
                             onChange={(selectedOption) => handleExplicitChange('departmentId', selectedOption)} />
                     </div>
                     <div className='grid grid-cols-1 col-start-2 col-span-5 gap-2'>

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { usePasswordReset } from "../../hooks/user-fetch-hooks/usePasswordReset";
+import { usePasswordReset } from "../../hooks/user-fetch-hooks/useUsers";
 import { useLogin } from "../../hooks/auth/useLogin";
 
 export function PasswordReset () {

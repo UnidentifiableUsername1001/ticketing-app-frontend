@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Select from 'react-select';
 import { useNavigate, useParams } from 'react-router';
-import useAssignableUsers from '../../hooks/user-fetch-hooks/useGetAllUsers';
+import { useGetAllUsers } from '../../hooks/user-fetch-hooks/useUsers';
 import { jwtDecode } from 'jwt-decode';
 import { ReadOnlyEditor } from './sub-components/ReadOnlyEditor';
 import { style1 } from '../../hooks/assorted/react-select-styles';
@@ -11,16 +11,11 @@ import { calculateTimeElapsed } from '../../hooks/assorted/ticketConstants';
 import { statusMapping } from '../../hooks/assorted/ticketConstants';
 
 function DetailView() {
-
-    const [ticketStatus, setTicketStatus] = useState({});
     const [draftStatus, setDraftStatus] = useState(null);
-
-    const [assignedUser, setAssignedUser] = useState({});
     const [draftAssignee, setDraftAssignee] = useState(null);
-
     const [newFollowers, setNewFollowers] = useState(null);
 
-    const assignableUsers = useAssignableUsers();
+    const { allUsers, allUsersError, allUsersPending } = useGetAllUsers();
     const statusOptions = statusMapping();
 
     const navigate = useNavigate();
@@ -220,12 +215,30 @@ function DetailView() {
                                     <label htmlFor='assignedUser' className='font-lato font-semibold text-lg'>
                                         Change assigned user?
                                     </label>
-                                    <Select
-                                        unstyled
-                                        value={draftAssignee}
-                                        options={assignableUsers}
-                                        onChange={(selectedOption) => setDraftAssignee(selectedOption)}
-                                        classNames={style1} />
+                                    {allUsersError 
+                                        ? (
+                                            <p>
+                                                Error Retrieving users
+                                            </p>
+                                        ) 
+                                        : allUsersPending ? (
+                                            <p>
+                                                Loading users...
+                                            </p>
+                                        )
+                                        : (
+                                            <Select
+                                            unstyled
+                                            value={draftAssignee}
+                                            options={allUsers.map((user) => ({
+                                                label: user.firstName + ' ' + user.lastName,
+                                                value: user._id
+                                            }))}
+                                            onChange={(selectedOption) => setDraftAssignee(selectedOption)}
+                                            classNames={style1} />
+                                        )
+                                    }
+                                    
                                 </div>
                             )
                             : (<></>)

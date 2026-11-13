@@ -22,8 +22,6 @@ export function UserSearchBar({userList, setSelectedUser, query, setQuery}) {
 
     }, [isFocused])
 
-    console.log(userList);
-
     return (
         <div
             ref={containerRef}

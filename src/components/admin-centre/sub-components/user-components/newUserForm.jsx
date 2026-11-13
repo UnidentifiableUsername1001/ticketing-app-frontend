@@ -1,21 +1,26 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useContext } from 'react';
 import { useGetDepartments } from '../../../../hooks/department-fetch/useDepartments';
-import { useNewUser } from '../../../../hooks/user-fetch-hooks/useNewUser';
+import { useNewUser } from '../../../../hooks/user-fetch-hooks/useUsers';
 import Select from 'react-select';
 import { style1 } from '../../../../hooks/assorted/react-select-styles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
+import { ToastContext } from '../../../../context/toast-notification/ToastContext';
 
 export function NewUserForm({closeForm}) {
-        const [newFormData, setNewFormData] = useState({
+    const { addToast } = useContext(ToastContext);
+
+    const blankForm = {
         firstName: "",
         lastName: "",
         jobTitle: "",
         email: "",
         password: "",
         departmentId: {},
-        role: {}
-    });
+        role: {} 
+    };
+
+    const [newFormData, setNewFormData] = useState(blankForm);
 
     const metaData = {
         firstName: {
@@ -61,13 +66,11 @@ export function NewUserForm({closeForm}) {
     ];
 
     const selectOptions = (key) => {
-        
         if(key === 'role') return roleOptions
-        
-        return departments?.departments?.map(({name, _id}) => (
+        return departments?.map((dept) => (
             {
-                label: name,
-                value: _id
+                label: dept.name,
+                value: dept
             }            
         ))
     }
@@ -89,10 +92,20 @@ export function NewUserForm({closeForm}) {
         })
     };
 
-    const nextOrSubmit = () => {
-        group === 1 
-        ? setGroup(2)
-        : addUser(newFormData)
+    const nextOrSubmit = async () => {
+
+        if(group === 1) return setGroup(2)
+        
+        try {
+            await addUser(newFormData);
+            addToast({msg: "User added!", type: 'success'});
+            closeForm('');
+            setNewFormData(blankForm);
+        } catch (e) {
+            console.error(e);
+            addToast({msg: `${e.message}`, type: 'error'});
+        }
+
     }
     
     return (
