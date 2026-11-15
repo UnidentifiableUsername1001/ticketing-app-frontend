@@ -20,21 +20,22 @@ export function useLogin (object) {
                 }, body: JSON.stringify(payload) 
             });
 
-            const data = await response.json();
-
             if (!response.ok) {
+
+                let errorData;
                 
                 try {
-                    
+                    errorData = response.json();
                 } catch (e){
                     throw new Error(`Error was not JSON. Status: ${response.status}`)
                 }
 
-                const errorMessage = data?.message || response.statusText || 'Request failed';
+                const errorMessage = errorData?.message || 'Request failed';
 
                 throw new HttpError(response.status, errorMessage, data)
             };
-            
+
+            const data = await response.json();
             setIsLoggedIn(true);
 
             return data

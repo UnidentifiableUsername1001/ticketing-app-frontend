@@ -18,8 +18,10 @@ function useUpdateUser() {
                 switch(sanitised) {
                     case "":
                         return false
-                    case null || undefined:
+                    case null:
                         return false
+                    case undefined:
+                        return false;
                     case false:
                         return true
                     default:
@@ -105,7 +107,7 @@ function useGetOneUser(targetUserId) {
             return cache.find((user) => user._id === targetUserId);
         },
         queryFn: async () => {
-            const response = await fetch(url(destructTargId), {
+            const response = await fetch(url(targetUserId), {
                 method: 'GET',
                 headers: {
                     Accept: 'application/JSON',

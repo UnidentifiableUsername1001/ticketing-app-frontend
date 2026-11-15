@@ -83,7 +83,6 @@ export function AdminUsers() {
 
     const hamburgerClick = (user) => {
         setSelectUser(user);
-        console.log(selectUser);
         setIsFocused(true);  
     };
 
@@ -123,11 +122,19 @@ export function AdminUsers() {
                     closeFormFunc={setFormOverlay}
                     closeFormState={formOverlay}
                 />
-                <UpdateUserForm 
-                    closeFormFunc={setFormOverlay}
-                    userData={selectUser}
-                    closeFormState={formOverlay}
-                />
+                {!selectUser
+                    ? (<>
+                    
+                    </>)
+                    : (<>
+                        <UpdateUserForm 
+                            closeFormFunc={setFormOverlay}
+                            userData={selectUser}
+                            closeFormState={formOverlay}
+                        />
+                    </>)
+                }
+                
             </div>
             <div
                 className={`

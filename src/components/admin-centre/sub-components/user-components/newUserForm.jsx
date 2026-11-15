@@ -99,7 +99,7 @@ export function NewUserForm({closeFormFunc, closeFormState}) {
         try {
             await addUser(newFormData);
             addToast({msg: "User added!", type: 'success'});
-            closeForm('');
+            closeFormFunc('');
             setNewFormData(blankForm);
         } catch (e) {
             console.error(e);

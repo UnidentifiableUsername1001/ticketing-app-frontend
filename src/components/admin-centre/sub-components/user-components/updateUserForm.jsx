@@ -9,8 +9,6 @@ import { ToastContext } from '../../../../context/toast-notification/ToastContex
 
 export function UpdateUserForm({userData, closeFormFunc, closeFormState}){
 
-    if(!userData) return;
-
     const blankForm = {
         firstName: "",
         lastName: "",
@@ -122,7 +120,7 @@ export function UpdateUserForm({userData, closeFormFunc, closeFormState}){
         return updateFormData[key] !== ''
         ? `${updateFormData[key]}`
         : `${userData[key]}`
-    }
+    };
 
     return (
         <div className={`
