@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { ToastContext } from '../../../../context/toast-notification/ToastContext';
 
-export function NewUserForm({closeForm}) {
+export function NewUserForm({closeFormFunc, closeFormState}) {
     const { addToast } = useContext(ToastContext);
 
     const blankForm = {
@@ -73,7 +73,7 @@ export function NewUserForm({closeForm}) {
                 value: dept
             }            
         ))
-    }
+    };
     
     const updateEventHandler = (event) => {
         let targetName = event.target.name;
@@ -109,7 +109,11 @@ export function NewUserForm({closeForm}) {
     }
     
     return (
-        <div className={` 
+        <div className={`
+                ${closeFormState === 'new'
+                    ? ''
+                    : 'hidden'
+                } 
                 bg-white w-200 mx-auto rounded-xl border border-wiseGrey4/25
                 p-7 font-lato grid grid-rows-[auto_1fr] gap-5 relative -top-10 shadow-xl
             `}>
@@ -184,7 +188,7 @@ export function NewUserForm({closeForm}) {
                         <span
                             className='self-center font-semibold'
                         >
-                            Department & Role
+                            Role & Access
                             
                         </span>
                         
@@ -209,7 +213,7 @@ export function NewUserForm({closeForm}) {
                             `}>
                             <label
                                 className='
-
+                                    
                                 '
                             >
                                 {metaData[key].labelText}
@@ -241,7 +245,7 @@ export function NewUserForm({closeForm}) {
             </div>
                 <FontAwesomeIcon
                     icon={faXmark}
-                    onClick={() => closeForm('')}
+                    onClick={() => closeFormFunc('')}
                     className='
                         absolute top-0 right-0 p-6
                         text-3xl cursor-pointer transtion-all duration-150 hover:scale-110

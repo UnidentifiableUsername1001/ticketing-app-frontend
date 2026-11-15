@@ -29,7 +29,7 @@ function RenderFields ({field, updateHandlerNormal, formData, updateHandlerCusto
                 <input
                     className="
                         bg-wiseRose4/15 p-4 rounded-md outline-none transition-all duration-150 font-lato
-                        hover:bg-wiseRose4/35 focus:bg-wiseRose4/35 
+                        hover:bg-wiseRose4/35 focus:bg-wiseRose4/35
                     "
                     type="text"
                     name={fieldName}

@@ -5,6 +5,7 @@ import { UserSearchBar } from './UserSearchBar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { NewUserForm } from './newUserForm';
+import { UpdateUserForm } from './updateUserForm';
 
 export function AdminUsers() {
 
@@ -34,7 +35,10 @@ export function AdminUsers() {
     const actions = [
         {
             title: 'Edit',
-            function: editUser
+            function: () => {
+                setFormOverlay('edit');
+                setIsFocused(false);
+            }
         },
         {
             title: 'Delete',
@@ -47,27 +51,39 @@ export function AdminUsers() {
     ]
 
     const { allUsers, allUsersError, allUsersPending } = useGetAllUsers();
-
     const searchResults = useFuseSearch(allUsers, searchQuery, fuseKeys);
 
     const containerRef = useRef(null);
     const [isFocused, setIsFocused] = useState(false);
+    const [allSelected, setAllSelected] = useState(false);
 
-    const checkboxSelect = (user) => {
+    const selectAll = () => {
+        if(allSelected) {
+            setAllSelected(!allSelected);
+            setBulkUser([]); 
+        } else {
+            setAllSelected(!allSelected);
+            setBulkUser(allUsers);
+        }
+        
+    }
+
+    const singleCheckSelect = (user) => {
         let arrayCopy = [...bulkUser];
         
-        if(arrayCopy.includes(user)) {
+        if(allSelected || arrayCopy.includes(user)) {
+            setAllSelected(false);
             return setBulkUser(arrayCopy.toSpliced(arrayCopy.indexOf(user), 1));
-        }
+        };
 
         arrayCopy.push(user);
 
         return setBulkUser(arrayCopy);
-
     };
 
     const hamburgerClick = (user) => {
         setSelectUser(user);
+        console.log(selectUser);
         setIsFocused(true);  
     };
 
@@ -96,7 +112,7 @@ export function AdminUsers() {
             <div
                 className={`
                         ${formOverlay !== ''
-                            ? `transition all absolute inset-0 z-50 bg-wiseGrey5/20 rounded-xl backdrop-blur-xs
+                            ? `transition-all absolute inset-0 z-50 bg-wiseGrey5/20 rounded-xl backdrop-blur-xs
                                 
                             `
                             : 'hidden'
@@ -104,7 +120,13 @@ export function AdminUsers() {
                     `}
             >
                 <NewUserForm
-                    closeForm={setFormOverlay}
+                    closeFormFunc={setFormOverlay}
+                    closeFormState={formOverlay}
+                />
+                <UpdateUserForm 
+                    closeFormFunc={setFormOverlay}
+                    userData={selectUser}
+                    closeFormState={formOverlay}
                 />
             </div>
             <div
@@ -197,10 +219,16 @@ export function AdminUsers() {
                         >
                             <th
                                 className='
-                                    px-3 py-2 max-w-5
+                                    px-4 py-2 flex flex-row gap-3 w-40
                                 '
                             >
-                                Select
+                                <input
+                                    type='checkbox'
+                                    checked={allSelected}
+                                    className=' w-5 h-5 accent-wiseRose4'
+                                    onChange={() => selectAll()}
+                                />
+                                Select All
                             </th>
                             <th
                                 className='
@@ -242,6 +270,7 @@ export function AdminUsers() {
                     </thead>
                     <tbody
                         className='overflow-y-auto'
+                        ref={containerRef}
                     >
                         {allUsers?.length !== 0 ? (
                             <>
@@ -250,7 +279,7 @@ export function AdminUsers() {
                                         className={`
                                             border-b-2 border-wiseGrey4/35 
                                             *:shrink-0 transition-all
-                                            ${bulkUser?.includes(user)
+                                            ${bulkUser?.includes(user) || allSelected
                                                 ? 'bg-wiseRose3/20'
                                                 : ''
                                             }
@@ -259,11 +288,12 @@ export function AdminUsers() {
                                         <td className='py-4 px-4'>
                                             <input
                                                 type='checkbox'
+                                                checked={allSelected || bulkUser.includes(user)}
                                                 className='
                                                      
                                                     w-5 h-5 accent-wiseRose4
                                                 '
-                                                onClick={() => checkboxSelect(user)}
+                                                onChange={() => singleCheckSelect(user)}
                                             />
                                         </td>
                                         <td 
@@ -285,7 +315,7 @@ export function AdminUsers() {
                                         </td>
                                         <td 
                                             className='py-2 px-3 relative'
-                                            ref={containerRef}
+                                            
                                             
                                         >
                                             <FontAwesomeIcon
@@ -299,7 +329,7 @@ export function AdminUsers() {
                                             <div
                                                 className={`
                                                     absolute bg-white border border-wiseGrey4/30 shadow-md z-50
-                                                    gap-2 flex flex-col rounded-md min-w-fit top-5 -right-3
+                                                    flex flex-col rounded-md min-w-fit top-5 -right-3
                                                     ${isFocused && selectUser?._id === user?._id
                                                         ? ''
                                                         : 'hidden'

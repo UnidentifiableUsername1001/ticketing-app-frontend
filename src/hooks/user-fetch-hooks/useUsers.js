@@ -68,7 +68,12 @@ function useUpdateUser() {
             await queryClient.cancelQueries({ queryKey: ['users'] });
             const previousUsers = queryClient.getQueryData(['users']);
             queryClient.setQueryData(['users'], (old) => {
-                return old.map((user) => user._id === updatedUser._id ? updatedUser : user);
+                return old.map((user) => user._id === updatedUser._id 
+                    ? {...updatedUser,
+                        role: updatedUser.role.value,
+                    } 
+                    : user
+                );
             });
 
             return { previousUsers }
