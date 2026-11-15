@@ -311,8 +311,9 @@ function useNewUser() {
 function useDeleteUser() {
     const queryClient = useQueryClient();
     const jwtInStore = sessionStorage.getItem('auth-token');
-    const deleteUser = useMutation({
+    const deleteUser = useMutation({ 
         mutationFn: async (payload) => {
+            console.log(payload._id)
             const response = await fetch(url(`delete/${payload._id}`), {
                 method: 'DELETE',
                 headers: {
@@ -340,11 +341,7 @@ function useDeleteUser() {
             const oldUsers = queryClient.getQueryData(['users']);
 
             queryClient.setQueryData(['users'], (old) => 
-                old.map((user) => {
-                    if(user._id === oldUser._id) return;
-                    return user;
-                }
-            ));
+                old.map((user) => user._id !== oldUser._id));
 
             return {
                 oldUsers

@@ -92,7 +92,7 @@ export function AdminUsers() {
         setSelectUser(user);
         setIsFocused(true);  
     };
-    
+
     useEffect(() => {
 
         if(!isFocused) return
@@ -315,17 +315,17 @@ export function AdminUsers() {
                                                 py-2 px-3
                                                 font-semibold         
                                         '>
-                                            {user.firstName + ' ' + user.lastName}
+                                            {user?.firstName + ' ' + user?.lastName}
                                             
                                         </td>
                                         <td className='py-2 px-3'>
-                                            {user.email}
+                                            {user?.email}
                                         </td>
                                         <td className='py-2 px-3'>
                                             {user?.departmentId?.name }
                                         </td>
                                         <td className='py-2 px-3'>
-                                            {user.role}
+                                            {user?.role}
                                         </td>
                                         <td 
                                             className='py-2 px-3 relative'
