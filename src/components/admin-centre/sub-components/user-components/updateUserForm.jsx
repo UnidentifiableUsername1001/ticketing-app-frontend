@@ -90,12 +90,12 @@ export function UpdateUserForm({userData, closeFormFunc, closeFormState}){
     };
 
     const handleSubmit = async () => {
-        console.log({
-            originalEntry: userData,
-            updatedEntry: updateFormData
-        });
         try {
-            await updateUser(updateFormData);
+            let data = {
+                ...updateFormData,
+                _id: userData._id
+            };
+            await updateUser(data);
             addToast({msg: "User updated!", type: "success"});
             setUpdateFormData(blankForm);
             closeFormFunc('');

@@ -1,15 +1,15 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useContext } from 'react';
 import { useFuseSearch } from '../../../../hooks/assorted/useFuseSearch';
-import { useGetAllUsers, useUpdateUser } from '../../../../hooks/user-fetch-hooks/useUsers';
+import { useGetAllUsers, useUpdateUser, useDeleteUser } from '../../../../hooks/user-fetch-hooks/useUsers';
 import { UserSearchBar } from './UserSearchBar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { NewUserForm } from './newUserForm';
 import { UpdateUserForm } from './updateUserForm';
-import { TRUE } from 'sass';
+import { ToastContext } from '../../../../context/toast-notification/ToastContext';
 
 export function AdminUsers() {
-
+    const { addToast } = useContext(ToastContext);
     const [searchQuery, setSearchQuery] = useState('');
     const [selectUser, setSelectUser] = useState(null);
     const [bulkUser, setBulkUser] = useState([]);
@@ -18,6 +18,7 @@ export function AdminUsers() {
     const [allSelected, setAllSelected] = useState(false);
     const { allUsers, allUsersError, allUsersPending } = useGetAllUsers();
     const { updateUser, updatingUser, errorUpdating } = useUpdateUser();
+    const { deleteUser, deletingUser, errorDeleting } = useDeleteUser();
     const containerRef = useRef(null);
     const fuseKeys = [
         'jobTitle',
@@ -39,8 +40,15 @@ export function AdminUsers() {
         },
         {
             title: 'Delete',
-            function: (user) => {
-                console.log(`This hasn't been coded yet`);
+            function: async (user) => {
+                try {
+                    await deleteUser(user);
+                    addToast({msg: "User deleted!", type: "success"});
+                    setIsFocused(false);
+                } catch (e) {
+                    console.error(e);
+                    addToast({msg: e.message, type: "error"});
+                }
             }
         },
         {
@@ -84,7 +92,7 @@ export function AdminUsers() {
         setSelectUser(user);
         setIsFocused(true);  
     };
-
+    
     useEffect(() => {
 
         if(!isFocused) return

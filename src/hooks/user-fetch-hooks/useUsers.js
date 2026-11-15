@@ -1,7 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { config } from "../../../config";
 import { HttpError } from "../../utils/errors";
-import { useParams } from "react-router-dom";
 
 const url = (endpoint='') => `${config.backendUrl}/api/users/${endpoint}`;
 
@@ -40,6 +39,8 @@ function useUpdateUser() {
                 const destructRole = typeof finalPayload.role === 'object' ? finalPayload.role.value : finalPayload.role;
                 finalPayload.role = destructRole;
             };
+
+            console.log(payload._id)
 
             const response = await fetch(url(`update-user/${payload._id}`), {
                 method: 'PUT',
@@ -272,7 +273,7 @@ function useNewUser() {
             
         },
         onMutate: async (newUser) => {
-            queryClient.invalidateQueries(['users']);
+            queryClient.cancelQueries(['users']);
             const prevUsers = queryClient.getQueryData(['users']);
 
             let departmentId = newUser.departmentId.value._id;
@@ -305,12 +306,69 @@ function useNewUser() {
         isAdded: mutate.isSuccess,
         errorAdding: mutate.isError
     }
-}; 
+};
+
+function useDeleteUser() {
+    const queryClient = useQueryClient();
+    const jwtInStore = sessionStorage.getItem('auth-token');
+    const deleteUser = useMutation({
+        mutationFn: async (payload) => {
+            const response = await fetch(url(`delete/${payload._id}`), {
+                method: 'DELETE',
+                headers: {
+                    Accept: 'application/JSON',
+                    'Content-Type':'application/JSON',
+                    Authorization: `Bearer ${jwtInStore}`
+                },
+            });
+
+            if (!response.ok) {
+                let errorData = null
+                try {
+                    errorData = await response.json();
+                } catch (e) {
+                    throw new Error(`Response was not JSON. Status: ${response.status}`);
+                }
+                const errorMessage = errorData.message || 'Request Failed';
+                throw new HttpError(response.status, errorMessage, errorData);
+            };
+
+            return response.json();
+        },
+        onMutate: async (oldUser) => {
+            queryClient.cancelQueries(['users']);
+            const oldUsers = queryClient.getQueryData(['users']);
+
+            queryClient.setQueryData(['users'], (old) => 
+                old.map((user) => {
+                    if(user._id === oldUser._id) return;
+                    return user;
+                }
+            ));
+
+            return {
+                oldUsers
+            }
+        },
+        onError: (error, variables, onMutate) => {
+            queryClient.setQueryData(['users'], onMutate.oldUsers);
+        },
+        onSettled: () => {
+            queryClient.invalidateQueries(['users']);
+        }
+    })
+    return {
+        deleteUser: deleteUser.mutateAsync,
+        deletingUser: deleteUser.isPending,
+        errorDeleting: deleteUser.isError
+    }
+}
 
 export {
     useGetAllUsers,
     useGetOneUser,
     useNewUser,
     usePasswordReset,
-    useUpdateUser
+    useUpdateUser,
+    useDeleteUser
 }
