@@ -1,17 +1,24 @@
 import { useState, useRef, useEffect } from 'react';
 import { useFuseSearch } from '../../../../hooks/assorted/useFuseSearch';
-import { useGetAllUsers } from '../../../../hooks/user-fetch-hooks/useUsers';
+import { useGetAllUsers, useUpdateUser } from '../../../../hooks/user-fetch-hooks/useUsers';
 import { UserSearchBar } from './UserSearchBar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { NewUserForm } from './newUserForm';
 import { UpdateUserForm } from './updateUserForm';
+import { TRUE } from 'sass';
 
 export function AdminUsers() {
 
     const [searchQuery, setSearchQuery] = useState('');
     const [selectUser, setSelectUser] = useState(null);
     const [bulkUser, setBulkUser] = useState([]);
+    const [formOverlay, setFormOverlay] = useState('');
+    const [isFocused, setIsFocused] = useState(false);
+    const [allSelected, setAllSelected] = useState(false);
+    const { allUsers, allUsersError, allUsersPending } = useGetAllUsers();
+    const { updateUser, updatingUser, errorUpdating } = useUpdateUser();
+    const containerRef = useRef(null);
     const fuseKeys = [
         'jobTitle',
         'firstName',
@@ -21,17 +28,7 @@ export function AdminUsers() {
         'departmentId',
         'role'
     ];
-    const [formOverlay, setFormOverlay] = useState('');
-
-    // Placeholder delete and edit functions for const action
-    const deleteUser = () => {
-
-    }
-
-    const editUser = () => {
-
-    }
-
+    const searchResults = useFuseSearch(allUsers, searchQuery, fuseKeys);
     const actions = [
         {
             title: 'Edit',
@@ -42,20 +39,22 @@ export function AdminUsers() {
         },
         {
             title: 'Delete',
-            function: deleteUser
+            function: (user) => {
+                console.log(`This hasn't been coded yet`);
+            }
         },
         {
             title: 'Force Password Reset',
-            function: editUser
+            function: (user) => {
+                updateUser({
+                    _id: user._id,
+                    passwordResetRequired: true
+                });
+            }
         },
     ]
 
-    const { allUsers, allUsersError, allUsersPending } = useGetAllUsers();
-    const searchResults = useFuseSearch(allUsers, searchQuery, fuseKeys);
-
-    const containerRef = useRef(null);
-    const [isFocused, setIsFocused] = useState(false);
-    const [allSelected, setAllSelected] = useState(false);
+    
 
     const selectAll = () => {
         if(allSelected) {

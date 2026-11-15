@@ -38,8 +38,10 @@ function Navbar() {
                     >
                         Quick Links
                     </h2>
-                    {links.map((link) => (
-                        <NavLink to={link.linkTo} 
+                    {links.map((link, index) => (
+                        <NavLink 
+                            key={index}
+                            to={link.linkTo} 
                             className={`
                                 nav-item
                                 text-[16px] font-medium text-wiseGrey5/80 hover:text-wiseRose4
