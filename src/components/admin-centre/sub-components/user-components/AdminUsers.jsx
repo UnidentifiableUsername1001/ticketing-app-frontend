@@ -110,7 +110,7 @@ export function AdminUsers() {
 
     const forcePasswordReset = async () => {
         try {
-            const payloadArray = users.map((user) => ({
+            const payloadArray = bulkUser.map((user) => ({
                 passwordResetRequired: true,
                 _id: user._id
             })).map((payload) => updateUser(payload));
