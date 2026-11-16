@@ -38,6 +38,7 @@ import { faComments,
 
 import { 
   faGear,
+  faTriangleExclamation,
   faBars,
   faCircleQuestion,
   faArrowLeft, 
@@ -58,12 +59,15 @@ import {
   faUserLock,
   faUsersGear,
   faPeopleRoof,
-  faDesktop 
+  faDesktop,
+  faTrophy 
 } from '@fortawesome/free-solid-svg-icons';
 
 
 library.add(
   faArrowLeft,
+  faTriangleExclamation,
+  faTrophy,
   faBars,
   faDesktop,
   faPeopleRoof,

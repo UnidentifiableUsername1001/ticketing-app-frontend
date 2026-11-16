@@ -3,10 +3,13 @@ import { jwtDecode } from 'jwt-decode';
 import { useSearchParams } from 'react-router';
 import { useTicketSearch, useGetAllTickets, useGetTicketViewCounts } from '../../hooks/ticket-fetch/useTickets';
 import { SearchBar } from './sub-components/SearchBar';
+import { ToastContext } from '../../context/toast-notification/ToastContext';
+import { useContext } from 'react';
 
 function Dashboard() {
     const [searchParams, setSearchParams] = useSearchParams({view: 'team'});
     const activeView = searchParams.get('view');
+    const { addToast } = useContext(ToastContext);
 
     const { searchData, searching, searchError } = useTicketSearch(searchParams);
     const { counts, countError, counting } = useGetTicketViewCounts(); 
@@ -43,6 +46,10 @@ function Dashboard() {
         : { view: 'closed', status: 'Closed' }
     }
 
+    const addToastButton = () => {
+        addToast({msg: "Testing toasts", type: "error"});
+    }
+
     return (
         <div className='bg-wiseRose5/25 h-full min-w-275'>
             <div className='grid grid-rows-[auto_1fr] gap-10 h-full py-5 mx-10'>
@@ -70,6 +77,12 @@ function Dashboard() {
                             >
                                 A clear view of incoming work, ownership and progress.
                             </p>
+                            <button
+                                className='button1-no-width'
+                                onClick={() => addToastButton()}
+                            >
+                                Add toast
+                            </button>
                         </div>
                     </div>
 

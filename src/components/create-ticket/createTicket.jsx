@@ -165,7 +165,7 @@ function CreateTicket() {
 
             await createTicket(finalPayload);
 
-            addToast({msg: `Ticket #${ticketSuccessData.ticketNumber} created!`, type: 'success'});
+            addToast({msg: `Ticket created!`, type: 'success'});
             navigate('/dashboard');
 
         } catch (e) {

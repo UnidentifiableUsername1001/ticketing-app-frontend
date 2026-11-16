@@ -180,6 +180,7 @@ export function AdminUsers() {
                     closeFormState={formOverlay}
                     selectOptions={selectOptions}
                     users={bulkUser}
+                    setUsers={setBulkUser}
                 />
                 
             </div>

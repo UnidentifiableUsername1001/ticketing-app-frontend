@@ -96,11 +96,12 @@ function Navbar() {
                         nav-item
                         transition-all
                         flex flex-row justify-between
-                        w-full
+                        w-full group
                     `}>
                     <h1
                         className={`
-                            text-base font-medium text-wiseGrey4
+                            text-base font-medium text-wiseGrey4 group-hover:text-wiseRose4
+                            transition-all duration-150
                         `}
                     >
                         Logout
@@ -110,7 +111,9 @@ function Navbar() {
                             cursor-pointer text-wiseGrey5 text-lg
                         `} 
                         title='Logout'>
-                        <FontAwesomeIcon icon={faArrowRightFromBracket}/>
+                        <FontAwesomeIcon icon={faArrowRightFromBracket}
+                            className='group-hover:text-wiseRose4 transition-all duration-150'
+                        />
                     </button>
                 </div>
             </div>

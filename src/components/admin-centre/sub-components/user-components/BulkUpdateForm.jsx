@@ -7,7 +7,7 @@ import { useContext, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
-export function BulkUpdateForm({users, closeFormState, closeFormFunc, selectOptions}) {
+export function BulkUpdateForm({users, closeFormState, closeFormFunc, selectOptions, setUsers}) {
     const { departments, departmentsPending, errorGetting } = useGetDepartments();
     const { updateUser, updatingUser, errorUpdating } = useUpdateUser();
     const { addToast } = useContext(ToastContext);
@@ -41,13 +41,13 @@ export function BulkUpdateForm({users, closeFormState, closeFormFunc, selectOpti
 
             await Promise.all(payloadArray);
 
-            addToast({msg: "All selected users updated!"});
+            addToast({msg: "All selected users updated!", type: "success"});
             setUpdatedFields(eligibleFields);
             closeFormFunc('');
-
+            setUsers([]);
         } catch (e) {
             console.error(e);
-            addToast({msg: e.message});
+            addToast({msg: e.message, type: "error"});
         }
     }
 
