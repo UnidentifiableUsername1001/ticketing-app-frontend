@@ -7,6 +7,7 @@ import { faBars, faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icon
 import { NewUserForm } from './newUserForm';
 import { UpdateUserForm } from './updateUserForm';
 import { ToastContext } from '../../../../context/toast-notification/ToastContext';
+import { BulkUpdateForm } from './BulkUpdateForm';
 
 export function AdminUsers() {
     const { addToast } = useContext(ToastContext);
@@ -62,8 +63,6 @@ export function AdminUsers() {
         },
     ]
 
-    
-
     const selectAll = () => {
         if(allSelected) {
             setAllSelected(!allSelected);
@@ -91,6 +90,22 @@ export function AdminUsers() {
     const hamburgerClick = (user) => {
         setSelectUser(user);
         setIsFocused(true);  
+    };
+
+    
+    const selectOptions = (key, departments) => {
+        const roleOptions = [
+            {value: 'Admin', label: 'Admin'},
+            {value: 'Manager', label: 'Department Manager'},
+            {value: 'User', label: 'Standard user'}
+        ];
+        if(key === 'role') return roleOptions
+        return departments?.map((dept) => (
+            {
+                label: dept.name,
+                value: dept
+            }            
+        ))
     };
 
     useEffect(() => {
@@ -128,6 +143,7 @@ export function AdminUsers() {
                 <NewUserForm
                     closeFormFunc={setFormOverlay}
                     closeFormState={formOverlay}
+                    selectOptions={selectOptions}
                 />
                 {!selectUser
                     ? (<>
@@ -138,9 +154,16 @@ export function AdminUsers() {
                             closeFormFunc={setFormOverlay}
                             userData={selectUser}
                             closeFormState={formOverlay}
+                            selectOptions={selectOptions}
                         />
                     </>)
                 }
+                <BulkUpdateForm
+                    closeFormFunc={setFormOverlay}
+                    closeFormState={formOverlay}
+                    selectOptions={selectOptions}
+                    users={bulkUser}
+                />
                 
             </div>
             <div
@@ -185,6 +208,7 @@ export function AdminUsers() {
                                     {bulkUser?.length} Selected
                                 </p>
                                 <p
+                                    onClick={() => setFormOverlay('bulk')}
                                     className='
                                         text-wiseRose3 cursor-pointer hover:text-wiseRose2
                                     '   

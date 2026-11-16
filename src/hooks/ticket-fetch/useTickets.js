@@ -451,10 +451,6 @@ function useUploadAttachment() {
                 throw new Error(`HTTP error while uploading files. Status: ${uploadFile.status}`);
             }
 
-            let metaData = {
-
-            }
-
             return {
                 fileUrl: data.fileUrl,
                 fileName: data.fileName,

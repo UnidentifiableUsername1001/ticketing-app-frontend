@@ -40,8 +40,6 @@ function useUpdateUser() {
                 finalPayload.role = destructRole;
             };
 
-            console.log(payload._id)
-
             const response = await fetch(url(`update-user/${payload._id}`), {
                 method: 'PUT',
                 headers: {

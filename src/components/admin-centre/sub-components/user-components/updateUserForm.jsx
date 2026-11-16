@@ -7,7 +7,7 @@ import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ToastContext } from '../../../../context/toast-notification/ToastContext';
 
-export function UpdateUserForm({userData, closeFormFunc, closeFormState}){
+export function UpdateUserForm({userData, closeFormFunc, closeFormState, roleOptions, selectOptions}){
 
     const blankForm = {
         firstName: "",
@@ -54,12 +54,6 @@ export function UpdateUserForm({userData, closeFormFunc, closeFormState}){
     const { departments, departmentsPending, errorGetting } = useGetDepartments();
     const { updateUser, updatingUser, errorUpdating } = useUpdateUser();
     const { addToast } = useContext(ToastContext);
-
-    const roleOptions = [
-        {value: 'Admin', label: 'Admin'},
-        {value: 'Manager', label: 'Department Manager'},
-        {value: 'User', label: 'Standard user'}
-    ];
     
     const updateEventHandler = (event) => {
         let targetName = event.target.name;
@@ -77,16 +71,6 @@ export function UpdateUserForm({userData, closeFormFunc, closeFormState}){
             [name]: value
         })
         console.log(updateFormData)
-    };
-
-    const selectOptions = (key) => {
-        if(key === 'role') return roleOptions
-        return departments?.map((dept) => (
-            {
-                label: dept.name,
-                value: dept
-            }            
-        ))
     };
 
     const handleSubmit = async () => {
@@ -237,7 +221,7 @@ export function UpdateUserForm({userData, closeFormFunc, closeFormState}){
                                                 unstyled
                                                 classNames={style1}
                                                 value={updateFormData[key]}
-                                                options={selectOptions(key)}
+                                                options={selectOptions(key, departments)}
                                                 onChange={(selectedOption) => handleExplicitChange(key, selectedOption)} 
                                                     />
                                         )

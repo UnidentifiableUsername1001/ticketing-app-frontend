@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { ToastContext } from '../../../../context/toast-notification/ToastContext';
 
-export function NewUserForm({closeFormFunc, closeFormState}) {
+export function NewUserForm({closeFormFunc, closeFormState, roleOptions, selectOptions}) {
     const { addToast } = useContext(ToastContext);
 
     const blankForm = {
@@ -54,26 +54,8 @@ export function NewUserForm({closeFormFunc, closeFormState}) {
     };
 
     const [group, setGroup] = useState(1);
-
     const { departments, errorGetting, departmentsPending } = useGetDepartments();
-
     const { addUser, isAdded, errorAdding } = useNewUser();
-
-    const roleOptions = [
-        {value: 'Admin', label: 'Admin'},
-        {value: 'Manager', label: 'Team Manager'},
-        {value: 'User', label: 'Standard user'}
-    ];
-
-    const selectOptions = (key) => {
-        if(key === 'role') return roleOptions
-        return departments?.map((dept) => (
-            {
-                label: dept.name,
-                value: dept
-            }            
-        ))
-    };
     
     const updateEventHandler = (event) => {
         let targetName = event.target.name;
@@ -224,7 +206,7 @@ export function NewUserForm({closeFormFunc, closeFormState}) {
                                         unstyled
                                         classNames={style1}
                                         value={newFormData[key]}
-                                        options={selectOptions(key)}
+                                        options={selectOptions(key, departments)}
                                         onChange={(selectedOption) => handleExplicitChange(key, selectedOption)} 
                                             />
                                 )
