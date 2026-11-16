@@ -3,7 +3,7 @@ import { useFuseSearch } from '../../../../hooks/assorted/useFuseSearch';
 import { useGetAllUsers, useUpdateUser, useDeleteUser } from '../../../../hooks/user-fetch-hooks/useUsers';
 import { UserSearchBar } from './UserSearchBar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars, faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faPenToSquare, faTrash, faUserLock } from '@fortawesome/free-solid-svg-icons';
 import { NewUserForm } from './newUserForm';
 import { UpdateUserForm } from './updateUserForm';
 import { ToastContext } from '../../../../context/toast-notification/ToastContext';
@@ -107,6 +107,23 @@ export function AdminUsers() {
             }            
         ))
     };
+
+    const forcePasswordReset = async () => {
+        try {
+            const payloadArray = users.map((user) => ({
+                passwordResetRequired: true,
+                _id: user._id
+            })).map((payload) => updateUser(payload));
+
+            await Promise.all(payloadArray);
+
+            addToast({msg: "All selected users updated!"});
+
+        } catch (e) {
+            console.error(e);
+            addToast({msg: e.message});
+        }
+    }
 
     useEffect(() => {
 
@@ -228,6 +245,18 @@ export function AdminUsers() {
                                     /> 
                                     Delete
                                 </p>
+                                <p
+                                    onClick={() => forcePasswordReset()}
+                                    className='
+                                        text-wiseRose3 cursor-pointer hover:text-wiseRose2
+                                    '   
+                                >
+                                    <FontAwesomeIcon
+                                        icon={faUserLock}
+                                    /> 
+                                    Password Reset
+                                </p>
+                                
                             </div>
                         )
                         : (<></>)
