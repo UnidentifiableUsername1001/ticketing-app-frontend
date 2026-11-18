@@ -1,9 +1,10 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useContext } from 'react'
 import { CreateDepartment } from './createDepartment';
 import { EditDepartment } from './editDepartment';
 import { useGetDepartments } from '../../../../hooks/department-fetch/useDepartments';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faCirclePlus, faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { ToastContext } from '../../../../context/toast-notification/ToastContext';
 
 export function AdminTeams() {
     const { departments, departmentsPending, errorGetting } = useGetDepartments();
@@ -15,6 +16,7 @@ export function AdminTeams() {
     const [isFocused, setIsFocused] = useState(false);
     const [allSelected, setAllSelected] = useState(false);
     const containerRef = useRef(null);
+    const { addToast } = useContext(ToastContext);
     const actions = [
         {
             title: 'Edit',
@@ -26,14 +28,6 @@ export function AdminTeams() {
         {
             title: 'Delete',
             function: async (user) => {
-                try {
-                    await deleteUser(user);
-                    addToast({msg: "User deleted!", type: "success"});
-                    setIsFocused(false);
-                } catch (e) {
-                    console.error(e);
-                    addToast({msg: e.message, type: "error"});
-                }
             }
         },
     ]
