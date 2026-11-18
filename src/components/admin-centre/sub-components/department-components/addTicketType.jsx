@@ -1,7 +1,7 @@
-import React, {useState} from 'react';
+import {useState} from 'react';
 import Select from 'react-select';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSquareCheck, faSquarePlus, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faSquarePlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { expectedTypeMapping, dataSources } from '../../../../hooks/assorted/ticketConstants';
 import { style1 } from '../../../../hooks/assorted/react-select-styles';
 

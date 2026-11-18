@@ -144,7 +144,8 @@ export function AdminUsers() {
     return (
         <div
             className={`
-                    h-full w-full grid grid-rows-[auto_1fr] gap-8 font-lato 
+                    h-full grid grid-rows-[auto_1fr] gap-8 font-lato min-h-0 self-start
+                    bg-white rounded-xl border border-wiseGrey4/25 p-7 relative
                 `}
         >
             <div
@@ -186,7 +187,7 @@ export function AdminUsers() {
             </div>
             <div
                 className={`
-                        flex flex-row justify-between
+                        flex flex-row justify-between shink-0
                     `}
             >
                 <div
@@ -274,7 +275,9 @@ export function AdminUsers() {
                 </div>
             </div>
             <div
-                className=''
+                className='
+                            h-full min-h-0 self-start border border-wiseGrey4/30 
+                '
             >
                 <table
                     className='w-full text-left border-collapse'
@@ -334,7 +337,6 @@ export function AdminUsers() {
                                 Actions
                             </th>
                         </tr>
-
                     </thead>
                     <tbody
                         className='overflow-y-auto'

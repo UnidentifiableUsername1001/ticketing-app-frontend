@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import Select from 'react-select';
+import { useState } from 'react';
 import { useCreateDepartment } from '../../../../hooks/department-fetch/useDepartments';
 import { AddTicketType } from './addTicketType';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleUp, faChevronDown, faDeleteLeft, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faAngleUp, faChevronDown, faXmark } from '@fortawesome/free-solid-svg-icons';
 
 export function CreateDepartment() {
     

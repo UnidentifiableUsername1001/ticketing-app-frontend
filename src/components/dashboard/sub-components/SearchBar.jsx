@@ -94,7 +94,7 @@ export function SearchBar() {
             ref={containerRef}
             className={
                 `
-                    flex flex-col relative w-full
+                    flex flex-col relative w-1/2
                     font-lato ml-24
                 `
             }
@@ -107,7 +107,7 @@ export function SearchBar() {
                 onFocus={() => setIsFocused(true)}
                 className={
                     `
-                        outline-none h-full text-wiseGrey2 bg-wiseGrey4/30 rounded-md  px-4
+                        outline-none h-full text-wiseGrey2 bg-wiseGrey4/30 rounded-md py-2 px-4
 
                     `
                 }

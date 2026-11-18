@@ -18,13 +18,13 @@ export default function AdminCentre({children}) {
 
     const availablePages = [
         {
-            title: 'People',
+            title: 'People & Access',
             body: 'Invite users and manage workspace access.',
             icon: faUsersGear,
             endpoint: '/admin-centre/users'
         },
         {
-            title: 'Teams',
+            title: 'Teams Management',
             body: 'Define where requests go and who owns them.',
             icon: faPeopleRoof,
             endpoint: '/admin-centre/teams'
@@ -43,8 +43,8 @@ export default function AdminCentre({children}) {
     };
 
     return (
-        <div className="bg-wiseRose5/25">
-            <div className="grid grid-rows-[auto_1fr] py-5 mx-10">
+        <div className="bg-wiseRose5/25 h-full min-h-0">
+            <div className="grid grid-rows-[auto_1fr] py-5 mx-10 h-full min-h-0 gap-5">
                 <div>
                     <p
                             className={`
@@ -78,7 +78,7 @@ export default function AdminCentre({children}) {
                         </p>
                 </div>
                 <div className={`
-                        mt-5 grid grid-cols-[auto_1fr] gap-4
+                        grid grid-cols-[auto_1fr] gap-4 h-full min-h-0
                     `}>
                     <ul className={`
                             bg-white gap-5 w-fit p-2 rounded-xl border border-wiseGrey4/25
@@ -105,10 +105,10 @@ export default function AdminCentre({children}) {
                                 />
                                 <span
                                     className={`
-                                            absolute whitespace-nowrap text-wiseGrey5 -ml-30 z-50
-                                            px-3 py-1
-                                            opacity-0 group-hover:opacity-100 group-hover:rounded-xl 
-                                            text-sm group-hover:shadow-lg group-hover:ml-4 mt-1
+                                            absolute whitespace-nowrap text-wiseGrey5 z-50
+                                            px-3 py-1 -mt-9
+                                            hidden group-hover:flex group-hover:rounded-xl 
+                                            text-sm group-hover:shadow-lg group-hover:ml-13 
                                             group-hover:z-50 transition-all 
                                             delay-500 duration-300 group-hover:bg-wiseGrey1 
                                         `}
@@ -120,8 +120,7 @@ export default function AdminCentre({children}) {
                     </ul>
                     <div
                         className={`
-                                bg-white rounded-xl border border-wiseGrey4/25
-                                p-7 relative
+                                h-full min-h-0 
                             `}
                     >
                         <Outlet/>

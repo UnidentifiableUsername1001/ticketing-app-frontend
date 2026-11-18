@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import { useState } from 'react';
 import Select from 'react-select';
 import { 
     useGetDepartments, 
@@ -6,7 +6,7 @@ import {
     useGetOneDepartment } from '../../../../hooks/department-fetch/useDepartments';
 import { AddTicketType } from './addTicketType';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleUp, faChevronDown, faPenToSquare, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faPenToSquare, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { EditTicketType } from './EditTicketType';
 import { style1 } from '../../../../hooks/assorted/react-select-styles';
 

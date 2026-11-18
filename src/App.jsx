@@ -60,7 +60,8 @@ import {
   faUsersGear,
   faPeopleRoof,
   faDesktop,
-  faTrophy 
+  faTrophy,
+  faCirclePlus 
 } from '@fortawesome/free-solid-svg-icons';
 
 
@@ -98,7 +99,7 @@ library.add(
   faTrash,
   faSquareCheck,
   faXmark,
-  faArrowUpFromBracket
+  faArrowUpFromBracket,
 );
 
 
@@ -135,7 +136,7 @@ function App() {
             </div>
             <ToastContainer/>
             <main 
-              className='flex flex-row flex-1 min-h-0 overflow-hidden'>
+              className='flex flex-1 min-h-0 h-full overflow-hidden'>
                 <Navbar />
                 <div className='flex-1 overflow-y-auto bg-wiseGrey5'>
                   <Routes>
