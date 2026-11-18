@@ -2,9 +2,9 @@ import { useState } from 'react';
 import { useCreateDepartment } from '../../../../hooks/department-fetch/useDepartments';
 import { AddTicketType } from './addTicketType';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleUp, faChevronDown, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
 
-export function CreateDepartment() {
+export function CreateDepartment({overlay, setOverlay}) {
     
     const [formData, setFormData] = useState({
         name: '',
@@ -13,12 +13,8 @@ export function CreateDepartment() {
             assignmentStrategy: ''
         }
     });
-
     const { createDepartment, deptCreated, deptPending, deptError } = useCreateDepartment();
-
     const [showTicketType, setShowTicketType] = useState(false);
-
-    const [showForm, setShowForm] = useState(false);
 
     const handleAppendTicketType = (newTypeData) => {
         setFormData({
@@ -54,110 +50,190 @@ export function CreateDepartment() {
     }
 
     return (
-        <div className='top-div grid grid-cols-1 gap-10 font-lato'>
-            <button type='button' className='form-dropDown-button' onClick={() => setShowForm(!showForm)}>
-                <div className='width-full flex flex-row justify-between relative z-10'>
-                    <span className=''>New Department</span>
-                    <span className=''>
-                        {showForm === false ? 
-                            <><FontAwesomeIcon icon={faChevronDown}/></> 
-                            : 
-                            <><FontAwesomeIcon icon={faAngleUp}/></>}
-                    </span>
-                </div>
-            </button>
-            <div className={` 
-                    ${showForm ? 'block opacity-100' : 'hidden opacity-0'}
-                    transition-all bg-wiseOffWhite p-7 border border-wiseGrey4
-                `}>
-                <form className='grid grid-cols-7 gap-10 text-wiseGrey1'>
-                    <div className='grid grid-cols-1 col-start-2 col-span-5 gap-2'>
-                        <label htmlFor='name' className='admin-form-label'>Department Name:</label>
-                        <input
-                            className='admin-form-control'
-                            type='text'
-                            name='name'
-                            value={formData.name}
-                            onChange={updateEventHandler}
-                            placeholder='E.g. Projects, Marketing etc.'
-                        />
-                    </div>
-                    <div className='grid grid-cols-1 col-start-2 col-span-5 gap-10'>
-                        <div className='grid grid-cols-1 gap-2'>
-                            <label htmlFor='config' className='admin-form-label'>Assignment Strategy: </label>
-                            <select 
-                                name='assignmentStrategy'
-                                className='appearance-none admin-form-control'
-                                onChange={(e) => setFormData({
-                                    ...formData,
-                                    config: {
-                                        ...formData.config,
-                                        assignmentStrategy: e.target.value
-                                    }
-                                })}>
-                                <option value={'Load Balance'}>Load Balance</option>
-                                <option value={'Manual'}>Manual</option>
-                            </select>
-                        </div>
-                        <div 
-                            className={`${formData.ticketTypes.length !== 0 ? 
-                                'block opacity-100' : 
-                                'hidden opacity-0'}
-                                grid grid-cols-1 gap-2 p-4 mt-2`}>
-                            <h2 className='admin-form-lable text-lg'>Custom Tickets:</h2>
-                            {formData.ticketTypes.length !== 0 ? (
-                                formData.ticketTypes.map((ticket, index) => (
-                                    <>
-                                        <div key={index} className='grid grid-cols-1 gap-2'>
-                                            <p 
-                                            className='bg-wiseOffWhite/10 p-1 rounded-sm w-2/4 flex flex-row'>
-                                                <span className='text-wiseDarkPink'>#{index + 1}</span> - {ticket.typeName}
-                                                <span className='ml-auto'>
-                                                    <button type='button' onClick={() => deleteTicketType(index)}
-                                                        className=' text-wiseOffWhite font-lato font-bold cursor-pointer transition delay-75 duration-200 hover:scale-105 hover:text-wiseSkin'>
-                                                        <FontAwesomeIcon icon={faXmark}/>
-                                                    </button>
-                                                </span>
-                                            </p>
-                                        </div>
-                                    </>
-                                ))
-                            ) : (
-                                <></>
-                            )}
-                        </div>
-                        <div className='grid justify-items-stretch'>
-                            <button 
-                                type='button'
-                                title='For adding department specific tickets' 
-                                onClick={() => setShowTicketType(!showTicketType)}
-                                className='admin-form-button justify-self-center'
-                            >
-                                Add Ticket Type
-                            </button>
-                        </div>
-                    </div>
-                    <div 
-                        className={`${showTicketType ? 
-                            'block opacity-100' : 
-                            'hidden opacity-0'} 
-                            grid grid-cols-1 col-start-2 col-span-5 gap-2
-                        `}
+        <div className={`
+            ${overlay === 'new'
+                    ? ''
+                    : 'hidden'
+                } 
+                p-7 font-lato grid grid-rows-[auto_1fr] gap-15 relative
+                min-h-0 h-full
+        `}>
+            <div
+                className='
+                    flex flex-col gap-2 w-1/2
+                '
+            >
+                <p
+                    className='
+                        flex flex-row gap-1 text-wiseGrey3
+                    '
+                >
+                    <span
+                        onClick={() => setOverlay('')}
+                        className='
+                            cursor-pointer transition-all duration-150 text-wiseRose3 
+                            hover:text-wiseRose2 hover:underline
+                        '
                     >
-                            <AddTicketType
-                                appendTypeFunc={handleAppendTicketType}
-                                showTicketTypeForm={handleShowFormChild}
-                            />
-                    </div>
-                    <div className='grid grid-cols-1 col-start-5 col-end-9 justify-items-stretch'>
-                        <button 
-                            type='button'
-                            onClick={() => createDepartment(formData)} 
-                            className='admin-form-button justify-self-end'>
-                                Finish
-                        </button>
-                    </div>
-                </form>
+                        Team management
+                    </span>
+                    <span>/</span>
+                    <span
+
+                        className='
+                        '
+                    >
+                        Create
+                    </span>
+                </p>
+                <h2
+                    className='
+                        font-semibold text-xl
+                    '
+                >
+                    Create Department
+                </h2>
+                <p
+                    className='
+                        text-wiseGrey3
+                    '
+                >
+                    Departments are how you organise your business by providing 
+                    a home for your users and types of requests
+                </p>
+            </div>
+            <div className='
+                flex flex-col overflow-y-auto mb-20 gap-10
+            '>
+                <div className='
+                    flex flex-col w-120 gap-3
+                '>
+                    <label htmlFor='name' className='admin-form-label'>Department Name</label>
+                    <input
+                        className='admin-form-control'
+                        type='text'
+                        name='name'
+                        value={formData.name}
+                        onChange={updateEventHandler}
+                        placeholder='E.g. Projects, Marketing etc.'
+                    />
+                </div>
+                <div className='
+                    flex flex-col w-120 gap-3   
+                '>
+                    <label htmlFor='config' className='admin-form-label'>Assignment Strategy </label>
+                    <select 
+                        name='assignmentStrategy'
+                        className='appearance-none admin-form-control'
+                        onChange={(e) => setFormData({
+                            ...formData,
+                            config: {
+                                ...formData.config,
+                                assignmentStrategy: e.target.value
+                            }
+                        })}>
+                        <option value={'Load Balance'}>Load Balance</option>
+                        <option value={'Manual'}>Manual</option>
+                    </select>
+                </div>
+                <div 
+                    className={`
+                        flex flex-col gap-2
+                    `}>
+                    <h2 className='text-xl'>
+                        Custom Requests   
+                    </h2>
+                    <p
+                        className='
+                            text-wiseGrey3 flex flex-col gap-2
+                        '
+                    >
+                        <span>
+                            Structure what kinds of request can be raised for this team, 
+                            and add as many fields as needed<br/>
+                        </span>    
+                        <span
+                            className='italic font-bold text-wiseRose3'
+                        >
+                            *All request types come with a title, description and file upload field as default.
+                        </span>
+                    </p>
+                    
+                    {formData.ticketTypes.length !== 0 ? (
+                        formData.ticketTypes.map((ticket, index) => (
+                            <>
+                                <div key={index} className='grid grid-cols-1 gap-2'>
+                                    <p 
+                                    className='bg-wiseOffWhite/10 p-1 rounded-sm w-2/4 flex flex-row'>
+                                        <span className='text-wiseDarkPink'>#{index + 1}</span> - {ticket.typeName}
+                                        <span className=''>
+                                            <button type='button' onClick={() => deleteTicketType(index)}
+                                                className=' 
+                                                    font-lato font-bold cursor-pointer transition 
+                                                    delay-75 duration-200 hover:scale-105 hover:text-wiseSkin'>
+                                                <FontAwesomeIcon icon={faXmark}/>
+                                            </button>
+                                        </span>
+                                    </p>
+                                </div>
+                            </>
+                        ))
+                    ) : (
+                        <></>
+                    )}
+                </div>
+                <div 
+                    className={`${showTicketType ? 
+                        '' : 
+                        'hidden'} 
+                    `}
+                >
+                        <AddTicketType
+                            appendTypeFunc={handleAppendTicketType}
+                            showTicketTypeForm={handleShowFormChild}
+                        />
+                </div>
+                <div className=''>
+                    <button 
+                        type='button'
+                        title='For adding department specific tickets' 
+                        onClick={() => setShowTicketType(!showTicketType)}
+                        className='
+                            cursor-pointer w-60 py-3
+                            bg-wiseGrey4/30 rounded-lg transition-all duration-150
+                            hover:bg-wiseRose4/50
+                        '
+                    >
+                        + Add Custom Request
+                    </button>
+                </div>
+                
+            </div>
+            
+            <div 
+                className='
+                    absolute w-full border-t border-wiseGrey4/60 bottom-0
+                    p-5 flex flex-row gap-2 z-50 justify-end bg-white
+            '>
+                <button
+                    type='button'
+                    onClick={() => setOverlay('')}
+                    className='
+                        w-20 rounded-lg font-bold hover:bg-wiseGrey4/60
+                        transition-all duration-150 cursor-pointer
+                    '
+                >
+                    Close
+                </button>
+                <button 
+                    type='button'
+                    onClick={() => createDepartment(formData)} 
+                    className='
+                        button1-no-width
+                        w-20 font-bold
+                    '>
+                        Finish
+                </button>
             </div>
         </div>
     )

@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { ToastContext } from '../../../../context/toast-notification/ToastContext';
 
-export function NewUserForm({closeFormFunc, closeFormState, roleOptions, selectOptions}) {
+export function NewUserForm({closeFormFunc, closeFormState, selectOptions}) {
     const { addToast } = useContext(ToastContext);
 
     const blankForm = {
@@ -97,7 +97,7 @@ export function NewUserForm({closeFormFunc, closeFormState, roleOptions, selectO
                     : 'hidden'
                 } 
                 bg-white w-200 mx-auto rounded-xl border border-wiseGrey4/25
-                p-7 font-lato grid grid-rows-[auto_1fr] gap-5 relative -top-10 shadow-xl
+                p-7 font-lato grid grid-rows-[auto_1fr] gap-5 top-20 relative shadow-xl
             `}>
             <div
 
@@ -235,9 +235,13 @@ export function NewUserForm({closeFormFunc, closeFormState, roleOptions, selectO
                     '
                 />
             <div
-                className='
-                    flex flex-row justify-between
-                '
+                className={`
+                    flex flex-row
+                    ${group === 1
+                        ? 'justify-end'
+                        : 'justify-between'
+                    } 
+                `}
             >
                 <button
                     type='button'
@@ -246,8 +250,8 @@ export function NewUserForm({closeFormFunc, closeFormState, roleOptions, selectO
                         
                         w-25 
                         ${group === 1
-                            ? 'opacity-0'
-                            : 'button2-no-width opacity-100'
+                            ? 'hidden'
+                            : 'button2-no-width '
                         }
                     `}
                 >
@@ -258,6 +262,7 @@ export function NewUserForm({closeFormFunc, closeFormState, roleOptions, selectO
                     onClick={() => nextOrSubmit()} 
                     className='
                         button1-no-width w-25
+                        
                     '>
                         {group === 1
                             ? 'Next'

@@ -72,7 +72,7 @@ export function AddTicketType ({appendTypeFunc, showTicketTypeForm}) {
 
     return (
         <div>
-            <div className='grid grid-cols-1 gap-2 mb-15'>
+            <div className='grid grid-cols-1 gap-2'>
                 <label htmlFor='typeName' className='admin-form-label'>Ticket Type Name:</label>
                 <input
                     className='admin-form-control'
@@ -122,7 +122,7 @@ export function AddTicketType ({appendTypeFunc, showTicketTypeForm}) {
                     </div>
                     <div className='grid grid-cols-1 gap-2'>
                         <label className='admin-form-label' htmlFor={field.required}>Required:</label>
-                        <div className='grid grid-cols-5 '>
+                        <div className='grid'>
                             <div className=''>
                                 <label>True</label>
                                 <input
@@ -174,7 +174,7 @@ export function AddTicketType ({appendTypeFunc, showTicketTypeForm}) {
                 <button 
                     type='button' 
                     onClick={handleSubmit}
-                    className='admin-form-button mt-10 mb-10 justify-self-center'>
+                    className='admin-form-button justify-self-center'>
                         Save Ticket Type
                 </button>
             </div>

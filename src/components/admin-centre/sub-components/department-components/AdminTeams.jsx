@@ -3,7 +3,7 @@ import { CreateDepartment } from './createDepartment';
 import { EditDepartment } from './editDepartment';
 import { useGetDepartments } from '../../../../hooks/department-fetch/useDepartments';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars, faCirclePlus } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faCirclePlus, faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 export function AdminTeams() {
     const { departments, departmentsPending, errorGetting } = useGetDepartments();
@@ -39,12 +39,13 @@ export function AdminTeams() {
     ]
 
     const selectAll = () => {
+        console.log(bulkTypes);
         if(allSelected) {
             setAllSelected(!allSelected);
             setBulkTypes([]); 
         } else {
             setAllSelected(!allSelected);
-            setBulkTypes(departments);
+            setBulkTypes(activeDept.ticketTypes);
         }
         
     }
@@ -87,7 +88,7 @@ export function AdminTeams() {
         <div 
             className='
                 h-full min-h-0 grid grid-cols-[auto_1fr]
-                relative font-lato mr-10 border border-wiseGrey4/25 bg-white rounded-2xl 
+                relative font-lato border border-wiseGrey4/25 bg-white rounded-2xl 
         '>
             <div
                 className={`
@@ -155,10 +156,35 @@ export function AdminTeams() {
             </div>
             <div
                 className={`
-                        bg-whitepy-5 px-8 py-5
-                        min-h-0 max-h-full flex flex-col gap-10
+                        px-8 py-5 relative
+                        min-h-0 h-full flex flex-col gap-10
                     `}
             >
+                <div
+                    className={`
+                        ${formOverlay !== ''
+                            ? `absolute inset-0 z-40 bg-white rounded-2xl
+                            border-l border-wiseGrey4/50 h-full shadow-[-5px_0_10px_-9px]
+                                
+                            `
+                            : 'hidden'
+                        }
+                    `}
+                >
+                    <CreateDepartment
+                        overlay={formOverlay}
+                        setOverlay={setFormOverlay}
+                    />
+                    {/* Only render update form if a department selected and formOverlay set to edit */}
+                    {!formOverlay === 'edit'
+                        ? (<>
+
+                        </>)
+                        : (<>
+                            
+                        </>)
+                    }
+                </div>
                 <div
                     className='
                         flex flex-col gap-2 shrink-0
@@ -191,14 +217,58 @@ export function AdminTeams() {
                     >
                         Request Types
                     </h3>
-                    <button
-                        onClick={() => setFormOverlay('requestType')}
+                    <div
                         className='
-                            button1-no-width font-bold
+                            flex flex-row gap-10
                         '
                     >
-                        + Add Request Type
-                    </button>
+                        {bulkTypes && bulkTypes?.length > 0 
+                            ? (
+                                <div
+                                    className={`
+                                            flex flex-row self-center gap-8
+                                            py-2 px-4 rounded-sm text-wiseGrey1
+                                        `}
+                                >
+                                    <p
+                                        className='font-bold'
+                                    >
+                                        {bulkTypes?.length} Selected
+                                    </p>
+                                    <p
+                                        onClick={() => setFormOverlay('bulk')}
+                                        className='
+                                            text-wiseRose3 cursor-pointer hover:text-wiseRose2
+                                        '   
+                                    >
+                                        <FontAwesomeIcon
+                                            icon={faPenToSquare}
+                                        /> 
+                                        Edit
+                                    </p>
+                                    <p
+                                        className='
+                                            text-wiseRose3 cursor-pointer hover:text-wiseRose2
+                                        '
+                                    >
+                                        <FontAwesomeIcon 
+                                            icon={faTrash}
+                                        /> 
+                                        Delete
+                                    </p>
+                                </div>
+                            )
+                            : (<></>)
+                        }   
+                        <button
+                            onClick={() => setFormOverlay('requestType')}
+                            className='
+                                button1-no-width font-bold
+                            '
+                        >
+                            + Add Request Type
+                        </button>
+                    </div>    
                 </div>
                 <div
                     className='
@@ -315,7 +385,7 @@ export function AdminTeams() {
                                                 <div
                                                     className={`
                                                         absolute bg-white border border-wiseGrey4/30 shadow-md z-50
-                                                        flex flex-col rounded-md min-w-fit left-8 top-5
+                                                        flex flex-col rounded-md min-w-fit left-10 top-2
                                                         ${isFocused && selectedReqType?.typeName === type?.typeName
                                                             ? ''
                                                             : 'hidden'

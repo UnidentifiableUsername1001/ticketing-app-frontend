@@ -120,7 +120,7 @@ export default function AdminCentre({children}) {
                     </ul>
                     <div
                         className={`
-                                h-full min-h-0 
+                                h-full min-h-0 mr-10
                             `}
                     >
                         <Outlet/>

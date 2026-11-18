@@ -151,7 +151,7 @@ export function AdminUsers() {
             <div
                 className={`
                         ${formOverlay !== ''
-                            ? `transition-all absolute inset-0 z-50 bg-wiseGrey5/20 rounded-xl backdrop-blur-xs
+                            ? `transition-all absolute inset-0 z-50 bg-wiseGrey5/20 rounded-xl backdrop-blur-[2px]
                                 
                             `
                             : 'hidden'
