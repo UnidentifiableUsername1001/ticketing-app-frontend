@@ -45,22 +45,18 @@ export function CreateDepartment({overlay, setOverlay}) {
         });
     };
 
-    const handleShowFormChild = (bool) => {
-        setShowTicketType(bool);
-    }
-
     return (
         <div className={`
             ${overlay === 'new'
                     ? ''
                     : 'hidden'
                 } 
-                p-7 font-lato grid grid-rows-[auto_1fr] gap-15 relative
-                min-h-0 h-full
+                font-lato grid grid-rows-[auto_1fr] relative
+                min-h-0 h-full overflow-y-auto gap-8
         `}>
             <div
                 className='
-                    flex flex-col gap-2 w-1/2
+                    flex flex-col gap-2 w-1/2 pt-7 px-7
                 '
             >
                 <p
@@ -103,7 +99,7 @@ export function CreateDepartment({overlay, setOverlay}) {
                 </p>
             </div>
             <div className='
-                flex flex-col overflow-y-auto mb-20 gap-10
+                flex flex-col gap-10 px-7
             '>
                 <div className='
                     flex flex-col w-120 gap-3
@@ -138,27 +134,32 @@ export function CreateDepartment({overlay, setOverlay}) {
                 </div>
                 <div 
                     className={`
-                        flex flex-col gap-2
+                        flex flex-col gap-10
                     `}>
-                    <h2 className='text-xl'>
-                        Custom Requests   
-                    </h2>
-                    <p
+                    <div
                         className='
-                            text-wiseGrey3 flex flex-col gap-2
+                            flex flex-col gap-2
                         '
                     >
-                        <span>
-                            Structure what kinds of request can be raised for this team, 
-                            and add as many fields as needed<br/>
-                        </span>    
-                        <span
-                            className='italic font-bold text-wiseRose3'
+                        <h2 className='text-xl'>
+                            Custom Requests   
+                        </h2>
+                        <p
+                            className='
+                                text-wiseGrey3 flex flex-col gap-2
+                            '
                         >
-                            *All request types come with a title, description and file upload field as default.
-                        </span>
-                    </p>
-                    
+                            <span>
+                                Structure what kinds of request can be raised for this team, 
+                                and add as many fields as needed<br/>
+                            </span>    
+                            <span
+                                className='italic font-bold text-wiseRose3'
+                            >
+                                *All request types come with a title, description and file upload field as default.
+                            </span>
+                        </p>
+                    </div>
                     {formData.ticketTypes.length !== 0 ? (
                         formData.ticketTypes.map((ticket, index) => (
                             <>
@@ -181,38 +182,43 @@ export function CreateDepartment({overlay, setOverlay}) {
                     ) : (
                         <></>
                     )}
-                </div>
-                <div 
-                    className={`${showTicketType ? 
-                        '' : 
-                        'hidden'} 
-                    `}
-                >
+
+                    <div className={`
+                        flex flex-col gap-5
+                    `}>
+                        <button 
+                            type='button'
+                            title='For adding department specific tickets' 
+                            onClick={() => setShowTicketType(!showTicketType)}
+                            className={`
+                                cursor-pointer 
+                                ${showTicketType
+                                    ? `
+                                        hidden
+                                    `
+                                    : `
+                                        bg-wiseGrey4/30 rounded-lg transition-all duration-150
+                                        hover:bg-wiseRose4/50 w-60 py-3
+                                    `
+                                }
+                                
+                            `}
+                        >
+                            + Add Custom Request
+                        </button>
                         <AddTicketType
                             appendTypeFunc={handleAppendTicketType}
-                            showTicketTypeForm={handleShowFormChild}
+                            setShowForm={setShowTicketType}
+                            showForm={showTicketType}
                         />
-                </div>
-                <div className=''>
-                    <button 
-                        type='button'
-                        title='For adding department specific tickets' 
-                        onClick={() => setShowTicketType(!showTicketType)}
-                        className='
-                            cursor-pointer w-60 py-3
-                            bg-wiseGrey4/30 rounded-lg transition-all duration-150
-                            hover:bg-wiseRose4/50
-                        '
-                    >
-                        + Add Custom Request
-                    </button>
+                    </div>
                 </div>
                 
+                
             </div>
-            
             <div 
                 className='
-                    absolute w-full border-t border-wiseGrey4/60 bottom-0
+                    sticky border-t border-wiseGrey4/60 bottom-0
                     p-5 flex flex-row gap-2 z-50 justify-end bg-white
             '>
                 <button

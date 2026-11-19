@@ -55,10 +55,6 @@ const dataSources = [
     {
         label: 'All Departments',
         value: 'ALL_DEPARTMENTS'
-    },
-    {
-        label: 'All Kit',
-        value: 'ALL_KIT'
     }
 ]
 
