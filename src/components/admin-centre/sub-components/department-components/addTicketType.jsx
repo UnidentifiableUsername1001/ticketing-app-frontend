@@ -96,96 +96,104 @@ export function AddTicketType ({appendTypeFunc, setShowForm, showForm }) {
             {newTicketType.fields.map((field, index) => (
                 <>
                 <div key={index} className='
-                    flex flex-col gap-10 border border-wiseGrey4/40 shadow-lg p-5
-                    rounded-xl
+                    flex flex-row gap-10 border border-wiseGrey4/40 shadow-lg p-5
+                    rounded-xl relative pt-10
                 '>
                     <div
                         className='
-                            flex flex-row justify-between
+                            flex flex-col flex-1 gap-5 
                         '
                     >
-                        <h1 
+                        <div
                             className='
-                                font-bold text-2xl text-wiseGrey2
-                                col-span-2 
-                            '>
-                            Field {index + 1}
-                        </h1>
-                        <div className='flex flex-row '>
-                            { newTicketType.fields.length !== 1 ? (
-                            <button 
-                                type='button' 
-                                onClick={() => removeField(index)}
+                                flex flex-row justify-between
+                            '
+                        >
+                            <h1 
                                 className='
-                                    text-2xl text-wiseRose3 hover:text-wiseRose4 cursor-pointer
-                                    transition-all duration-150
-                                '
-                                title='Delete Field'>
-                                    <FontAwesomeIcon icon={faTrash}/>
-                            </button>
-                            ) : (
-                                <></>
-                            )}
-                        </div>    
-                    </div>
-                    
-                    <div className='grid grid-cols-1 gap-2 col-span-2 '>
-                        <label className='admin-form-label' htmlFor={field.name}>Title</label>
-                        <input
-                            className='admin-form-control'
-                            type='text'
-                            name='name'
-                            placeholder='E.g. Select the equipment'
-                            value={field.name}
-                            onChange={(e) => handleFieldChange(index, e.target.name, e.target.value)}/>
-                    </div>
-                    <div className='grid grid-cols-1 gap-2'>
-                        <label className='admin-form-label' htmlFor={field.expectedType}>Expected Data Type:</label>
-                        <Select
-                            unstyled
-                            classNames={style1}
-                            value={expectedTypeMapping.find(option => option.value === field.expectedType) || null}
-                            options={expectedTypeMapping}
-                            onChange={(selectedOption) => handleFieldChange(index, 'expectedType', selectedOption ? selectedOption.value : '')} />
-                    </div>
-                    {newTicketType.fields[index].expectedType === 'Dropdown'
-                        ? (
-                            <div className='grid grid-cols-1 gap-2'>
-                                <label className='admin-form-label' htmlFor={field.dataSource}>Data Source:</label>
-                                <Select
-                                    unstyled
-                                    classNames={style1}
-                                    value={dataSources.find(option => option.value === field.dataSource) || null}
-                                    options={dataSources}
-                                    onChange={(selectedOption) => handleFieldChange(index, 'dataSource', selectedOption ? selectedOption.value : '')} />
-                            </div>
-                        )
-                        : (
-                            <></>
-                        )
-                    }
-                    
-                    <div className='grid grid-cols-1 gap-2'>
-                        <label className='admin-form-label' htmlFor={field.required}>
-                            Required
-                        </label>
-                        <Select
-                            unstyled
-                            classNames={style1}
-                            onChange={(option) => handleFieldChange(index, option.label, option.value)}
-                            options={[
-                                {
-                                    label: 'Yes',
-                                    value: true
-                                },
-                                {
-                                    label: 'No',
-                                    value: false
-                                }
-                            ]}
+                                    font-bold text-2xl text-wiseGrey2
+                                    col-span-2 
+                                '>
+                                {newTicketType.fields[index].name}
+                            </h1>  
+                        </div>
                         
-                        />
+                        <div className='grid grid-cols-1 gap-2 col-span-2 '>
+                            <label className='admin-form-label' htmlFor={field.name}>Title</label>
+                            <input
+                                className='admin-form-control'
+                                type='text'
+                                name='name'
+                                placeholder='E.g. Select the equipment'
+                                value={field.name}
+                                onChange={(e) => handleFieldChange(index, e.target.name, e.target.value)}/>
+                        </div>
+                        <div className='grid grid-cols-1 gap-2'>
+                            <label className='admin-form-label' htmlFor={field.expectedType}>Expected Data Type:</label>
+                            <Select
+                                unstyled
+                                classNames={style1}
+                                value={expectedTypeMapping.find(option => option.value === field.expectedType) || null}
+                                options={expectedTypeMapping}
+                                onChange={(selectedOption) => handleFieldChange(index, 'expectedType', selectedOption ? selectedOption.value : '')} />
+                        </div>
+                        {newTicketType.fields[index].expectedType === 'Dropdown'
+                            ? (
+                                <div className='grid grid-cols-1 gap-2'>
+                                    <label className='admin-form-label' htmlFor={field.dataSource}>Data Source:</label>
+                                    <Select
+                                        unstyled
+                                        classNames={style1}
+                                        value={dataSources.find(option => option.value === field.dataSource) || null}
+                                        options={dataSources}
+                                        onChange={(selectedOption) => handleFieldChange(index, 'dataSource', selectedOption ? selectedOption.value : '')} />
+                                </div>
+                            )
+                            : (
+                                <></>
+                            )
+                        }
+                        
+                        <div className='grid grid-cols-1 gap-2'>
+                            <label className='admin-form-label' htmlFor={field.required}>
+                                Required
+                            </label>
+                            <Select
+                                unstyled
+                                classNames={style1}
+                                onChange={(option) => handleFieldChange(index, option.label, option.value)}
+                                options={[
+                                    {
+                                        label: 'Yes',
+                                        value: true
+                                    },
+                                    {
+                                        label: 'No',
+                                        value: false
+                                    }
+                                ]}
+                            
+                            />
+                        </div>
                     </div>
+                    <div className='
+                        absolute right-3 top-3
+                    '>
+                        { newTicketType.fields.length !== 1 ? (
+                        <button 
+                            type='button' 
+                            onClick={() => removeField(index)}
+                            className='
+                                text-2xl text-wiseRose3 hover:text-wiseRose4 cursor-pointer
+                                transition-all duration-150
+                            '
+                            title='Delete Field'>
+                                <FontAwesomeIcon icon={faTrash}/>
+                        </button>
+                        ) : (
+                            <></>
+                        )}
+                    </div>  
                 </div>
             </>
             ))}

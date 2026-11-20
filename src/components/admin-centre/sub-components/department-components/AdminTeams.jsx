@@ -170,9 +170,11 @@ export function AdminTeams() {
                         setOverlay={setFormOverlay}
                     />
                     {/* Only render update form if a department selected and formOverlay set to edit */}
-                    {!formOverlay === 'edit'
+                    {formOverlay === 'edit'
                         ? (<>
-
+                            <EditDepartment
+                                targetDept={activeDept}
+                            />
                         </>)
                         : (<>
                             
@@ -255,12 +257,14 @@ export function AdminTeams() {
                             : (<></>)
                         }   
                         <button
-                            onClick={() => setFormOverlay('requestType')}
+                            onClick={() => setFormOverlay('edit')}
                             className='
-                                button1-no-width font-bold
+                                button1-no-width font-bold w-40
                             '
                         >
-                            + Add Request Type
+                            <FontAwesomeIcon
+                                icon={faPenToSquare}
+                            /> Edit Team
                         </button>
                     </div>    
                 </div>

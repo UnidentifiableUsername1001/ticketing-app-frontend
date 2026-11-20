@@ -135,7 +135,8 @@ export function CreateDepartment({overlay, setOverlay}) {
                 <div 
                     className={`
                         flex flex-col gap-10
-                    `}>
+                    `}
+                >
                     <div
                         className='
                             flex flex-col gap-2
@@ -163,19 +164,35 @@ export function CreateDepartment({overlay, setOverlay}) {
                     {formData.ticketTypes.length !== 0 ? (
                         formData.ticketTypes.map((ticket, index) => (
                             <>
-                                <div key={index} className='grid grid-cols-1 gap-2'>
+                                <div key={index} 
+                                    className='
+                                        flex flex-row gap-2
+                                    '
+                                >
                                     <p 
-                                    className='bg-wiseOffWhite/10 p-1 rounded-sm w-2/4 flex flex-row'>
-                                        <span className='text-wiseDarkPink'>#{index + 1}</span> - {ticket.typeName}
-                                        <span className=''>
-                                            <button type='button' onClick={() => deleteTicketType(index)}
-                                                className=' 
-                                                    font-lato font-bold cursor-pointer transition 
-                                                    delay-75 duration-200 hover:scale-105 hover:text-wiseSkin'>
-                                                <FontAwesomeIcon icon={faXmark}/>
-                                            </button>
+                                        className='
+                                            w-60 gap-3
+                                            bg-wiseRose5 p-2 rounded-sm flex flex-row
+
+                                        '
+                                    >
+                                        <span className='text-wiseRose2 font-bold text-lg'>
+                                            #{index + 1}
+                                        </span> 
+                                        <span
+                                            className='
+                                                font-semibold text-lg 
+                                            '
+                                        >
+                                            {ticket.typeName}
                                         </span>
                                     </p>
+                                    <button type='button' onClick={() => deleteTicketType(index)}
+                                        className=' 
+                                            font-lato font-bold cursor-pointer transition text-xl
+                                            duration-150 hover:text-wiseSkin'>
+                                        <FontAwesomeIcon icon={faXmark}/>
+                                    </button>
                                 </div>
                             </>
                         ))
@@ -213,8 +230,6 @@ export function CreateDepartment({overlay, setOverlay}) {
                         />
                     </div>
                 </div>
-                
-                
             </div>
             <div 
                 className='

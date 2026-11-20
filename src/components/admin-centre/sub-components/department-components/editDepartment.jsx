@@ -1,35 +1,19 @@
 import { useState } from 'react';
 import Select from 'react-select';
 import { 
-    useGetDepartments, 
-    useEditDepartment, 
-    useGetOneDepartment } from '../../../../hooks/department-fetch/useDepartments';
+    useEditDepartment
+} from '../../../../hooks/department-fetch/useDepartments';
 import { AddTicketType } from './addTicketType';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { EditTicketType } from './EditTicketType';
 import { style1 } from '../../../../hooks/assorted/react-select-styles';
 
-export function EditDepartment() {
-
-    const [formData, setFormData] = useState({});
-    const [targetDeptId, setTargetDeptId] = useState(null);
-    const [showForm, setShowForm] = useState(false);
-
-    // For editing ticket types
+export function EditDepartment({targetDept}) {
     const [showEditTicket, setShowEditTicket] = useState(null);
     const [ticketToEdit, setTicketToEdit] = useState({});
-    
-    const { departments, departmentsPending, errorGetting } = useGetDepartments();
     const { update, errorUpdating, isUpdating } = useEditDepartment();
-    const { deptData, deptError, deptPending } = useGetOneDepartment(targetDeptId);
-
-    const handleSetTargDept = async (option) => {
-        setTargetDeptId(option._id);
-        if (deptData && Object.keys(deptData).length !== 0) {
-            setFormData({...deptData});
-        }
-    }; 
+    const [formData, setFormData] = useState({...targetDept});
 
     const updateHandler = (event) => {
         const targetName = event.target.name;
@@ -62,10 +46,6 @@ export function EditDepartment() {
         });
     };
 
-    const handleShowFormChild = (bool) => {
-        setShowTicketType(bool);
-    }
-
     const handleEditTicketType = (newTypeData, index) => {
 
         const ticketTypes = formData.ticketTypes;
@@ -87,130 +67,220 @@ export function EditDepartment() {
     }
 
     return (
-        <div className='top-div grid grid-cols-1 gap-10 font-lato'>
-            <div className={` 
-                `}>
-                <form className='grid grid-cols-7 gap-10 text-wiseGrey1'>
-                    <div className='grid grid-cols-1 col-start-2 col-span-5 gap-2'>
-                        <label className='admin-form-label' htmlFor='selectUser'>Select a department:</label>
-                        <Select
-                            unstyled
-                            classNames={style1}
-                            value={targetDeptId}
-                            options={departments.map(dept => ({
-                                label: dept.name,
-                                value: dept
-                            }))}
-                            onChange={(selectedOption) => handleSetTargDept(selectedOption) } />
-                    </div>
-                    {formData && Object.keys(formData).length !== 0 ? (
-                        <>
-                            <div className='grid grid-cols-1 col-start-2 col-span-5 gap-2'>
-                                <label htmlFor='name' className='admin-form-label'>Department Name - <span className='text-wiseRose3'>Current: <span className='text-wiseRose1'>{formData ? formData.name : ""}</span></span></label>
-                                <input
-                                    className='admin-form-control'
-                                    type='text'
-                                    name='name'
-                                    value={formData.name}
-                                    onChange={updateHandler}
-                                    placeholder='E.g. Projects, Marketing etc.'
-                                />
-                            </div>
-                            <div className='grid grid-cols-1 col-start-2 col-span-5 gap-10'>
-                                <div className='grid grid-cols-1 gap-2'>
-                                    <label htmlFor='config' className='admin-form-label'>Assignment Strategy</label>
-                                    <select 
-                                        name='config'
-                                        className='appearance-none admin-form-control'>
-                                        <option value={formData.config?.assignmentStrategy}>Load Balance</option>
-                                        <option value={formData.config?.assignmentStrategy}>Manual</option>
-                                    </select>
-                                </div>
-                                <div 
-                                    className={`${Object.keys(formData).length !== 0 && formData.ticketTypes.length !== 0 ? 
-                                        'block opacity-100' : 
-                                        'hidden opacity-0'}
-                                        grid grid-cols-1 gap-2 p-4 mt-2`}>
-                                    <h2 className='admin-form-lable text-lg'>Custom Tickets:</h2>
-                                    {Object.keys(formData).length !== 0 && formData.ticketTypes.length !== 0 ? (
-                                        formData.ticketTypes.map((ticket, index) => (
-                                            <>
-                                                <div key={index} className='grid grid-cols-1 gap-2'>
-                                                    <p 
-                                                    className='bg-wiseNavy2 p-1 rounded-sm w-2/4 flex flex-row'>
-                                                        <span className='text-wiseDarkPink'>#{index + 1}</span><span className='ml-3 text-wiseGrey5'> {ticket.typeName}</span>
-                                                        <span className='ml-auto'>
-                                                            <button type='button' onClick={() => {
-                                                                setShowEditTicket(showEditTicket === index ? null : index)
-                                                                setTicketToEdit(ticket);
-                                                            }}
-                                                                className=' text-wiseOffWhite mx-1 font-lato font-bold cursor-pointer transition delay-75 duration-200 hover:scale-105 hover:text-wiseSkin'>
-                                                                <FontAwesomeIcon icon={faPenToSquare}/>
-                                                            </button>
-                                                            <button type='button' onClick={() => deleteTicketType(index)}
-                                                                className=' text-wiseOffWhite font-lato font-bold cursor-pointer transition delay-75 duration-200 hover:scale-105 hover:text-wiseSkin'>
-                                                                <FontAwesomeIcon icon={faXmark}/>
-                                                            </button>
-                                                        </span>
-                                                    </p>
-                                                    {showEditTicket === index ? (
-                                                        <div 
-                                                            className=''>
-                                                            <EditTicketType
-                                                                appendTypeFunc={handleEditTicketType}
-                                                                showTicketState={handleShowEditFormChild}
-                                                                currentTicket={ticketToEdit}
-                                                                index={index} />
-                                                        </div>        
-                                                    ) : (
-                                                        <></>
-                                                    )}
-                                                </div>
-                                            </>
-                                        ))
-                                    ) : (
-                                        <></>
-                                    )}
-                                </div>
-                                <div className='grid justify-items-stretch'>
-                                    <button 
-                                        type='button'
-                                        title='For adding department specific tickets' 
-                                        onClick={() => setShowTicketType(!showTicketType)}
-                                        className='admin-form-button justify-self-center'
-                                    >
-                                        Add Ticket Type
-                                    </button>
-                                </div>
-                            </div>
-                            <div 
-                                className={`${showTicketType ? 
-                                    'block opacity-100' : 
-                                    'hidden opacity-0'} 
-                                    grid grid-cols-1 col-start-2 col-span-5 gap-2
-                                `}
-                            >
-                                    <AddTicketType
-                                        appendTypeFunc={handleAppendTicketType}
-                                        showTicketTypeForm={handleShowFormChild}
-                                    />
-                            </div>
-                            <div className='grid grid-cols-1 col-start-5 col-end-9 justify-items-stretch'>
-                                <button 
-                                    type='button'
-                                    onClick={() => update()} 
-                                    className='admin-form-button justify-self-end'>
-                                        Finish
-                                </button>
-                            </div>
-                        </>
-                    ) : (
-                        <div className='col-start-2 col-span-5 text-center text-wiseSkin/60 py-10 font-bold'>
-                            Please select a department above to load its customizable options.
-                        </div>
-                    )}
+        <div className={` 
+                font-lato grid grid-rows-[auto_1fr] relative
+                min-h-0 h-full overflow-y-auto gap-8
+            `}>
+            <div
+                className='
+                    flex flex-col gap-2 w-1/2 pt-7 px-7
+                '
+            >
+                <p
+                    className='
+                        flex flex-row gap-1 text-wiseGrey3
+                    '
+                >
+                    <span
+                        onClick={() => setOverlay('')}
+                        className='
+                            cursor-pointer transition-all duration-150 text-wiseRose3 
+                            hover:text-wiseRose2 hover:underline
+                        '
+                    >
+                        Team management
+                    </span>
+                    <span>/</span>
+                    <span
 
-                </form>
+                        className='
+                        '
+                    >
+                        Edit
+                    </span>
+                </p>
+                <h2
+                    className='
+                        font-semibold text-xl
+                    '
+                >
+                    Edit Team
+                </h2>
+                <p
+                    className='
+                        text-wiseGrey3
+                    '
+                >
+                    Adjust the settings and details of the selected team
+                </p>
+            </div>
+            <div className='
+                flex flex-col gap-10 px-7
+            '>
+                <div className=' flex flex-col w-120 gap-3'>
+                    <label htmlFor='name' className='admin-form-label'>
+                        Department Name
+                    </label>
+                    <input
+                        className='admin-form-control'
+                        type='text'
+                        name='name'
+                        value={formData.name}
+                        onChange={updateHandler}
+                        placeholder='E.g. Projects, Marketing etc.'
+                    />
+                </div>
+                <div className='flex flex-col w-120 gap-3'>
+                    <label htmlFor='config' className='admin-form-label'>Assignment Strategy</label>
+                    <select 
+                        name='config'
+                        className='appearance-none admin-form-control'>
+                        <option value={formData.config?.assignmentStrategy}>Load Balance</option>
+                        <option value={formData.config?.assignmentStrategy}>Manual</option>
+                    </select>
+                </div>
+                <div 
+                    className={`
+                        flex flex-col gap-10
+                    `}
+                >
+                    <div
+                        className='
+                            flex flex-col gap-2
+                        '
+                    >
+                        <h2 className='text-xl'>
+                            Custom Requests   
+                        </h2>
+                        <p
+                            className='
+                                text-wiseGrey3 flex flex-col gap-2
+                            '
+                        >
+                            <span>
+                                Structure what kinds of request can be raised for this team, 
+                                and add as many fields as needed<br/>
+                            </span>    
+                            <span
+                                className='italic font-bold text-wiseRose3'
+                            >
+                                *All request types come with a title, description and file upload field as default.
+                            </span>
+                        </p>
+                    </div>
+                    <div
+                        className='
+                            flex flex-col gap-3
+                        '
+                    >
+                    {Object.keys(formData).length !== 0 && formData.ticketTypes.length !== 0 ? (
+                        formData.ticketTypes.map((ticket, index) => (
+                            <div key={index} className='flex flex-col gap-2'>
+                                <p 
+                                className='bg-wiseRose5 p-2 rounded-sm w-60 flex flex-row'>
+                                    <span className='text-wiseDarkPink'>
+                                        #{index + 1}
+                                    </span>
+                                    <span className='ml-3'>
+                                        {ticket.typeName}
+                                    </span>
+                                    <span className='ml-auto'>
+                                        <button type='button' onClick={() => {
+                                            setShowEditTicket(showEditTicket === index ? null : index)
+                                            setTicketToEdit(ticket);
+                                        }}
+                                            className=' 
+                                                mx-1 font-lato font-bold cursor-pointer transition 
+                                                duration-150 hover:text-wiseSkin
+                                            '
+                                        >
+                                            <FontAwesomeIcon icon={faPenToSquare}/>
+                                        </button>
+                                        <button type='button' onClick={() => deleteTicketType(index)}
+                                            className='
+                                                font-lato font-bold cursor-pointer transition 
+                                                duration-150 hover:text-wiseSkin
+                                                '
+                                            >
+                                            <FontAwesomeIcon icon={faXmark}/>
+                                        </button>
+                                    </span>
+                                </p>
+                                {showEditTicket === index ? (
+                                    <div 
+                                        className=''>
+                                        <EditTicketType
+                                            appendTypeFunc={handleEditTicketType}
+                                            showTicketState={handleShowEditFormChild}
+                                            currentTicket={ticketToEdit}
+                                            index={index} />
+                                    </div>        
+                                ) : (
+                                    <></>
+                                )}
+                            </div>
+                            
+                            ))
+                        ) : (
+                            <>
+                            
+                            </>
+                        )}
+                    </div>
+                </div>
+                <div className='flex flex-col gap-5'>
+                    <button 
+                        type='button'
+                        title='For adding department specific tickets' 
+                        onClick={() => setShowTicketType(!showTicketType)}
+                        className={`
+                            cursor-pointer 
+                            ${showTicketType
+                                ? `
+                                    hidden
+                                `
+                                : `
+                                    bg-wiseGrey4/30 rounded-lg transition-all duration-150
+                                    hover:bg-wiseRose4/50 w-60 py-3
+                                `
+                            }
+                            
+                        `}
+                    >
+                        + Add Custom Request
+                    </button>
+                    <AddTicketType
+                            appendTypeFunc={handleAppendTicketType}
+                            showForm={showTicketType}
+                            setShowForm={setShowTicketType}
+                        />
+                </div>
+            </div>
+            <div 
+                className='
+                    sticky border-t border-wiseGrey4/60 bottom-0
+                    p-5 flex flex-row gap-2 z-50 justify-end bg-white
+                '
+            >
+                <button
+                    type='button'
+                    onClick={() => setOverlay('')}
+                    className='
+                        w-20 rounded-lg font-bold hover:bg-wiseGrey4/60
+                        transition-all duration-150 cursor-pointer
+                    '
+                >
+                    Close
+                </button>
+                <button 
+                    type='button'
+                    onClick={() => update()} 
+                    className='
+                        button1-no-width
+                        w-20 font-bold
+                    '>
+                        Finish
+                </button>
             </div>
         </div>
     )
