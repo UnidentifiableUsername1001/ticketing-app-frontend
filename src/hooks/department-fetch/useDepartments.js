@@ -119,7 +119,7 @@ function useEditDepartment () {
     });
 
     return {
-        update: updateDepartment.mutate,
+        update: updateDepartment.mutateAsync,
         isUpdating: updateDepartment.isPending,
         errorUpdating: updateDepartment.isError
     }

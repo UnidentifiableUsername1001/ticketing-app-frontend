@@ -53,16 +53,9 @@ function Dashboard() {
                 {/* Views Section */}
                 <div className='flex flex-row'>
                     <div>
-                        <p
-                            className={`
-                                    font-lato text-sm text-wiseGrey3 mb-4
-                                `}
-                        >
-                            Workspace / Create Issue
-                        </p>
                         <h1 
                             className='font-lato font-extrabold text-wiseGrey1
-                            text-4xl'>
+                            text-3xl'>
                             Dashboard
                         </h1>
                         <p

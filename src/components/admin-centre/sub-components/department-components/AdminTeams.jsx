@@ -174,6 +174,7 @@ export function AdminTeams() {
                         ? (<>
                             <EditDepartment
                                 targetDept={activeDept}
+                                setOverlay={setFormOverlay}
                             />
                         </>)
                         : (<>

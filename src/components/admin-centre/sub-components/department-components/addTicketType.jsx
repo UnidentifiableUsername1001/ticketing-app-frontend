@@ -73,7 +73,7 @@ export function AddTicketType ({appendTypeFunc, setShowForm, showForm }) {
     return (
         <div
             className={`
-                rounded-x flex flex-col gap-10 px-4 w-200
+                flex flex-col gap-10 px-4 w-200
                 ${showForm 
                     ? '' 
                     : 'hidden'
@@ -92,6 +92,25 @@ export function AddTicketType ({appendTypeFunc, setShowForm, showForm }) {
                     onChange={(e) => setNewTicketType({...newTicketType, [e.target.name]: e.target.value})}
                     placeholder='E.g. Kit-list ammendments'
                 />
+            </div>
+            <div className='flex flex-col gap-4 -mb-6'>
+                <h2 htmlFor='typeName' className='admin-form-label text-xl'>
+                    Set Custom Fields
+                </h2>
+                <p
+                    className='
+                        text-wiseGrey3 flex flex-col gap-2
+                    '
+                >
+                    <span>
+                        Custom fields outline what data this request type should include
+                    </span>    
+                    <span
+                        className='italic font-bold text-wiseRose3'
+                    >
+                        *All request types come with a title, description and file upload field as default.
+                    </span>
+                </p>
             </div>
             {newTicketType.fields.map((field, index) => (
                 <>
@@ -161,7 +180,7 @@ export function AddTicketType ({appendTypeFunc, setShowForm, showForm }) {
                             <Select
                                 unstyled
                                 classNames={style1}
-                                onChange={(option) => handleFieldChange(index, option.label, option.value)}
+                                onChange={(option) => handleFieldChange(index, 'required', option.value)}
                                 options={[
                                     {
                                         label: 'Yes',
@@ -237,7 +256,7 @@ export function AddTicketType ({appendTypeFunc, setShowForm, showForm }) {
                 </button>
                 <button 
                     type='button' 
-                    onClick={handleSubmit}
+                    onClick={() => handleSubmit()}
                     className='
                         button1-no-width
                         font-bold w-40

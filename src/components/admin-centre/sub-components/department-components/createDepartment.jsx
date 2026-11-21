@@ -153,11 +153,6 @@ export function CreateDepartment({overlay, setOverlay}) {
                             <span>
                                 Structure what kinds of request can be raised for this team, 
                                 and add as many fields as needed<br/>
-                            </span>    
-                            <span
-                                className='italic font-bold text-wiseRose3'
-                            >
-                                *All request types come with a title, description and file upload field as default.
                             </span>
                         </p>
                     </div>

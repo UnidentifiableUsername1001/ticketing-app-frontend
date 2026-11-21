@@ -1,19 +1,17 @@
-import { useState } from 'react';
-import Select from 'react-select';
-import { 
-    useEditDepartment
-} from '../../../../hooks/department-fetch/useDepartments';
+import { useContext, useState } from 'react';
+import { useEditDepartment } from '../../../../hooks/department-fetch/useDepartments';
 import { AddTicketType } from './addTicketType';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { EditTicketType } from './EditTicketType';
-import { style1 } from '../../../../hooks/assorted/react-select-styles';
+import { ToastContext } from '../../../../context/toast-notification/ToastContext';
 
-export function EditDepartment({targetDept}) {
+export function EditDepartment({targetDept, setOverlay}) {
     const [showEditTicket, setShowEditTicket] = useState(null);
     const [ticketToEdit, setTicketToEdit] = useState({});
     const { update, errorUpdating, isUpdating } = useEditDepartment();
     const [formData, setFormData] = useState({...targetDept});
+    const { addToast } = useContext(ToastContext);
 
     const updateHandler = (event) => {
         const targetName = event.target.name;
@@ -64,6 +62,18 @@ export function EditDepartment({targetDept}) {
 
     const handleShowEditFormChild = (value) => {
         setShowEditTicket(value);
+    };
+
+    const handleSubmit = async () => {
+        console.log(formData)
+        try {
+            const response = await update(formData);
+            addToast({msg: `${response.department.name} team updated!`, type: "success"});
+            setOverlay(false);
+        } catch(e) {
+            console.error(e);
+            addToast({msg: e.message, type: "error"});
+        }
     }
 
     return (
@@ -160,11 +170,6 @@ export function EditDepartment({targetDept}) {
                             <span>
                                 Structure what kinds of request can be raised for this team, 
                                 and add as many fields as needed<br/>
-                            </span>    
-                            <span
-                                className='italic font-bold text-wiseRose3'
-                            >
-                                *All request types come with a title, description and file upload field as default.
                             </span>
                         </p>
                     </div>
@@ -175,7 +180,15 @@ export function EditDepartment({targetDept}) {
                     >
                     {Object.keys(formData).length !== 0 && formData.ticketTypes.length !== 0 ? (
                         formData.ticketTypes.map((ticket, index) => (
-                            <div key={index} className='flex flex-col gap-2'>
+                            <div key={index} className={`
+                                flex flex-col gap-5
+                                ${showEditTicket === index
+                                    ? `
+                                        border border-wiseGrey4/40 rounded-sm p-2
+                                    `
+                                    : ``
+                                }
+                            `}>
                                 <p 
                                 className='bg-wiseRose5 p-2 rounded-sm w-60 flex flex-row'>
                                     <span className='text-wiseDarkPink'>
@@ -274,7 +287,7 @@ export function EditDepartment({targetDept}) {
                 </button>
                 <button 
                     type='button'
-                    onClick={() => update()} 
+                    onClick={() => handleSubmit()} 
                     className='
                         button1-no-width
                         w-20 font-bold

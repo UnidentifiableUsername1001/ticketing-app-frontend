@@ -46,18 +46,7 @@ export default function AdminCentre({children}) {
         <div className="bg-wiseRose5/25 h-full min-h-0">
             <div className="grid grid-rows-[auto_1fr] py-5 mx-10 h-full min-h-0 gap-5">
                 <div>
-                    <p
-                            className={`
-                                    font-lato text-sm text-wiseGrey3 mb-4
-                                `}
-                        >
-                            Workspace / 
-                            {decoded.user.role === 'Admin'
-                                ? ' Admin centre'
-                                : ' Settings'
-                            }
-                        </p>
-                        <h1 className='font-lato font-extrabold text-wiseGrey1 text-4xl'>
+                        <h1 className='font-lato font-extrabold text-wiseGrey1 text-3xl'>
                             {
                                 selectedTab?.title
                                 ? selectedTab.title

@@ -79,14 +79,7 @@ function DetailView() {
                     <div
                         className='flex flex-col'
                     >
-                        <p
-                            className={`
-                                    font-lato text-sm text-wiseGrey3 mb-4
-                                `}
-                        >
-                            Workspace / Issue Details
-                        </p>
-                        <h1 className='font-lato font-extrabold text-wiseGrey1 text-4xl'>
+                        <h1 className='font-lato font-extrabold text-wiseGrey1 text-3xl'>
                             {ticket?.title ? ticket.title : 'No title'}
                         </h1>
                         <p
